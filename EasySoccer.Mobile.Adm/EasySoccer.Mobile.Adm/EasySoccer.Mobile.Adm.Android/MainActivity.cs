@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using Acr.UserDialogs;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Prism;
@@ -18,6 +19,10 @@ namespace EasySoccer.Mobile.Adm.Droid
             base.OnCreate(savedInstanceState);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
+            UserDialogs.Init(this);
+
+
             LoadApplication(new App(new AndroidInitializer()));
         }
 

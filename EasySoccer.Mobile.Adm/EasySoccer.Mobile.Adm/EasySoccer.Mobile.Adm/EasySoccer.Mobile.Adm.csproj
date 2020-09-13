@@ -19,4 +19,10 @@
     <ProjectReference Include="..\..\EasySoccer.Mobile.Adm.API\EasySoccer.Mobile.Adm.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Views\Login.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

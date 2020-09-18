@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.SignUp"
+             xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Label Style="{StaticResource gilroyLightLabel}" Text="Dados do complexo esportivo" FontSize="Small"/>
+                <BoxView HorizontalOptions="FillAndExpand" Color="#DCDCDC" HeightRequest="1"/>
+                <Entry Placeholder="Seu Nome" Style="{StaticResource gilroyLightEntry}" Text="{Binding UserName}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Entry Placeholder="Email" Keyboard="Email" Style="{StaticResource gilroyLightEntry}" Text="{Binding UserEmail}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Entry Placeholder="CNPJ" Style="{StaticResource gilroyLightEntry}" Text="{Binding CNPJ}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                    <Entry.Behaviors>
+                        <behaviorPack:MaskedBehavior Mask="XX.XXX.XXX/XXXX-XX" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Placeholder="Nome do Complexo Esportivo" Style="{StaticResource gilroyLightEntry}" Text="{Binding CompanyName}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Label Style="{StaticResource gilroyLightLabel}" Text="Dados do plano" FontSize="Small"/>
+                <BoxView HorizontalOptions="FillAndExpand" Color="#DCDCDC" HeightRequest="1"/>
+                <Picker ItemsSource="{Binding PlansName}" SelectedIndex="{Binding SelectedPlan}" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53" Title="Plano"></Picker>
+                <Picker ItemsSource="{Binding PlansInstallments}" SelectedIndex="{Binding SelectedInstallment}" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53" Title="Parcelas"></Picker>
+                <Frame Margin="5" HasShadow="True" CornerRadius="10" BorderColor="#161E53">
+                    <StackLayout>
+                        <Label Style="{StaticResource gilroyLightLabel}" Text="Para mais informações sobre planos acesse:" HorizontalTextAlignment="Center" />
+                        <Label Style="{StaticResource gilroyLightLabel}" Text="easysoccer.com.br" HorizontalTextAlignment="Center" TextColor="#0000EE">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenLinkCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </Frame>
+                <Label Style="{StaticResource gilroyLightLabel}" Text="Dados de pagamento" FontSize="Small"/>
+                <BoxView HorizontalOptions="FillAndExpand" Color="#DCDCDC" HeightRequest="1"/>
+                <Entry Placeholder="Nome do Titular" Style="{StaticResource gilroyLightEntry}" Text="{Binding FinancialName}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Entry Placeholder="CPF fo Titular" Style="{StaticResource gilroyLightEntry}" Text="{Binding FinancialDocument}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                    <Entry.Behaviors>
+                        <behaviorPack:MaskedBehavior Mask="XXX.XXX.XXX-XX" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Placeholder="Data Nascimento do Titular" Style="{StaticResource gilroyLightEntry}" Text="{Binding FinancialBirthDay}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                    <Entry.Behaviors>
+                        <behaviorPack:MaskedBehavior Mask="XX/XX/XXXX" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Entry Placeholder="Numero do Cartão" Style="{StaticResource gilroyLightEntry}" Text="{Binding CardNumber}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                    <Entry.Behaviors>
+                        <behaviorPack:MaskedBehavior Mask="XXXX XXXX XXXX XXXX" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" Placeholder="Vencimento do Cartão" Style="{StaticResource gilroyLightEntry}" Text="{Binding CardExpiration}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                        <Entry.Behaviors>
+                            <behaviorPack:MaskedBehavior Mask="XX/XXXX" />
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Entry Grid.Column="1" Placeholder="Código de Seg." Style="{StaticResource gilroyLightEntry}" Text="{Binding SecurityCode}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                        <Entry.Behaviors>
+                            <behaviorPack:MaskedBehavior Mask="XXX" />
+                        </Entry.Behaviors>
+                    </Entry>
+                </Grid>
+                <Button Text="Cadastrar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

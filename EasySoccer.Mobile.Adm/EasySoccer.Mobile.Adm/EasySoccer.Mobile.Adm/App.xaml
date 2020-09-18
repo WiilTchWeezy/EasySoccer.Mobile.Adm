@@ -17,6 +17,9 @@
             <Style x:Key="gilroyLightEntry" TargetType="Entry">
                 <Setter Property="FontFamily" Value="Gilroy-Light.otf#Gilroy-Light" />
             </Style>
+            <Style x:Key="gilroyLightPicker" TargetType="Picker">
+                <Setter Property="FontFamily" Value="Gilroy-Light.otf#Gilroy-Light" />
+            </Style>
             <Style x:Key="gilroyLightButtonPrimary" TargetType="Button">
                 <Setter Property="FontFamily" Value="Gilroy-Light.otf#Gilroy-Light" />
                 <Setter Property="BackgroundColor" Value="#161E53" />

@@ -1,4 +1,6 @@
 ﻿using Acr.UserDialogs;
+using EasySoccer.Mobile.Adm.API.ApiRequest;
+using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.API.Infra.Exceptions;
 using EasySoccer.Mobile.Adm.API.Session;
 using Newtonsoft.Json;
@@ -65,7 +67,11 @@ namespace EasySoccer.Mobile.Adm.API
                 if (httpResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var response = await httpResponse.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(response);
+                    var objectResponse = JsonConvert.DeserializeObject<T>(response, new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    });
+                    return objectResponse;
                 }
                 else if (httpResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
@@ -140,6 +146,16 @@ namespace EasySoccer.Mobile.Adm.API
             Preferences.Remove("AuthExpiresDate");
             Preferences.Set("AuthToken", token);
             Preferences.Set("AuthExpiresDate", expireDate);
+        }
+
+        public Task<List<PlansInfoResponse>> GetPlansInfoAsync()
+        {
+            return Get<List<PlansInfoResponse>>("financial/getPlansInfo");
+        }
+
+        public Task<object> PostCompanyFormInputAsync(CompanyFormInputRequest companyFormInputRequest)
+        {
+            return Post<object>("Company/companyforminput", companyFormInputRequest);
         }
     }
 }

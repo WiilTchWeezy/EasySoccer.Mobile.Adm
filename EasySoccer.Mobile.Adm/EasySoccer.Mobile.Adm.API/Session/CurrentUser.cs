@@ -83,6 +83,14 @@ namespace EasySoccer.Mobile.Adm.API.Session
             _eventAggregator?.GetEvent<UserLoggedInEvent>().Publish(false);
         }
 
+        public void Login(string token, DateTime expireDate)
+        {
+            Preferences.Remove("AuthToken");
+            Preferences.Remove("AuthExpiresDate");
+            Preferences.Set("AuthToken", token);
+            Preferences.Set("AuthExpiresDate", expireDate);
+        }
+
         public List<Claim> DecryptToken()
         {
             if (string.IsNullOrEmpty(AuthToken) == false)

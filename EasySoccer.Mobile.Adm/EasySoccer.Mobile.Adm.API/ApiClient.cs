@@ -157,5 +157,11 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return Post<object>("Company/companyforminput", companyFormInputRequest);
         }
+
+        public Task<TokenResponse> LoginAsync(string email, string password)
+        {
+            return Get<TokenResponse>("login/tokencompany?" + GenerateQueryParameters(new { email, password }));
+        }
+
     }
 }

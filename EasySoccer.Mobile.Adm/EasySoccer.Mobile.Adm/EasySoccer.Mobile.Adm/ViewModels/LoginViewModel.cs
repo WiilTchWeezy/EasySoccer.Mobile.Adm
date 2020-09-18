@@ -50,7 +50,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 if(response != null)
                 {
                     CurrentUser.Instance.Login(response.Token, response.ExpireDate);
-                    await _navigationService.NavigateAsync("MainPage/NavigationPage/CompanyReservations");
+                    await _navigationService.NavigateAsync("/MainPage/NavigationPage/CompanyReservations");
                 }
             }
             catch (Exception e)

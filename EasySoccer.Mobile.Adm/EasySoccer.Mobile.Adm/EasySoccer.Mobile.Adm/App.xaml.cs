@@ -5,6 +5,7 @@ using EasySoccer.Mobile.Adm.Views;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Forms;
+using EasySoccer.Mobile.Adm.API.Session;
 
 namespace EasySoccer.Mobile.Adm
 {
@@ -18,8 +19,10 @@ namespace EasySoccer.Mobile.Adm
         protected override async void OnInitialized()
         {
             InitializeComponent();
-
-            await NavigationService.NavigateAsync("Login");
+            if (CurrentUser.Instance.IsLoggedIn)
+                await NavigationService.NavigateAsync("MainPage/NavigationPage/CompanyReservations");
+            else
+                await NavigationService.NavigateAsync("Login");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

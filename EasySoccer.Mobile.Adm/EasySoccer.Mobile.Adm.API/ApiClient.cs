@@ -165,7 +165,12 @@ namespace EasySoccer.Mobile.Adm.API
 
         public Task<List<CompanySchedulesResponse>> GetCompanySchedulesAsync(DateTime selectedDate)
         {
-            return Get<List<CompanySchedulesResponse>>("SoccerPitchReservation/getschedules?" + GenerateQueryParameters(new { selectedDate }));
+            return Get<List<CompanySchedulesResponse>>("SoccerPitchReservation/getcompanyschedules?" + GenerateQueryParameters(new { selectedDate }));
+        }
+
+        public Task<CompanyInfoResponse> GetCompanyInfoAsync()
+        {
+            return Get<CompanyInfoResponse>("Company/getcompanyinfo");
         }
 
     }

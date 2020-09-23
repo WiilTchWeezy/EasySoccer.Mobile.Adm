@@ -5,8 +5,70 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="EasySoccer.Mobile.Adm.Views.CompanyReservations">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Agendamentos"/>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Image Source="{Binding Image}" Aspect="Fill" HeightRequest="150"></Image>
+                <StackLayout Padding="5">
+                    <Label Text="{Binding Name}" Style="{StaticResource gilroyLabel}" FontAttributes="Bold" FontSize="Title"></Label>
+                    <Label Text="{Binding City}" Style="{StaticResource gilroyLightLabel}" FontSize="Micro" FontAttributes="Italic" TextColor="#4E4E4E"></Label>
+                    <Label Text="{Binding CompleteAddress}" Style="{StaticResource gilroyLightLabel}" FontSize="Micro" FontAttributes="Italic" TextColor="#4E4E4E"></Label>
+                </StackLayout>
+                <StackLayout Padding="5" BackgroundColor="#DCDCDC">
+                    <Frame CornerRadius="10" HasShadow="True">
+                        <StackLayout>
+                            <Label Text="Data Selecionada" Style="{StaticResource gilroyLightLabel}"/>
+                            <DatePicker Date="{Binding SelectedDate}" Style="{StaticResource gilroyLightLabel}"></DatePicker>
+                        </StackLayout>
+                    </Frame>
+                    <CollectionView ItemsSource="{Binding CompanySchedules}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout HeightRequest="120"  Padding="5">
+                                    <BoxView Color="#161E53" HorizontalOptions="FillAndExpand" HeightRequest="1"/>
+                                    <Label Text="{Binding Hour}" Style="{StaticResource gilroyLabel}"/>
+                                    <Grid BackgroundColor="#888888" Padding="5">
+                                        <CollectionView ItemsSource="{Binding Events}" >
+                                            <CollectionView.ItemsLayout>
+                                                <LinearItemsLayout Orientation="Horizontal"    
+                               SnapPointsType="MandatorySingle"
+                               SnapPointsAlignment="Start"
+                               ItemSpacing="10"/>
+                                            </CollectionView.ItemsLayout>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Frame BorderColor="#161E53" CornerRadius="10">
+                                                        <StackLayout>
+                                                            <Label Text="{Binding ScheduleHour}" Style="{StaticResource gilroyLabel}" IsVisible="{Binding HasReservation}"/>
+                                                            <Label Text="{Binding SoccerPitch}" Style="{StaticResource gilroyLightLabel}"/>
+                                                            <Grid BackgroundColor="#FF591F" Margin="10,0,10,-10" Padding="3" IsVisible="{Binding NotHaveReservation}">
+                                                                <Grid.GestureRecognizers>
+                                                                    <TapGestureRecognizer Command="{Binding ScheduleHour}"/>
+                                                                </Grid.GestureRecognizers>
+                                                                <Label Text="Agendar" TextColor="#FFF" Style="{StaticResource gilroyLightLabel}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                                            </Grid>
+                                                        </StackLayout>
+                                                    </Frame>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                            <CollectionView.EmptyView>
+                                                <StackLayout>
+                                                    <Label TextColor="#FFF" Text="Nenhum horário agendado." HorizontalOptions="Center" Style="{StaticResource gilroyLightLabel}" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                                    <Grid BackgroundColor="#FF591F" Margin="35,0,35,0" Padding="5">
+                                                        <Grid.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding ScheduleHour}"/>
+                                                        </Grid.GestureRecognizers>
+                                                        <Label Text="Agendar" TextColor="#FFF" Style="{StaticResource gilroyLightLabel}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                                    </Grid>
+                                                </StackLayout>
+                                            </CollectionView.EmptyView>
+                                        </CollectionView>
+                                    </Grid>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

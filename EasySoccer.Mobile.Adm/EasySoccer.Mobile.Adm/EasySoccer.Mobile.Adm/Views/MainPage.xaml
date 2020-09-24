@@ -20,9 +20,9 @@
                         <Label Grid.Column="0" Text="&#xf784;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
                         <Label Grid.Column="1" Text="Minha Agenda" IsEnabled="{Binding UserLoggedIn}" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
                     </Grid>
-                    <Grid Padding="10" IsEnabled="{Binding UserLoggedIn}">
+                    <Grid Padding="10">
                         <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="MySchedules"/>
+                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="CompanyInfo"/>
                         </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30"/>

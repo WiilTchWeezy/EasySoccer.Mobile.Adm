@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySoccer.Mobile.Adm.Andro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySoccer.Mobile.Adm.iOS", "EasySoccer.Mobile.Adm\EasySoccer.Mobile.Adm.iOS\EasySoccer.Mobile.Adm.iOS.csproj", "{F4DCABC9-75F3-471E-8AE2-623A5197C6A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySoccer.Mobile.Adm.API", "EasySoccer.Mobile.Adm.API\EasySoccer.Mobile.Adm.API.csproj", "{1EBA09D6-2909-42EC-8E19-AD3398E50429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasySoccer.Mobile.Adm.API", "EasySoccer.Mobile.Adm.API\EasySoccer.Mobile.Adm.API.csproj", "{1EBA09D6-2909-42EC-8E19-AD3398E50429}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

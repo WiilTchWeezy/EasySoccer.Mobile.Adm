@@ -40,12 +40,6 @@
                                                         <StackLayout>
                                                             <Label Text="{Binding ScheduleHour}" Style="{StaticResource gilroyLabel}" IsVisible="{Binding HasReservation}"/>
                                                             <Label Text="{Binding SoccerPitch}" Style="{StaticResource gilroyLightLabel}"/>
-                                                            <Grid BackgroundColor="#FF591F" Margin="10,0,10,-10" Padding="3" IsVisible="{Binding NotHaveReservation}">
-                                                                <Grid.GestureRecognizers>
-                                                                    <TapGestureRecognizer Command="{Binding ScheduleHour}"/>
-                                                                </Grid.GestureRecognizers>
-                                                                <Label Text="Agendar" TextColor="#FFF" Style="{StaticResource gilroyLightLabel}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                                                            </Grid>
                                                         </StackLayout>
                                                     </Frame>
                                                 </DataTemplate>
@@ -53,12 +47,6 @@
                                             <CollectionView.EmptyView>
                                                 <StackLayout>
                                                     <Label TextColor="#FFF" Text="Nenhum horário agendado." HorizontalOptions="Center" Style="{StaticResource gilroyLightLabel}" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
-                                                    <Grid BackgroundColor="#FF591F" Margin="35,0,35,0" Padding="5">
-                                                        <Grid.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding ScheduleHour}"/>
-                                                        </Grid.GestureRecognizers>
-                                                        <Label Text="Agendar" TextColor="#FFF" Style="{StaticResource gilroyLightLabel}" VerticalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                                                    </Grid>
                                                 </StackLayout>
                                             </CollectionView.EmptyView>
                                         </CollectionView>

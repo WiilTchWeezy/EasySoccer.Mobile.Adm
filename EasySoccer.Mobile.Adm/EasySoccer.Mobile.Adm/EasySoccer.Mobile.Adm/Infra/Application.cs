@@ -22,6 +22,7 @@ namespace EasySoccer.Mobile.Adm.Infra
         public void LogOff(INavigationService navigationService)
         {
             CurrentUser.Instance.LogOff();
+            navigationService.NavigateAsync("/Login");
         }
 
         public string GetImage(string fileName, BlobContainerEnum blobContainer)

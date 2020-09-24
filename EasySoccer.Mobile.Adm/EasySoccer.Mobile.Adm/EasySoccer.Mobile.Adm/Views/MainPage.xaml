@@ -9,27 +9,16 @@
             <StackLayout>
                 <Image Source="MenuLogo.png" Opacity="0.8"/>
                 <StackLayout>
-                    <Grid Padding="10">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="SoccerPitchSearch"/>
-                        </Grid.GestureRecognizers>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Text="&#xf689;" Style="{StaticResource fontAwesomeLabel}" FontSize="25" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="1" Text="Complexos Esportivos" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
-                    </Grid>
                     <Grid Padding="10" IsEnabled="{Binding UserLoggedIn}">
                         <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="UserInfo"/>
+                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="CompanyReservations"/>
                         </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Text="&#xf007;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="1" Text="Minhas Informações" IsEnabled="{Binding UserLoggedIn}" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
+                        <Label Grid.Column="0" Text="&#xf784;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Text="Minha Agenda" IsEnabled="{Binding UserLoggedIn}" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
                     </Grid>
                     <Grid Padding="10" IsEnabled="{Binding UserLoggedIn}">
                         <Grid.GestureRecognizers>
@@ -39,19 +28,19 @@
                             <ColumnDefinition Width="30"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Text="&#xf1e3;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="1" Text="Meus Horários" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
+                        <Label Grid.Column="0" Text="&#xf015;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Text="Informações do Complexo Esportivo" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
                     </Grid>
                     <Grid Padding="10">
                         <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="{Binding LoginLogoutParameter}"/>
+                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="Logout"/>
                         </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Text="&#xf2f6;" Style="{StaticResource fontAwesomeLabel}" FontSize="25" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="1" Text="{Binding LoginLogoutText}" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
+                        <Label Grid.Column="0" Text="&#xf2f6;" Style="{StaticResource fontAwesomeLabel}" FontSize="25" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Text="Sair" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
                     </Grid>
                 </StackLayout>
             </StackLayout>

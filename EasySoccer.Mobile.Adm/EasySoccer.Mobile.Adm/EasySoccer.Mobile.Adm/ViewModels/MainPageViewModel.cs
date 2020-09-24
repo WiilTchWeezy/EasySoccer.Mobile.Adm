@@ -1,4 +1,9 @@
-﻿using Prism.Commands;
+﻿using Acr.UserDialogs;
+using EasySoccer.Mobile.Adm.API.Events;
+using EasySoccer.Mobile.Adm.API.Session;
+using EasySoccer.Mobile.Adm.Infra;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
@@ -10,10 +15,56 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        public MainPageViewModel(INavigationService navigationService)
+        public DelegateCommand<string> NavigatePageCommand { get; set; }
+        private INavigationService _navigationService;
+        private IEventAggregator _eventAggregator;
+        public MainPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
             : base(navigationService)
         {
-            Title = "Main Page";
+            NavigatePageCommand = new DelegateCommand<string>(NavigatePage);
+            _navigationService = navigationService;
+            _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<UserLoggedInEvent>().Subscribe(UserHasLoggedIn);
+            UserLoggedIn = CurrentUser.Instance.IsLoggedIn;
+            CurrentUser.Instance.SetEventAggregator(_eventAggregator);
+        }
+
+        private void NavigatePage(string page)
+        {
+            if (page == "Logout")
+            {
+                var confirmConfig = new ConfirmConfig()
+                {
+                    CancelText = "Cancelar",
+                    Message = "Deseja realmente sair?",
+                    OkText = "Sair",
+                    Title = "EasySoccer",
+                    OnAction = (selection) =>
+                    {
+                        if (selection)
+                            Application.Instance.LogOff(_navigationService);
+                    }
+                };
+                UserDialogs.Instance.Confirm(confirmConfig);
+            }
+            else if (page == "Login")
+            {
+                _navigationService.NavigateAsync("Login", useModalNavigation: true);
+            }
+            else
+                _navigationService.NavigateAsync("NavigationPage/" + page);
+        }
+
+        private void UserHasLoggedIn(bool payLoad)
+        {
+            this.UserLoggedIn = payLoad;
+        }
+
+        private bool _userLoggedIn;
+        public bool UserLoggedIn
+        {
+            get { return _userLoggedIn; }
+            set { SetProperty(ref _userLoggedIn, value); }
         }
     }
 }

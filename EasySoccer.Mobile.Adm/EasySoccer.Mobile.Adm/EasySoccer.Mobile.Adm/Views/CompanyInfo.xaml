@@ -32,6 +32,7 @@
                 </Entry>
                     <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Latitude" Text="{Binding Latitude}" BackgroundColor="Transparent" Grid.Column="1" IsEnabled="False"/>
             </Grid>
+                <Button Text="Google Maps" Command="{Binding SearchPlacesCommand}"/>
                 <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding LoginCommand}"></Button>
             </StackLayout>
         </ScrollView>

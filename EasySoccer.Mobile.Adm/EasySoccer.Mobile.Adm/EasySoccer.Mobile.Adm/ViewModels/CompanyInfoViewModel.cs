@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.Infra;
+using EasySoccer.Mobile.Adm.Infra.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -15,9 +16,15 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     public class CompanyInfoViewModel : BindableBase, INavigationAware
     {
         public DelegateCommand SelectedImageCommand { get; set; }
-        public CompanyInfoViewModel()
+
+        public DelegateCommand SearchPlacesCommand { get; set; }
+
+        private IGooglePlacesService _googlePlacesService;
+        public CompanyInfoViewModel(IGooglePlacesService googlePlacesService)
         {
             SelectedImageCommand = new DelegateCommand(SelectImage);
+            _googlePlacesService = googlePlacesService;
+            SearchPlacesCommand = new DelegateCommand(SearchGoogleMaps);
         }
 
         private string _image;
@@ -108,6 +115,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     string base64 = Convert.ToBase64String(bytes);
                 }
             }
+        }
+
+        private void SearchGoogleMaps()
+        {
+            _googlePlacesService.DisplayIntent();
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)

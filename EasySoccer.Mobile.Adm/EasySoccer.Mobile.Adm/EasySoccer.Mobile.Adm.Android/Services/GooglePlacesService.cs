@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using EasySoccer.Mobile.Adm.Droid.Services;
 using EasySoccer.Mobile.Adm.Infra.Services;
+using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Google.Places;
 using Xamarin.Forms;
 
@@ -20,10 +21,10 @@ namespace EasySoccer.Mobile.Adm.Droid.Services
 {
     public class GooglePlacesService : AppCompatActivity, IGooglePlacesService
     {
-        public void DisplayIntent()
+        public void DisplayIntent(Action<PlaceDetail> onIntentResult)
         {
             var main = Xamarin.Essentials.Platform.CurrentActivity as MainActivity;
-            main.DisplayIntent();
+            main.DisplayIntent(onIntentResult);
         }
     }
 }

@@ -6,17 +6,20 @@ using Android.OS;
 using Android.Runtime;
 using EasySoccer.Mobile.Adm.Droid.Services;
 using EasySoccer.Mobile.Adm.Infra.Services;
+using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Google.Places;
 using Prism;
 using Prism.Ioc;
+using System;
 using System.Collections.Generic;
 
 namespace EasySoccer.Mobile.Adm.Droid
 {
     [Activity(Theme = "@style/MainTheme",
               ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity, IGooglePlacesService
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        private Action<PlaceDetail> _onIntentResult;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -42,8 +45,9 @@ namespace EasySoccer.Mobile.Adm.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        public void DisplayIntent()
+        public void DisplayIntent(Action<PlaceDetail> onIntentResult)
         {
+            _onIntentResult = onIntentResult;
             List<Place.Field> fields = new List<Place.Field>();
 
             fields.Add(Place.Field.Id);
@@ -61,8 +65,23 @@ namespace EasySoccer.Mobile.Adm.Droid
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-
-            var place = Autocomplete.GetPlaceFromIntent(data);
+            try
+            {
+                var place = Autocomplete.GetPlaceFromIntent(data);
+                var placeDetail = new PlaceDetail
+                {
+                    Address = place.Address,
+                    Id = place.Id,
+                    Name = place.Name,
+                    Latitude = place.LatLng.Latitude,
+                    Longitude = place.LatLng.Longitude
+                };
+                _onIntentResult(placeDetail);
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
     }
 

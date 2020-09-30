@@ -2,6 +2,7 @@
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.Infra;
 using EasySoccer.Mobile.Adm.Infra.Services;
+using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -18,13 +19,17 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public DelegateCommand SelectedImageCommand { get; set; }
 
         public DelegateCommand SearchPlacesCommand { get; set; }
+        public DelegateCommand CurrentLocationCommand { get; set; }
 
         private IGooglePlacesService _googlePlacesService;
+
+        Action<PlaceDetail> onIntentResult;
         public CompanyInfoViewModel(IGooglePlacesService googlePlacesService)
         {
             SelectedImageCommand = new DelegateCommand(SelectImage);
             _googlePlacesService = googlePlacesService;
             SearchPlacesCommand = new DelegateCommand(SearchGoogleMaps);
+            CurrentLocationCommand = new DelegateCommand(CurrentLocation);
         }
 
         private string _image;
@@ -62,15 +67,15 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _completeAddress, value); }
         }
 
-        private decimal _longitude;
-        public decimal Longitude
+        private double _longitude;
+        public double Longitude
         {
             get { return _longitude; }
             set { SetProperty(ref _longitude, value); }
         }
 
-        private decimal _latitude;
-        public decimal Latitude
+        private double _latitude;
+        public double Latitude
         {
             get { return _latitude; }
             set { SetProperty(ref _latitude, value); }
@@ -119,7 +124,22 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         private void SearchGoogleMaps()
         {
-            _googlePlacesService.DisplayIntent();
+            onIntentResult = (placeDetail) =>
+            {
+                this.Longitude = placeDetail.Longitude;
+                this.Latitude = placeDetail.Latitude;
+            };
+            _googlePlacesService.DisplayIntent(onIntentResult);
+        }
+
+        private async void CurrentLocation()
+        {
+            var location = await Geolocation.GetLastKnownLocationAsync();
+            if(location != null)
+            {
+                this.Longitude = location.Longitude;
+                this.Latitude = location.Latitude;
+            }
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)
@@ -130,5 +150,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             this.LoadDataAsync();
         }
+
+
     }
 }

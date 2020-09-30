@@ -9,8 +9,8 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public string CompleteAddress { get; set; }
         public string CNPJ { get; set; }
         public string Logo { get; set; }
-        public decimal Longitude { get; set; }
-        public decimal Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
         public string City { get; set; }
         public List<CompanyDaySchedule> CompanySchedules { get; set; }
     }

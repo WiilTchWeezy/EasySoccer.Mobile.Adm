@@ -129,6 +129,25 @@ namespace EasySoccer.Mobile.Adm.API
             return response;
         }
 
+        private async Task<TReturn> Patch<TReturn>(string apiMethod, object request)
+        {
+            TReturn response;
+            UserDialogs.Instance.ShowLoading("");
+            using (var httpClient = CreateClient())
+            {
+                var method = new HttpMethod("PATCH");
+
+                var jsonRequest = JsonConvert.SerializeObject(request);
+                var httpRequest = new HttpRequestMessage(method, $"{ApiUrl}{apiMethod}")
+                {
+                    Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json")
+                };
+                response = await TreatApiReturn<TReturn>(await httpClient.SendAsync(httpRequest));
+            }
+            UserDialogs.Instance.HideLoading();
+            return response;
+        }
+
 
         private string GenerateQueryParameters(object parameters)
         {
@@ -171,6 +190,16 @@ namespace EasySoccer.Mobile.Adm.API
         public Task<CompanyInfoResponse> GetCompanyInfoAsync()
         {
             return Get<CompanyInfoResponse>("Company/getcompanyinfo");
+        }
+
+        public Task<object> PostCompanyImageAsync(CompanyImageRequest companyImageRequest)
+        {
+            return Post<object>("Company/saveImage", companyImageRequest);
+        }
+
+        public Task<object> PatchCompanyAsync(PatchCompanyInfoRequest patchCompanyInfoRequest)
+        {
+            return Patch<object>("company/patchcompanyinfo", patchCompanyInfoRequest);
         }
 
     }

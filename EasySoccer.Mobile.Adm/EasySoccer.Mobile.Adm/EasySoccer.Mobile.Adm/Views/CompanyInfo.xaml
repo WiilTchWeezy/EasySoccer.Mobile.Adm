@@ -66,7 +66,7 @@
                         </Grid>
                     </Frame>
                 </Grid>
-                <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding LoginCommand}"></Button>
+                <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -17,9 +17,9 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     public class CompanyInfoViewModel : BindableBase, INavigationAware
     {
         public DelegateCommand SelectedImageCommand { get; set; }
-
         public DelegateCommand SearchPlacesCommand { get; set; }
         public DelegateCommand CurrentLocationCommand { get; set; }
+        public DelegateCommand SaveCommand { get; set; }
 
         private IGooglePlacesService _googlePlacesService;
 
@@ -30,6 +30,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             _googlePlacesService = googlePlacesService;
             SearchPlacesCommand = new DelegateCommand(SearchGoogleMaps);
             CurrentLocationCommand = new DelegateCommand(CurrentLocation);
+            SaveCommand = new DelegateCommand(SaveAsync);
         }
 
         private string _image;
@@ -105,20 +106,31 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         private async void SelectImage()
         {
-            var response = await MediaPicker.PickPhotoAsync(new MediaPickerOptions { Title = "Selecione uma imagem" });
-            if (response != null)
+            try
             {
-                var stream = await response.OpenReadAsync();
-                byte[] bytes = null;
-                using (var memoryStream = new MemoryStream())
+                var mediaResponse = await MediaPicker.PickPhotoAsync(new MediaPickerOptions { Title = "Selecione uma imagem" });
+                if (mediaResponse != null)
                 {
-                    stream.CopyTo(memoryStream);
-                    bytes = memoryStream.ToArray();
+                    var stream = await mediaResponse.OpenReadAsync();
+                    byte[] bytes = null;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        bytes = memoryStream.ToArray();
+                    }
+                    if (bytes != null)
+                    {
+                        string base64 = Convert.ToBase64String(bytes);
+                        if (string.IsNullOrEmpty(base64) == false)
+                        {
+                            var apiResponse = await ApiClient.Instance.PostCompanyImageAsync(new API.ApiRequest.CompanyImageRequest { ImageBase64 = base64 });
+                        }
+                    }
                 }
-                if (bytes != null)
-                {
-                    string base64 = Convert.ToBase64String(bytes);
-                }
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
             }
         }
 
@@ -135,10 +147,34 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         private async void CurrentLocation()
         {
             var location = await Geolocation.GetLastKnownLocationAsync();
-            if(location != null)
+            if (location != null)
             {
                 this.Longitude = location.Longitude;
                 this.Latitude = location.Latitude;
+            }
+        }
+
+        private async void SaveAsync()
+        {
+            try
+            {
+                var response = await ApiClient.Instance.PatchCompanyAsync(new API.ApiRequest.PatchCompanyInfoRequest
+                {
+                    CNPJ = this.CNPJ,
+                    CompleteAddress = this.CompleteAddress,
+                    Description = this.Description,
+                    Latitude = this.Latitude,
+                    Longitude = this.Longitude,
+                    Name = this.Name
+                });
+                if (response != null)
+                {
+                    UserDialogs.Instance.Alert("Dados atualizados com sucesso.");
+                }
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
             }
         }
 

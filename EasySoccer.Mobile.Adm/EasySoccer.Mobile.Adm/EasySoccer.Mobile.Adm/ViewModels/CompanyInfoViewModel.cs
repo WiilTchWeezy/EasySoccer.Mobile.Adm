@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
+using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.Infra;
 using EasySoccer.Mobile.Adm.Infra.Services;
 using EasySoccer.Mobile.Adm.Infra.Services.DTO;
@@ -20,8 +21,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public DelegateCommand SearchPlacesCommand { get; set; }
         public DelegateCommand CurrentLocationCommand { get; set; }
         public DelegateCommand SaveCommand { get; set; }
+        public DelegateCommand ActiveCommand { get; set; }
 
         private IGooglePlacesService _googlePlacesService;
+        private CompanyInfoResponse _companyInfoResponse = null;
 
         Action<PlaceDetail> onIntentResult;
         public CompanyInfoViewModel(IGooglePlacesService googlePlacesService)
@@ -31,6 +34,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             SearchPlacesCommand = new DelegateCommand(SearchGoogleMaps);
             CurrentLocationCommand = new DelegateCommand(CurrentLocation);
             SaveCommand = new DelegateCommand(SaveAsync);
+            ActiveCommand = new DelegateCommand(ActiveCompany);
         }
 
         private string _image;
@@ -82,6 +86,30 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _latitude, value); }
         }
 
+        private bool _isActive;
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (SetProperty(ref _isActive, value))
+                {
+                    ActiveCompany();
+                    if (value)
+                        StatusText = "Ativo";
+                    else
+                        StatusText = "Inativo";
+                }
+            }
+        }
+
+        private string _statusText;
+        public string StatusText
+        {
+            get { return _statusText; }
+            set { SetProperty(ref _statusText, value); }
+        }
+
         private async void LoadDataAsync()
         {
             try
@@ -89,6 +117,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 var companyInfoResponse = await ApiClient.Instance.GetCompanyInfoAsync();
                 if (companyInfoResponse != null)
                 {
+                    _companyInfoResponse = companyInfoResponse;
                     Image = Application.Instance.GetImage(companyInfoResponse.Logo, Infra.Enums.BlobContainerEnum.Company);
                     Name = companyInfoResponse.Name;
                     Description = companyInfoResponse.Description;
@@ -96,6 +125,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     CompleteAddress = companyInfoResponse.CompleteAddress;
                     Longitude = companyInfoResponse.Longitude;
                     Latitude = companyInfoResponse.Latitude;
+                    IsActive = companyInfoResponse.Active;
+                    if (IsActive)
+                        StatusText = "Ativo";
+                    else
+                        StatusText = "Inativo";
                 }
             }
             catch (Exception e)
@@ -158,7 +192,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             try
             {
-                var response = await ApiClient.Instance.PatchCompanyAsync(new API.ApiRequest.PatchCompanyInfoRequest
+                await ApiClient.Instance.PatchCompanyAsync(new API.ApiRequest.PatchCompanyInfoRequest
                 {
                     CNPJ = this.CNPJ,
                     CompleteAddress = this.CompleteAddress,
@@ -167,10 +201,21 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Longitude = this.Longitude,
                     Name = this.Name
                 });
-                if (response != null)
-                {
-                    UserDialogs.Instance.Alert("Dados atualizados com sucesso.");
-                }
+                UserDialogs.Instance.Alert("Dados atualizados com sucesso.");
+
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
+            }
+        }
+
+        private async void ActiveCompany()
+        {
+            try
+            {
+                if (_companyInfoResponse != null && _companyInfoResponse.Active != IsActive)
+                    await ApiClient.Instance.ActiveAsync(IsActive);
             }
             catch (Exception e)
             {

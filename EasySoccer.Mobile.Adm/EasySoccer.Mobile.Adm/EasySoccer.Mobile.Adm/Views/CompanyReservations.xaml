@@ -18,7 +18,7 @@
                     <Frame CornerRadius="10" HasShadow="True">
                         <StackLayout>
                             <Label Text="Data Selecionada" Style="{StaticResource gilroyLightLabel}"/>
-                            <DatePicker Date="{Binding SelectedDate}" Style="{StaticResource gilroyLightLabel}"></DatePicker>
+                            <DatePicker Date="{Binding SelectedDate}" Style="{StaticResource gilroyLightLabel}" BackgroundColor="Transparent"></DatePicker>
                         </StackLayout>
                     </Frame>
                     <CollectionView ItemsSource="{Binding CompanySchedules}">

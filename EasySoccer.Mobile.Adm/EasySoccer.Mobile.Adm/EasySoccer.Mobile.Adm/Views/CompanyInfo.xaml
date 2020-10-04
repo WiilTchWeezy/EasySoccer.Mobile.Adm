@@ -66,6 +66,21 @@
                         </Grid>
                     </Frame>
                 </Grid>
+                <Grid Padding="5">
+                    <Frame HasShadow="True" BorderColor="#DCDCDC">
+                        <StackLayout>
+                            <Label Style="{StaticResource gilroyLightLabel}" Text="Status do Complexo Esportivo:" FontSize="Small"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Style="{StaticResource gilroyLabel}" VerticalTextAlignment="Center" Text="{Binding StatusText}" FontSize="Small"/>
+                                <Switch Grid.Column="1" IsToggled="{Binding IsActive}" />
+                            </Grid>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
                 <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
             </StackLayout>
         </ScrollView>

@@ -202,5 +202,10 @@ namespace EasySoccer.Mobile.Adm.API
             return Patch<object>("company/patchcompanyinfo", patchCompanyInfoRequest);
         }
 
+        public Task<object> ActiveAsync(bool active)
+        {
+            return Post<object>("company/active", new { Active = active });
+        }
+
     }
 }

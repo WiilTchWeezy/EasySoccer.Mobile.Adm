@@ -1,6 +1,5 @@
-﻿using System;
+﻿using EasySoccer.Mobile.Adm.API.ApiResponses;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EasySoccer.Mobile.Adm.API.ApiRequest
 {
@@ -12,5 +11,6 @@ namespace EasySoccer.Mobile.Adm.API.ApiRequest
         public string CompleteAddress { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
+        public List<CompanyDaySchedule> CompanySchedules { get; set; }
     }
 }

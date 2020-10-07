@@ -2,6 +2,7 @@
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.Infra;
+using EasySoccer.Mobile.Adm.Infra.Constants;
 using EasySoccer.Mobile.Adm.Infra.Services;
 using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Prism.Commands;
@@ -9,6 +10,7 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Xamarin.Essentials;
@@ -22,19 +24,42 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public DelegateCommand CurrentLocationCommand { get; set; }
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand ActiveCommand { get; set; }
+        public DelegateCommand NavigateToSchedulesCommand { get; set; }
+        public ObservableCollection<string> HourStart { get; set; }
+        public ObservableCollection<string> HourEnd { get; set; }
+        public ObservableCollection<string> Days { get; set; }
 
         private IGooglePlacesService _googlePlacesService;
         private CompanyInfoResponse _companyInfoResponse = null;
-
+        private INavigationService _navigationService;
         Action<PlaceDetail> onIntentResult;
-        public CompanyInfoViewModel(IGooglePlacesService googlePlacesService)
+        public CompanyInfoViewModel(IGooglePlacesService googlePlacesService, INavigationService navigationService)
         {
-            SelectedImageCommand = new DelegateCommand(SelectImage);
             _googlePlacesService = googlePlacesService;
+            _navigationService = navigationService;
+            SelectedImageCommand = new DelegateCommand(SelectImage);
             SearchPlacesCommand = new DelegateCommand(SearchGoogleMaps);
             CurrentLocationCommand = new DelegateCommand(CurrentLocation);
             SaveCommand = new DelegateCommand(SaveAsync);
             ActiveCommand = new DelegateCommand(ActiveCompany);
+            NavigateToSchedulesCommand = new DelegateCommand(NavigateToSchedule);
+            HourStart = new ObservableCollection<string>();
+            HourEnd = new ObservableCollection<string>();
+            Days = new ObservableCollection<string>();
+            LoadDaysAndHours();
+        }
+
+        private void LoadDaysAndHours()
+        {
+            foreach (var item in Day.DaysNames)
+            {
+                Days.Add(item);
+            }
+            foreach (var item in Hour.HoursDescriptions)
+            {
+                HourStart.Add(item);
+                HourEnd.Add(item);
+            }
         }
 
         private string _image;
@@ -110,6 +135,85 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _statusText, value); }
         }
 
+        private int? _selectedDay = null;
+        public int? SelectedDay
+        {
+            get { return _selectedDay; }
+            set
+            {
+                if (SetProperty(ref _selectedDay, value))
+                {
+                    if (value.HasValue)
+                        UpdateCompanyScheduleInfo(value.Value);
+                }
+            }
+        }
+
+        private int? _selectHourStart = null;
+        public int? SelectHourStart
+        {
+            get { return _selectHourStart; }
+            set
+            {
+                if (SetProperty(ref _selectHourStart, value))
+                {
+                    var companyScheduleRequest = GetCompanyScheduleRequest();
+                    if (companyScheduleRequest != null && value.HasValue)
+                    {
+                        companyScheduleRequest.StartHour = value.Value;
+                    }
+                }
+            }
+        }
+
+        private int? _selectHourEnd = null;
+        public int? SelectHourEnd
+        {
+            get { return _selectHourEnd; }
+            set
+            {
+                if (SetProperty(ref _selectHourEnd, value))
+                {
+                    var companyScheduleRequest = GetCompanyScheduleRequest();
+                    if (companyScheduleRequest != null && value.HasValue)
+                    {
+                        companyScheduleRequest.FinalHour = value.Value;
+                    }
+                }
+            }
+        }
+
+        private bool _workOnThisDay;
+        public bool WorkOnThisDay
+        {
+            get { return _workOnThisDay; }
+            set
+            {
+                if (SetProperty(ref _workOnThisDay, value))
+                {
+                    var companyScheduleRequest = GetCompanyScheduleRequest();
+                    if (companyScheduleRequest != null)
+                    {
+                        companyScheduleRequest.WorkOnThisDay = value;
+                    }
+                }
+            }
+        }
+
+        private int? _idCity;
+        public int? IdCity
+        {
+            get { return _idCity; }
+            set { SetProperty(ref _idCity, value); }
+        }
+
+        private int? _idState;
+        public int? IdState
+        {
+            get { return _idState; }
+            set { SetProperty(ref _idState, value); }
+        }
+
         private async void LoadDataAsync()
         {
             try
@@ -126,16 +230,35 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Longitude = companyInfoResponse.Longitude;
                     Latitude = companyInfoResponse.Latitude;
                     IsActive = companyInfoResponse.Active;
+                    IdState = companyInfoResponse.IdState;
+                    IdCity = companyInfoResponse.IdCity;
                     if (IsActive)
                         StatusText = "Ativo";
                     else
                         StatusText = "Inativo";
+                    SelectedDay = 0;
                 }
             }
             catch (Exception e)
             {
                 UserDialogs.Instance.Alert(e.Message);
             }
+        }
+
+        private void UpdateCompanyScheduleInfo(int day)
+        {
+            var companySchedule = _companyInfoResponse.CompanySchedules.Where(x => x.Day == day).FirstOrDefault();
+            if (companySchedule != null)
+            {
+                SelectHourStart = (int)companySchedule.StartHour;
+                SelectHourEnd = (int)companySchedule.FinalHour;
+                WorkOnThisDay = companySchedule.WorkOnThisDay;
+            }
+        }
+
+        private CompanyDaySchedule GetCompanyScheduleRequest()
+        {
+            return _companyInfoResponse.CompanySchedules.Where(x => x.Day == SelectedDay).FirstOrDefault();
         }
 
         private async void SelectImage()
@@ -199,7 +322,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Description = this.Description,
                     Latitude = this.Latitude,
                     Longitude = this.Longitude,
-                    Name = this.Name
+                    Name = this.Name,
+                    CompanySchedules = _companyInfoResponse.CompanySchedules
                 });
                 UserDialogs.Instance.Alert("Dados atualizados com sucesso.");
 
@@ -221,6 +345,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             {
                 UserDialogs.Instance.Alert(e.Message);
             }
+        }
+
+        private async void NavigateToSchedule()
+        {
+            await _navigationService.NavigateAsync("CompanySchedules");
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)

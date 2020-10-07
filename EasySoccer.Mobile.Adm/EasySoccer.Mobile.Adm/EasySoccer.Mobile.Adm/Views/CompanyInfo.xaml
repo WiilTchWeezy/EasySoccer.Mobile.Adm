@@ -66,6 +66,29 @@
                         </Grid>
                     </Frame>
                 </Grid>
+                <Frame HasShadow="True" BorderColor="#DCDCDC" Margin="5">
+                    <StackLayout>
+                        <Label Style="{StaticResource gilroyLightLabel}" Text="Horários de funcionamento:" FontSize="Medium"/>
+
+                        <Picker ItemsSource="{Binding Days}" SelectedIndex="{Binding SelectedDay}" Title="Dia da Semana" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Picker ItemsSource="{Binding HourStart}" IsEnabled="{Binding WorkOnThisDay}" SelectedIndex="{Binding SelectHourStart}" Grid.Column="0" Title="Horário Inicial" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
+                            <Picker ItemsSource="{Binding HourEnd}" IsEnabled="{Binding WorkOnThisDay}" SelectedIndex="{Binding SelectHourEnd}" Grid.Column="1" Title="Horário Final" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
+                        </Grid>
+                        <Grid Margin="0, 15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="Trabalha neste dia:" Style="{StaticResource gilroyLightLabel}" FontSize="Medium"/>
+                            <Switch Grid.Column="1" IsToggled="{Binding WorkOnThisDay}"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
                 <Grid Padding="5">
                     <Frame HasShadow="True" BorderColor="#DCDCDC">
                         <StackLayout>

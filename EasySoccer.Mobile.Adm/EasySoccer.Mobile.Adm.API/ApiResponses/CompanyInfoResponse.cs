@@ -12,6 +12,8 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public string City { get; set; }
+        public int? IdCity { get; set; }
+        public int? IdState { get; set; }
         public bool Active { get; set; }
         public List<CompanyDaySchedule> CompanySchedules { get; set; }
     }

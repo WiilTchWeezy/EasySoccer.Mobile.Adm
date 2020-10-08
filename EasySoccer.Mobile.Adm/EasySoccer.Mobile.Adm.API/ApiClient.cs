@@ -207,5 +207,14 @@ namespace EasySoccer.Mobile.Adm.API
             return Post<object>("company/active", new { Active = active });
         }
 
+        public Task<List<StatesResponse>> GetStatesAsync()
+        {
+            return Get<List<StatesResponse>>("Company/getstates");
+        }
+
+        public Task<List<CityResponse>> GetCitiesAsync(int idState)
+        {
+            return Get<List<CityResponse>>("Company/getcitiesbystate?" + GenerateQueryParameters(new { IdState = idState });
+        }
     }
 }

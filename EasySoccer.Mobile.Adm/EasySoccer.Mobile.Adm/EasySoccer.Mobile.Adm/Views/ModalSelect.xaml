@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.ModalSelect"
+             Visual="Material">
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="#5b6186" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar x:Name="srchText" Style="{StaticResource gilroyLightEntry}" Placeholder="Pesquise..." SearchCommand="{Binding SearchCommand}" Text="{Binding SearchText}"/>
+            <CollectionView ItemsSource="{Binding Itens}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}" SelectionChangedCommand="{Binding OnSelectItemCommand}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="15">
+                        <Label Text="{Binding Text}" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <StackLayout>
+                    <Label Text="Nenhum resultado encontrado."
+                       Margin="10,25,10,10"
+                       FontSize="18"
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Center"
+                       Style="{StaticResource gilroyLightLabel}"/>
+                </StackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

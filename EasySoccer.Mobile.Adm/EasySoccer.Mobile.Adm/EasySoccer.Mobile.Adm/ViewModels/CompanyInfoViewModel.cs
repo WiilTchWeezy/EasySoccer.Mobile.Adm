@@ -3,6 +3,7 @@ using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.Infra;
 using EasySoccer.Mobile.Adm.Infra.Constants;
+using EasySoccer.Mobile.Adm.Infra.Enums;
 using EasySoccer.Mobile.Adm.Infra.Services;
 using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Prism.Commands;
@@ -25,6 +26,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand ActiveCommand { get; set; }
         public DelegateCommand NavigateToSchedulesCommand { get; set; }
+        public DelegateCommand SelectStateCommand { get; set; }
+        public DelegateCommand SelectCityCommand { get; set; }
         public ObservableCollection<string> HourStart { get; set; }
         public ObservableCollection<string> HourEnd { get; set; }
         public ObservableCollection<string> Days { get; set; }
@@ -46,6 +49,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             HourStart = new ObservableCollection<string>();
             HourEnd = new ObservableCollection<string>();
             Days = new ObservableCollection<string>();
+            SelectStateCommand = new DelegateCommand(SelectState);
+            SelectCityCommand = new DelegateCommand(SelectCity);
             LoadDaysAndHours();
         }
 
@@ -214,6 +219,20 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _idState, value); }
         }
 
+        private string _stateName;
+        public string StateName
+        {
+            get { return _stateName; }
+            set { SetProperty(ref _stateName, value); }
+        }
+
+        private string _cityName;
+        public string CityName
+        {
+            get { return _cityName; }
+            set { SetProperty(ref _cityName, value); }
+        }
+
         private async void LoadDataAsync()
         {
             try
@@ -232,6 +251,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     IsActive = companyInfoResponse.Active;
                     IdState = companyInfoResponse.IdState;
                     IdCity = companyInfoResponse.IdCity;
+                    CityName = companyInfoResponse.City;
+                    StateName = companyInfoResponse.State;
                     if (IsActive)
                         StatusText = "Ativo";
                     else
@@ -323,7 +344,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Latitude = this.Latitude,
                     Longitude = this.Longitude,
                     Name = this.Name,
-                    CompanySchedules = _companyInfoResponse.CompanySchedules
+                    IdCity = this.IdCity,
+                    CompanySchedules = _companyInfoResponse.CompanySchedules,
                 });
                 UserDialogs.Instance.Alert("Dados atualizados com sucesso.");
 
@@ -347,6 +369,20 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
+        private void SelectState()
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ModalSelectType", ModalSelectEnum.State);
+            _navigationService.NavigateAsync("ModalSelect", navigationParameters, useModalNavigation: true);
+        }
+        private void SelectCity()
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ModalSelectType", ModalSelectEnum.City);
+            navigationParameters.Add("StateId", IdState);
+            _navigationService.NavigateAsync("ModalSelect", navigationParameters, useModalNavigation: true);
+        }
+
         private async void NavigateToSchedule()
         {
             await _navigationService.NavigateAsync("CompanySchedules");
@@ -354,13 +390,21 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
+
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            this.LoadDataAsync();
+            if (parameters.GetNavigationMode() != Prism.Navigation.NavigationMode.Back)
+                this.LoadDataAsync();
+            if (parameters.ContainsKey("StateName"))
+                StateName = parameters.GetValue<string>("StateName");
+            if (parameters.ContainsKey("CityName"))
+                CityName = parameters.GetValue<string>("CityName");
+            if (parameters.ContainsKey("StateId"))
+                IdState = parameters.GetValue<int>("StateId");
+            if (parameters.ContainsKey("CityId"))
+                IdCity = parameters.GetValue<int>("CityId");
         }
-
-
     }
 }

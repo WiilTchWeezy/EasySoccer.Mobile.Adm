@@ -33,6 +33,17 @@
                     </Grid>
                     <Grid Padding="10">
                         <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="UserInfo"/>
+                        </Grid.GestureRecognizers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="&#xf007;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Text="Informações do Usuário" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
+                    </Grid>
+                    <Grid Padding="10">
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="Logout"/>
                         </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions>

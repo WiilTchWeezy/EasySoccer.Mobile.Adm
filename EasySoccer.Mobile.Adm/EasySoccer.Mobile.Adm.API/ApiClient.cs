@@ -214,7 +214,7 @@ namespace EasySoccer.Mobile.Adm.API
 
         public Task<List<CityResponse>> GetCitiesAsync(int idState)
         {
-            return Get<List<CityResponse>>("Company/getcitiesbystate?" + GenerateQueryParameters(new { IdState = idState });
+            return Get<List<CityResponse>>("Company/getcitiesbystate?" + GenerateQueryParameters(new { IdState = idState }));
         }
     }
 }

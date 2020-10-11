@@ -26,6 +26,32 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" IsEnabled="False" Style="{StaticResource gilroyLightEntry}" Placeholder="Estado" Text="{Binding StateName}" BackgroundColor="Transparent"/>
+                    <Frame Grid.Column="1" BackgroundColor="#FF591F" CornerRadius="10" Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectStateCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="&#xf055;" TextColor="#FFF" Style="{StaticResource fontAwesomeLabel}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" IsEnabled="False" Style="{StaticResource gilroyLightEntry}" Placeholder="Cidade" Text="{Binding CityName}" BackgroundColor="Transparent"/>
+                    <Frame Grid.Column="1" BackgroundColor="#FF591F" CornerRadius="10" Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectCityCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="&#xf055;" TextColor="#FFF" Style="{StaticResource fontAwesomeLabel}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Longitude" Text="{Binding Longitude}" BackgroundColor="Transparent" Grid.Column="0" IsEnabled="False" >
@@ -46,7 +72,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="&#xf689;" TextColor="#FFF" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="0" Text="&#xf689;" TextColor="#FFF" Style="{StaticResource fontAwesomeLabel}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
 
                             <Label Style="{StaticResource gilroyLightLabel}" Text="Pesquisar no Google Maps" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Column="1" FontSize="Micro" LineBreakMode="WordWrap" TextColor="#FFF" />
                         </Grid>

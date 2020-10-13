@@ -3,10 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="EasySoccer.Mobile.Adm.Views.UserInfo">
+             x:Class="EasySoccer.Mobile.Adm.Views.UserInfo"
+             xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack"
+             Visual="Material">
     <ContentPage.Content>
-        <StackLayout>
-            
+        <StackLayout Padding="10">
+            <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Nome" Text="{Binding Name}" BackgroundColor="Transparent"></Entry>
+            <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="E-mail" Text="{Binding Email}" Keyboard="Email" BackgroundColor="Transparent"/>
+            <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Telefone" Text="{Binding Phone}" BackgroundColor="Transparent">
+                <Entry.Behaviors>
+                    <behaviorPack:MaskedBehavior Mask="(XX) XXXXX-XXXX" />
+                </Entry.Behaviors>
+            </Entry>
+            <Button Text="Alterar Senha" BackgroundColor="#FF591F" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding ChangePasswordCommand}"></Button>
+            <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

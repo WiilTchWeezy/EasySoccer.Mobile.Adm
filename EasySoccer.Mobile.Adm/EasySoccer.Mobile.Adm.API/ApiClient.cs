@@ -216,5 +216,20 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return Get<List<CityResponse>>("Company/getcitiesbystate?" + GenerateQueryParameters(new { IdState = idState }));
         }
+
+        public Task<UserInfoResponse> GetUserInfo()
+        {
+            return Get<UserInfoResponse>("CompanyUser/getInfo");
+        }
+
+        public Task<UserInfoResponse> PatchUserAsync(PatchUserInfoRequest request)
+        {
+            return Patch<UserInfoResponse>("CompanyUser/patch", request);
+        }
+
+        public Task<bool> ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            return Post<bool>("CompanyUser/changepassword", request);
+        }
     }
 }

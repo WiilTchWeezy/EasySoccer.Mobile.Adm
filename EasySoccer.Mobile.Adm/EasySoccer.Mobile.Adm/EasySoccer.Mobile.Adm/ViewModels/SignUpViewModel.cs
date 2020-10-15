@@ -2,6 +2,8 @@
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiRequest;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
+using EasySoccer.Mobile.Adm.API.Validations;
+using FluentValidation;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -16,6 +18,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     public class SignUpViewModel : BindableBase, INavigationAware
     {
         private INavigationService _navigationService;
+        private CompanyValidator _validator;
         public SignUpViewModel(INavigationService navigationService)
         {
             PlansName = new ObservableCollection<string>();
@@ -24,6 +27,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             OpenLinkCommand = new DelegateCommand(OpenLink);
             SaveCommand = new DelegateCommand(PostCompanyInput);
             _navigationService = navigationService;
+            _validator = new CompanyValidator();
         }
 
         public List<PlansInfoResponse> Plans { get; set; }
@@ -188,15 +192,36 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     _request.CompanyDocument = CNPJ;
                     _request.CardNumber = CardNumber;
                     _request.CardExpiration = CardExpiration;
-                    var response = await ApiClient.Instance.PostCompanyFormInputAsync(_request);
-                    var alertConfig = new AlertConfig()
+
+                    var validationResponse = _validator.Validate(_request);
+                    if (validationResponse.IsValid)
                     {
-                        Title = "Obrigado por se cadastrar!",
-                        Message = "Você receberá um e-mail com suas credenciais. Muito Obrigado!",
-                        OkText = "Fechar"
-                    };
-                    UserDialogs.Instance.Alert(alertConfig);
-                    await _navigationService.GoBackAsync();
+                        var response = await ApiClient.Instance.PostCompanyFormInputAsync(_request);
+                        var alertConfig = new AlertConfig()
+                        {
+                            Title = "Obrigado por se cadastrar!",
+                            Message = "Você receberá um e-mail com suas credenciais. Muito Obrigado!",
+                            OkText = "Fechar"
+                        };
+                        UserDialogs.Instance.Alert(alertConfig);
+                        await _navigationService.GoBackAsync();
+                    }
+                    else
+                    {
+                        var validationMessages = validationResponse.Errors.Select(x => x.ErrorMessage).Distinct().ToArray();
+                        var errorMessage = string.Join(" - ", validationMessages);
+                        var alertConfig = new AlertConfig()
+                        {
+                            Title = "Alguns erros de validação!",
+                            Message = errorMessage,
+                            OkText = "Fechar"
+                        };
+                        UserDialogs.Instance.Alert(alertConfig);
+                    }
+                }
+                else
+                {
+                    UserDialogs.Instance.Alert("Selecione um plano e a quantidade de parcelas.");
                 }
             }
             catch (Exception e)

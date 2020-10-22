@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,9 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public long SoccerPitchId { get; set; }
 
         public bool NotHaveReservation { get { return !HasReservation; } }
+
+        public Guid SoccerPitchReservationId { get; set; }
+
+        public DelegateCommand<Guid?> GetReservationInfo { get; set; }
     }
 }

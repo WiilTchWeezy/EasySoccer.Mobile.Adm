@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.ReservationInfo"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout>
+                    <Image Source="{Binding CompanyImage}" Aspect="Fill" HeightRequest="150"></Image>
+                    <StackLayout Padding="5">
+                        <Label Text="{Binding CompanyName}" Style="{StaticResource gilroyLabel}" FontAttributes="Bold" FontSize="Title"></Label>
+                        <Label Text="{Binding CompanyCity}" Style="{StaticResource gilroyLightLabel}" FontSize="Micro" FontAttributes="Italic" TextColor="#4E4E4E"></Label>
+                        <Label Text="{Binding CompanyAddress}" Style="{StaticResource gilroyLightLabel}" FontSize="Micro" FontAttributes="Italic" TextColor="#4E4E4E"></Label>
+                    </StackLayout>
+                </StackLayout>
+                <Grid Padding="10">
+                    <Frame HasShadow="True" CornerRadius="10" VerticalOptions="FillAndExpand" WidthRequest="200" Padding="0" IsClippedToBounds="True">
+                        <Grid Margin="0" Padding="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Image Source="{Binding SoccerPitchImage}" Grid.Row="0" Aspect="Fill" HeightRequest="130"></Image>
+                            <StackLayout Grid.Row="1" Padding="5" Spacing="2">
+                                <Label Text="{Binding SoccerPitchName}" Style="{StaticResource gilroyLabel}" VerticalOptions="Center" FontSize="Medium" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding SoccerPitchSportType}" Style="{StaticResource gilroyLightLabel}" VerticalOptions="Center" FontSize="Micro" FontAttributes="Italic" TextColor="#4E4E4E"></Label>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                </Grid>
+                <Frame HasShadow="True" Margin="10" CornerRadius="10" BorderColor="#161E53">
+                    <StackLayout Padding="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding SelectedDate}" Grid.Column="0" FontSize="Medium" HorizontalTextAlignment="End" Style="{StaticResource gilroyLabel}"/>
+                            <Label Text="{Binding Hours}" Grid.Column="1" FontSize="Medium" HorizontalTextAlignment="Start" Style="{StaticResource gilroyLabel}"/>
+                        </Grid>
+                        <Label Text="{Binding SoccerPitchPlanName}" Style="{StaticResource gilroyLabel}" HorizontalTextAlignment="Center" FontSize="Medium" ></Label>
+                        <Label Text="{Binding SoccerPitchPlanDescription}" Style="{StaticResource gilroyLightLabel}" HorizontalTextAlignment="Center" ></Label>
+                    </StackLayout>
+                </Frame>
+                <Frame HasShadow="True" Margin="10" CornerRadius="10" BorderColor="#161E53">
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding PersonName}" Style="{StaticResource gilroyLabel}" HorizontalTextAlignment="Center" FontSize="Medium" ></Label>
+                        <Label Text="{Binding PersonPhone}" Style="{StaticResource gilroyLightLabel}" HorizontalTextAlignment="Center" ></Label>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

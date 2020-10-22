@@ -231,5 +231,10 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return Post<bool>("CompanyUser/changepassword", request);
         }
+
+        public async Task<ReservationInfoResponse> GetReservationInfoAsync(Guid reservationId)
+        {
+            return await Get<ReservationInfoResponse>("SoccerPitchReservation/getInfo?" + GenerateQueryParameters(new { reservationId }));
+        }
     }
 }

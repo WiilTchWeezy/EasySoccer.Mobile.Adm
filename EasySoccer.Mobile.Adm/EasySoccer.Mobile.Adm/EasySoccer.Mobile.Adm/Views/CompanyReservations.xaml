@@ -24,7 +24,7 @@
                     <CollectionView ItemsSource="{Binding CompanySchedules}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout HeightRequest="120"  Padding="5">
+                                <StackLayout HeightRequest="140"  Padding="5">
                                     <BoxView Color="#161E53" HorizontalOptions="FillAndExpand" HeightRequest="1"/>
                                     <Label Text="{Binding Hour}" Style="{StaticResource gilroyLabel}"/>
                                     <Grid BackgroundColor="#888888" Padding="5">
@@ -38,8 +38,12 @@
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate>
                                                     <Frame BorderColor="#161E53" CornerRadius="10">
+                                                        <Frame.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding GetReservationInfo}" CommandParameter="{Binding SoccerPitchReservationId}"/>
+                                                        </Frame.GestureRecognizers>
                                                         <StackLayout>
                                                             <Label Text="{Binding ScheduleHour}" Style="{StaticResource gilroyLabel}" IsVisible="{Binding HasReservation}"/>
+                                                            <Label Text="{Binding PersonName}" Style="{StaticResource gilroyLightLabel}"/>
                                                             <Label Text="{Binding SoccerPitch}" Style="{StaticResource gilroyLightLabel}"/>
                                                         </StackLayout>
                                                     </Frame>

@@ -21,7 +21,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public DateTime SelectedDate
         {
             get { return _selectedDate; }
-            set { SetProperty(ref _selectedDate, value); }
+            set
+            {
+                if (SetProperty(ref _selectedDate, value))
+                {
+                    this.LoadDataAsync();
+                }
+            }
         }
 
         private string _image;
@@ -51,8 +57,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             get { return _completeAddress; }
             set { SetProperty(ref _completeAddress, value); }
         }
-        public CompanyReservationsViewModel()
+        private INavigationService _navigationService;
+        public CompanyReservationsViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
             CompanySchedules = new ObservableCollection<CompanySchedulesResponse>();
         }
 
@@ -61,15 +69,29 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             try
             {
                 var companySchedules = await ApiClient.Instance.GetCompanySchedulesAsync(SelectedDate);
-                if(companySchedules != null)
+                if (companySchedules != null)
                 {
                     foreach (var item in companySchedules)
                     {
-                        CompanySchedules.Add(item);
+                        var schedule = new CompanySchedulesResponse { Hour = item.Hour, HourSpan = item.HourSpan, Events = new ObservableCollection<CompanySchedulesEventResponse>() };
+                        foreach (var e in item.Events)
+                        {
+                            schedule.Events.Add(new CompanySchedulesEventResponse
+                            {
+                                GetReservationInfo = new DelegateCommand<Guid?>(OpenReservationInfo),
+                                HasReservation = e.HasReservation,
+                                PersonName = e.PersonName,
+                                ScheduleHour = e.ScheduleHour,
+                                SoccerPitch = e.SoccerPitch,
+                                SoccerPitchId = e.SoccerPitchId,
+                                SoccerPitchReservationId = e.SoccerPitchReservationId
+                            });
+                        }
+                        CompanySchedules.Add(schedule);
                     }
                 }
                 var companyInfo = await ApiClient.Instance.GetCompanyInfoAsync();
-                if(companyInfo != null)
+                if (companyInfo != null)
                 {
                     Image = Application.Instance.GetImage(companyInfo.Logo, Infra.Enums.BlobContainerEnum.Company);
                     Name = companyInfo.Name;
@@ -81,6 +103,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             {
                 UserDialogs.Instance.Alert(e.Message, "Easysoccer");
             }
+        }
+
+        private void OpenReservationInfo(Guid? reservationId)
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ReservationId", reservationId);
+            _navigationService.NavigateAsync("ReservationInfo", navigationParameters);
         }
 
         public void OnNavigatedFrom(INavigationParameters parameters)

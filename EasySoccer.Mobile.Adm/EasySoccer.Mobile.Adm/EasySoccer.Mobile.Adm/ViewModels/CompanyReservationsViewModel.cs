@@ -69,8 +69,9 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             try
             {
                 var companySchedules = await ApiClient.Instance.GetCompanySchedulesAsync(SelectedDate);
-                if (companySchedules != null)
+                if (companySchedules != null && companySchedules.Count > 0)
                 {
+                    CompanySchedules.Clear();
                     foreach (var item in companySchedules)
                     {
                         var schedule = new CompanySchedulesResponse { Hour = item.Hour, HourSpan = item.HourSpan, Events = new ObservableCollection<CompanySchedulesEventResponse>() };

@@ -44,6 +44,28 @@
                     </Grid>
                     <Grid Padding="10">
                         <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="SoccerPitchs"/>
+                        </Grid.GestureRecognizers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="&#xF1E3;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Text="Quadras" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
+                    </Grid>
+                    <Grid Padding="10">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="Plans"/>
+                        </Grid.GestureRecognizers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="&#xf53a;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Text="Planos" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
+                    </Grid>
+                    <Grid Padding="10">
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="Logout"/>
                         </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions>

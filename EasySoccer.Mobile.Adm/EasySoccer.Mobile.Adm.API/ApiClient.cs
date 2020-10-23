@@ -236,5 +236,12 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Get<ReservationInfoResponse>("SoccerPitchReservation/getInfo?" + GenerateQueryParameters(new { reservationId }));
         }
+
+        public async Task<List<PlansResponse>> GetPlansAsync()
+        {
+            return await Get<List<PlansResponse>>("SoccerPitchPlan/get");
+        }
+
+        
     }
 }

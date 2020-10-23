@@ -39,6 +39,7 @@ namespace EasySoccer.Mobile.Adm
             containerRegistry.RegisterForNavigation<UserInfo, UserInfoViewModel>();
             containerRegistry.RegisterForNavigation<ChangePassword, ChangePasswordViewModel>();
             containerRegistry.RegisterForNavigation<ReservationInfo, ReservationInfoViewModel>();
+            containerRegistry.RegisterForNavigation<Plans, PlansViewModel>();
         }
     }
 }

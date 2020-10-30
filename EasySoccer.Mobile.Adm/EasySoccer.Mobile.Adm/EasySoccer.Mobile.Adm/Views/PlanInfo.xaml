@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.PlanInfo"
+             xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="5">
+                <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Nome" Text="{Binding Name}" BackgroundColor="Transparent"></Entry>
+                <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Descrição" Text="{Binding Description}" BackgroundColor="Transparent"/>
+                <Entry Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Placeholder="Valor" Text="{Binding Value}" BackgroundColor="Transparent">
+                    <Entry.Behaviors>
+                    </Entry.Behaviors>
+                </Entry>
+                <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

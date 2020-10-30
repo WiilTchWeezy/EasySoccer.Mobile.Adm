@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -15,9 +16,42 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     {
 
         public ObservableCollection<PlansResponse> Plans { get; set; }
-        public PlansViewModel()
+
+        private INavigationService _navigationService;
+
+        public DelegateCommand AddPlanCommand { get; set; }
+        public PlansViewModel(INavigationService navigationService)
         {
             Plans = new ObservableCollection<PlansResponse>();
+            _navigationService = navigationService;
+            AddPlanCommand = new DelegateCommand(OpenPlanInfoToAdd);
+        }
+
+        private void OpenPlanInfoToAdd()
+        {
+            try
+            {
+                _navigationService.NavigateAsync("PlanInfo");
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
+            }
+        }
+
+        private void OpenPlanInfoEdit(PlansResponse plan)
+        {
+            try
+            {
+                var jsonPlan = JsonConvert.SerializeObject(plan);
+                var navigationParameters = new NavigationParameters();
+                navigationParameters.Add("selectedPlan", jsonPlan);
+                _navigationService.NavigateAsync("PlanInfo", navigationParameters);
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
+            }
         }
 
         private async void LoadDataAsync()
@@ -30,6 +64,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Plans.Clear();
                     foreach (var item in response)
                     {
+                        item.EditPlanCommand = new DelegateCommand<PlansResponse>(OpenPlanInfoEdit);
                         Plans.Add(item);
                     }
                 }

@@ -242,6 +242,19 @@ namespace EasySoccer.Mobile.Adm.API
             return await Get<List<PlansResponse>>("SoccerPitchPlan/get");
         }
 
-        
+        public async Task<PlansResponse> PostSoccerPitchPlanAsync(SoccerPitchPlanRequest request)
+        {
+            return await Post<PlansResponse>("SoccerPitchPlan/post", request);
+        }
+
+        public async Task<PlansResponse> PatchSoccerPitchPlanAsync(SoccerPitchPlanRequest request)
+        {
+            return await Patch<PlansResponse>("SoccerPitchPlan/patch", request);
+        }
+
+        public async Task<List<SoccerPitchResponse>> GetSoccerPitchsAsync()
+        {
+            return await Get<List<SoccerPitchResponse>>("SoccerPitch/get");
+        }
     }
 }

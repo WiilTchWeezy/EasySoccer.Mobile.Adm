@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -14,9 +15,27 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     public class SoccerPitchsViewModel : BindableBase, INavigationAware
     {
         public ObservableCollection<SoccerPitchResponse> SoccerPitchs { get; set; }
-        public SoccerPitchsViewModel()
+
+        public DelegateCommand AddSoccerPitchCommand { get; set; }
+        public DelegateCommand<SoccerPitchResponse> EditSoccerPitchCommand { get; set; }
+        private INavigationService _navigationService;
+        public SoccerPitchsViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
             SoccerPitchs = new ObservableCollection<SoccerPitchResponse>();
+            AddSoccerPitchCommand = new DelegateCommand(OpenSoccerPitchInfoToAdd);
+        }
+
+        private void OpenSoccerPitchInfoToAdd()
+        {
+            _navigationService.NavigateAsync("SoccerPitchInfo");
+        }
+
+        private void OpenSoccerPitchInfoToEdit(SoccerPitchResponse soccerPitch)
+        {
+            var navigationParamters = new NavigationParameters();
+            navigationParamters.Add("soccerPitch", JsonConvert.SerializeObject(soccerPitch));
+            _navigationService.NavigateAsync("SoccerPitchInfo", navigationParamters);
         }
 
         private async void LoadDataAsync()
@@ -29,6 +48,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     SoccerPitchs.Clear();
                     foreach (var item in response)
                     {
+                        item.EditSoccerPitchCommand = new DelegateCommand<SoccerPitchResponse>(OpenSoccerPitchInfoToEdit);
                         SoccerPitchs.Add(item);
                     }
                 }

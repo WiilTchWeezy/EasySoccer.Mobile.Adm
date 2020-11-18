@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,5 +20,8 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public int? Interval { get; set; }
         public string ImageName { get; set; }
         public string Color { get; set; }
+
+        [JsonIgnore]
+        public DelegateCommand<SoccerPitchResponse> EditSoccerPitchCommand { get; set; }
     }
 }

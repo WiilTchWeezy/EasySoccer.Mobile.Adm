@@ -256,5 +256,20 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Get<List<SoccerPitchResponse>>("SoccerPitch/get");
         }
+
+        public Task<object> PostSoccerPitchImageAsync(SoccerPitchImageRequest soccerPitchImageRequest)
+        {
+            return Post<object>("SoccerPitch/saveImage", soccerPitchImageRequest);
+        }
+
+        public async Task<List<SportTypeResponse>> GetSportTypesAsync()
+        {
+            return await Get<List<SportTypeResponse>>("SoccerPitch/getsporttypes");
+        }
+
+        public async Task<List<ColorsResponse>> GetColorsAsync()
+        {
+            return await Get<List<ColorsResponse>>("SoccerPitch/getcolors");
+        }
     }
 }

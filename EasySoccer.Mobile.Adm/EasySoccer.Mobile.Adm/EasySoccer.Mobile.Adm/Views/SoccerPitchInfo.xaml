@@ -3,6 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="EasySoccer.Mobile.Adm.Views.SoccerPitchInfo">
+             x:Class="EasySoccer.Mobile.Adm.Views.SoccerPitchInfo"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+        <StackLayout Padding="5">
+            <Frame Margin="10" Padding="0" HasShadow="True">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectedImageCommand}"/>
+                </Frame.GestureRecognizers>
+                <Image  Source="{Binding Image}" HorizontalOptions="FillAndExpand" HeightRequest="179" VerticalOptions="FillAndExpand" />
+            </Frame>
+            <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Nome" Text="{Binding Name}" BackgroundColor="Transparent"></Entry>
+            <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Descrição" Text="{Binding Description}" BackgroundColor="Transparent"></Entry>
+            <Entry Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Placeholder="Intervalo Padrão (minutos)" Text="{Binding Interval}" BackgroundColor="Transparent"></Entry>
+            <Entry Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Placeholder="Número de jogadores" Text="{Binding NumberOfPlayers}" BackgroundColor="Transparent"></Entry>
+            <Grid Padding="5, 5, 0, 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Text="Possui cobertura?" FontSize="Medium" Style="{StaticResource gilroyLightLabel}" Grid.Column="0"/>
+                <Switch IsToggled="{Binding HasRoof}" Grid.Column="1"/>
+            </Grid>
+                <Picker ItemsSource="{Binding ColorsName}" SelectedIndex="{Binding SelectedColor}" Title="Cor no calendário:" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
+                <Picker ItemsSource="{Binding SportTypesName}" SelectedIndex="{Binding SelectedSportTypeId}" Title="Tipo de Esporte:" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
+        </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
   
 </ContentPage>

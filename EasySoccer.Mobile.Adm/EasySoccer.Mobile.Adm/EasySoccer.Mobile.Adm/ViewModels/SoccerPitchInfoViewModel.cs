@@ -25,6 +25,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public ObservableCollection<string> SportTypesName { get; set; }
         public ObservableCollection<string> ColorsName { get; set; }
         public ObservableCollection<ColorsResponse> Colors { get; set; }
+        public ObservableCollection<PlansResponse> Plans { get; set; }
 
         private string _name;
         public string Name
@@ -96,6 +97,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _color, value); }
         }
 
+        private int _plansHeight = 100;
+        public int PlansHeight
+        {
+            get { return _plansHeight; }
+            set { SetProperty(ref _plansHeight, value); }
+        }
+
         public DelegateCommand SelectedImageCommand { get; set; }
         public SoccerPitchInfoViewModel()
         {
@@ -104,6 +112,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             SportTypesName = new ObservableCollection<string>();
             Colors = new ObservableCollection<ColorsResponse>();
             ColorsName = new ObservableCollection<string>();
+            Plans = new ObservableCollection<PlansResponse>();
         }
 
         private async void SelectImage()
@@ -198,6 +207,28 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
+        private async void LoadPlansAsync()
+        {
+            try
+            {
+                var plansResponse = await ApiClient.Instance.GetPlansAsync();
+                if (plansResponse != null)
+                {
+                    Plans.Clear();
+                    foreach (var item in plansResponse)
+                    {
+                        Plans.Add(item);
+                    }
+                    if (Plans.Count > 0)
+                        PlansHeight = Plans.Count * 75;
+                }
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
+            }
+        }
+
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
 
@@ -224,6 +255,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
             this.GetSportTypesAsync();
             this.GetColorsAsync();
+            this.LoadPlansAsync();
         }
     }
 }

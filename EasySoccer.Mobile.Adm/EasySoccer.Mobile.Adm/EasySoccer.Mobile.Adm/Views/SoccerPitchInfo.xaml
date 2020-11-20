@@ -7,29 +7,53 @@
              Visual="Material">
     <ContentPage.Content>
         <ScrollView>
-        <StackLayout Padding="5">
-            <Frame Margin="10" Padding="0" HasShadow="True">
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding SelectedImageCommand}"/>
-                </Frame.GestureRecognizers>
-                <Image  Source="{Binding Image}" HorizontalOptions="FillAndExpand" HeightRequest="179" VerticalOptions="FillAndExpand" />
-            </Frame>
-            <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Nome" Text="{Binding Name}" BackgroundColor="Transparent"></Entry>
-            <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Descrição" Text="{Binding Description}" BackgroundColor="Transparent"></Entry>
-            <Entry Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Placeholder="Intervalo Padrão (minutos)" Text="{Binding Interval}" BackgroundColor="Transparent"></Entry>
-            <Entry Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Placeholder="Número de jogadores" Text="{Binding NumberOfPlayers}" BackgroundColor="Transparent"></Entry>
-            <Grid Padding="5, 5, 0, 5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Label Text="Possui cobertura?" FontSize="Medium" Style="{StaticResource gilroyLightLabel}" Grid.Column="0"/>
-                <Switch IsToggled="{Binding HasRoof}" Grid.Column="1"/>
-            </Grid>
+            <StackLayout Padding="5">
+                <Frame Margin="10" Padding="0" HasShadow="True">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectedImageCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Image  Source="{Binding Image}" HorizontalOptions="FillAndExpand" HeightRequest="179" VerticalOptions="FillAndExpand" />
+                </Frame>
+                <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Nome" Text="{Binding Name}" BackgroundColor="Transparent"></Entry>
+                <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Descrição" Text="{Binding Description}" BackgroundColor="Transparent"></Entry>
+                <Entry Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Placeholder="Intervalo Padrão (minutos)" Text="{Binding Interval}" BackgroundColor="Transparent"></Entry>
+                <Entry Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Placeholder="Número de jogadores" Text="{Binding NumberOfPlayers}" BackgroundColor="Transparent"></Entry>
+                <Grid Padding="5, 5, 0, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Possui cobertura?" FontSize="Medium" Style="{StaticResource gilroyLightLabel}" Grid.Column="0"/>
+                    <Switch IsToggled="{Binding HasRoof}" Grid.Column="1"/>
+                </Grid>
                 <Picker ItemsSource="{Binding ColorsName}" SelectedIndex="{Binding SelectedColor}" Title="Cor no calendário:" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
                 <Picker ItemsSource="{Binding SportTypesName}" SelectedIndex="{Binding SelectedSportTypeId}" Title="Tipo de Esporte:" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
-        </StackLayout>
+                <StackLayout>
+                <CollectionView ItemsSource="{Binding Plans}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="{Binding PlansHeight}">
+                    <CollectionView.Header>
+                        <Grid Padding="10" BackgroundColor="#DCDCDC">
+                            <Label Grid.Column="0" Text="Planos" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                        </Grid>
+                    </CollectionView.Header>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox Grid.Column="0"/>
+                                    <Label Grid.Column="1" Text="{Binding Name}" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView>
+                            <Label Text="Nenhum plano encontrado!" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
-  
+
 </ContentPage>

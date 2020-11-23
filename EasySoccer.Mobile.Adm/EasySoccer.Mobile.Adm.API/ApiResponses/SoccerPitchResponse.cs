@@ -14,7 +14,7 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public bool HasRoof { get; set; }
         public string Name { get; set; }
         public int NumberOfPlayers { get; set; }
-        public List<PlansInfoResponse> Plans { get; set; }
+        public List<PlansResponse> Plans { get; set; }
         public int SportTypeId { get; set; }
         public string SportTypeName { get; set; }
         public int? Interval { get; set; }

@@ -2,6 +2,7 @@
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.Infra;
+using EasySoccer.Mobile.Adm.ViewModels.ItensViewModel;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -25,7 +26,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public ObservableCollection<string> SportTypesName { get; set; }
         public ObservableCollection<string> ColorsName { get; set; }
         public ObservableCollection<ColorsResponse> Colors { get; set; }
-        public ObservableCollection<PlansResponse> Plans { get; set; }
+        public ObservableCollection<PlansItemViewModel> Plans { get; set; }
 
         private string _name;
         public string Name
@@ -112,7 +113,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             SportTypesName = new ObservableCollection<string>();
             Colors = new ObservableCollection<ColorsResponse>();
             ColorsName = new ObservableCollection<string>();
-            Plans = new ObservableCollection<PlansResponse>();
+            Plans = new ObservableCollection<PlansItemViewModel>();
         }
 
         private async void SelectImage()
@@ -137,6 +138,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                             _imageBase64 = base64;
                             if (_isEditing)
                                 await ApiClient.Instance.PostSoccerPitchImageAsync(new API.ApiRequest.SoccerPitchImageRequest { ImageBase64 = base64, SoccerPitchId = _currentSoccerPitch.Id });
+                            LoadSoccerPitchDataAsync();
                         }
                     }
                 }
@@ -217,15 +219,42 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Plans.Clear();
                     foreach (var item in plansResponse)
                     {
-                        Plans.Add(item);
+                        Plans.Add(new PlansItemViewModel(item));
                     }
                     if (Plans.Count > 0)
                         PlansHeight = Plans.Count * 75;
+                    if (_currentSoccerPitch.Plans != null && _currentSoccerPitch.Plans.Any())
+                    {
+                        foreach (var item in _currentSoccerPitch.Plans)
+                        {
+                            var plan = Plans.Where(x => x.Id == item.Id).FirstOrDefault();
+                            if (plan != null)
+                                plan.Selected = true;
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
                 UserDialogs.Instance.Alert(e.Message);
+            }
+        }
+
+        private async void LoadSoccerPitchDataAsync()
+        {
+            try
+            {
+                var response = await ApiClient.Instance.GetSoccerPitchByIdAsync(_currentSoccerPitch.Id);
+                if (response != null)
+                {
+                    Image = Application.Instance.GetImage(response.ImageName, Infra.Enums.BlobContainerEnum.SoccerPitch);
+                }
+
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
+
             }
         }
 

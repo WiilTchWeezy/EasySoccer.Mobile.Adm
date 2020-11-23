@@ -302,6 +302,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                         if (string.IsNullOrEmpty(base64) == false)
                         {
                             var apiResponse = await ApiClient.Instance.PostCompanyImageAsync(new API.ApiRequest.CompanyImageRequest { ImageBase64 = base64 });
+                            LoadDataAsync();
                         }
                     }
                 }

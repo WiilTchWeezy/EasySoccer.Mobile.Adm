@@ -271,5 +271,10 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Get<List<ColorsResponse>>("SoccerPitch/getcolors");
         }
+
+        public async Task<SoccerPitchResponse> GetSoccerPitchByIdAsync(long id)
+        {
+            return await Get<SoccerPitchResponse>("SoccerPitch/getbyid?" + GenerateQueryParameters(new { Id = id }));
+        }
     }
 }

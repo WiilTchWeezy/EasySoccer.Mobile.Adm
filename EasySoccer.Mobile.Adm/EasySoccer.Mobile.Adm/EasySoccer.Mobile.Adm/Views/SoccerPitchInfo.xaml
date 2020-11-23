@@ -42,7 +42,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0"/>
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding Selected}"/>
                                     <Label Grid.Column="1" Text="{Binding Name}" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
                                 </Grid>
                             </DataTemplate>

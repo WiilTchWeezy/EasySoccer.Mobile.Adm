@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
+using EasySoccer.Mobile.Adm.API.Infra.Exceptions;
 using EasySoccer.Mobile.Adm.API.Session;
 using EasySoccer.Mobile.Adm.Infra;
 using Prism.Commands;
@@ -99,6 +100,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     City = companyInfo.City;
                     CompleteAddress = companyInfo.CompleteAddress;
                 }
+            }
+            catch (ApiUnauthorizedException unae)
+            {
+                UserDialogs.Instance.Alert(unae.Message, "Easysoccer");
+                Application.Instance.LogOff(_navigationService);
             }
             catch (Exception e)
             {

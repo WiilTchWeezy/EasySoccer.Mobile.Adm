@@ -26,15 +26,23 @@
                     <Label Text="Possui cobertura?" FontSize="Medium" Style="{StaticResource gilroyLightLabel}" Grid.Column="0"/>
                     <Switch IsToggled="{Binding HasRoof}" Grid.Column="1"/>
                 </Grid>
+                <Grid Padding="5, 5, 0, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Quadra Ativa" FontSize="Medium" Style="{StaticResource gilroyLightLabel}" Grid.Column="0"/>
+                    <Switch IsToggled="{Binding HasActive}" Grid.Column="1"/>
+                </Grid>
                 <Picker ItemsSource="{Binding ColorsName}" SelectedIndex="{Binding SelectedColor}" Title="Cor no calendário:" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
                 <Picker ItemsSource="{Binding SportTypesName}" SelectedIndex="{Binding SelectedSportTypeId}" Title="Tipo de Esporte:" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53"/>
                 <StackLayout>
-                <CollectionView ItemsSource="{Binding Plans}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="{Binding PlansHeight}">
-                    <CollectionView.Header>
-                        <Grid Padding="10" BackgroundColor="#DCDCDC">
-                            <Label Grid.Column="0" Text="Planos" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
-                        </Grid>
-                    </CollectionView.Header>
+                    <CollectionView ItemsSource="{Binding Plans}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="{Binding PlansHeight}">
+                        <CollectionView.Header>
+                            <Grid Padding="10" BackgroundColor="#DCDCDC">
+                                <Label Grid.Column="0" Text="Planos" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                            </Grid>
+                        </CollectionView.Header>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -52,6 +60,7 @@
                         </CollectionView.EmptyView>
                     </CollectionView>
                 </StackLayout>
+                <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

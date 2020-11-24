@@ -1,6 +1,7 @@
 ﻿using EasySoccer.Mobile.Adm.API.Session;
 using EasySoccer.Mobile.Adm.Infra.Enums;
 using Prism.Navigation;
+using Xamarin.Forms;
 
 namespace EasySoccer.Mobile.Adm.Infra
 {
@@ -30,6 +31,14 @@ namespace EasySoccer.Mobile.Adm.Infra
             if (string.IsNullOrEmpty(fileName))
                 fileName = "default.png";
             return string.Format("{0}/{1}/{2}", _baseUrl, this.GetContainerDescription(blobContainer), fileName);
+        }
+
+        public ImageSource GetImageSource(string fileName, BlobContainerEnum blobContainer)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                fileName = "default.png";
+            var url = string.Format("{0}/{1}/{2}", _baseUrl, this.GetContainerDescription(blobContainer), fileName);
+            return ImageSource.FromUri(new System.Uri(url));
         }
 
         private string GetContainerDescription(BlobContainerEnum blobContainer)

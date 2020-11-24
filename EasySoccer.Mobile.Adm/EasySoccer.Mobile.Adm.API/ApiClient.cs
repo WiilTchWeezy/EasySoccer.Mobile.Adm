@@ -77,7 +77,7 @@ namespace EasySoccer.Mobile.Adm.API
                 {
                     UserDialogs.Instance.HideLoading();
                     CurrentUser.Instance.LogOff();
-                    throw new ApiUnauthorizedException("Ops! Você não está mais autenticado.");
+                    throw new ApiUnauthorizedException("Ops! Você não está mais autenticado. Será necessário refazer login.");
                 }
                 else
                 {
@@ -276,5 +276,16 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Get<SoccerPitchResponse>("SoccerPitch/getbyid?" + GenerateQueryParameters(new { Id = id }));
         }
+
+        public async Task<SoccerPitchResponse> PostSoccerPitchAsync(SoccerPitchRequest request)
+        {
+            return await Post<SoccerPitchResponse>("SoccerPitch/post", request);
+        }
+
+        public async Task<SoccerPitchResponse> PatchSoccerPitchAsync(SoccerPitchRequest request)
+        {
+            return await Patch<SoccerPitchResponse>("SoccerPitch/patch", request);
+        }
+
     }
 }

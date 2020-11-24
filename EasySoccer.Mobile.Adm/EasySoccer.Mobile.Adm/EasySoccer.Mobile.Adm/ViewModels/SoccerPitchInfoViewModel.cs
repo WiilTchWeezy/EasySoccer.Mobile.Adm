@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
+using EasySoccer.Mobile.Adm.API.ApiRequest;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.Infra;
 using EasySoccer.Mobile.Adm.ViewModels.ItensViewModel;
@@ -13,7 +14,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using Application = EasySoccer.Mobile.Adm.Infra.Application;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -42,8 +45,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _description, value); }
         }
 
-        private string _image;
-        public string Image
+        private ImageSource _image;
+        public ImageSource Image
         {
             get { return _image; }
             set { SetProperty(ref _image, value); }
@@ -105,8 +108,18 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _plansHeight, value); }
         }
 
+        private bool _hasActive;
+        public bool HasActive
+        {
+            get { return _hasActive; }
+            set { SetProperty(ref _hasActive, value); }
+        }
+
         public DelegateCommand SelectedImageCommand { get; set; }
-        public SoccerPitchInfoViewModel()
+        public DelegateCommand SaveCommand { get; set; }
+
+        private INavigationService _navigationService;
+        public SoccerPitchInfoViewModel(INavigationService navigationService)
         {
             SelectedImageCommand = new DelegateCommand(SelectImage);
             SportTypes = new ObservableCollection<SportTypeResponse>();
@@ -114,6 +127,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             Colors = new ObservableCollection<ColorsResponse>();
             ColorsName = new ObservableCollection<string>();
             Plans = new ObservableCollection<PlansItemViewModel>();
+            SaveCommand = new DelegateCommand(SaveAsync);
+            _navigationService = navigationService;
         }
 
         private async void SelectImage()
@@ -138,6 +153,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                             _imageBase64 = base64;
                             if (_isEditing)
                                 await ApiClient.Instance.PostSoccerPitchImageAsync(new API.ApiRequest.SoccerPitchImageRequest { ImageBase64 = base64, SoccerPitchId = _currentSoccerPitch.Id });
+                            Image = ImageSource.FromStream(() => new MemoryStream(bytes));
                             LoadSoccerPitchDataAsync();
                         }
                     }
@@ -223,7 +239,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     }
                     if (Plans.Count > 0)
                         PlansHeight = Plans.Count * 75;
-                    if (_currentSoccerPitch.Plans != null && _currentSoccerPitch.Plans.Any())
+                    if (_currentSoccerPitch != null && _currentSoccerPitch.Plans != null && _currentSoccerPitch.Plans.Any())
                     {
                         foreach (var item in _currentSoccerPitch.Plans)
                         {
@@ -244,17 +260,81 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             try
             {
-                var response = await ApiClient.Instance.GetSoccerPitchByIdAsync(_currentSoccerPitch.Id);
-                if (response != null)
+                if (_currentSoccerPitch != null)
                 {
-                    Image = Application.Instance.GetImage(response.ImageName, Infra.Enums.BlobContainerEnum.SoccerPitch);
+                    var response = await ApiClient.Instance.GetSoccerPitchByIdAsync(_currentSoccerPitch.Id);
+                    if (response != null)
+                    {
+                        Image = Application.Instance.GetImageSource(response.ImageName, Infra.Enums.BlobContainerEnum.SoccerPitch);
+                        Name = response.Name;
+                        Description = response.Description;
+                        Interval = response.Interval;
+                        NumberOfPlayers = response.NumberOfPlayers;
+                        HasRoof = response.HasRoof;
+                        SportTypeId = response.SportTypeId;
+                        Color = response.Color;
+                    }
                 }
-
             }
             catch (Exception e)
             {
                 UserDialogs.Instance.Alert(e.Message);
 
+            }
+        }
+
+        private async void SaveAsync()
+        {
+            try
+            {
+                if (_isEditing)
+                {
+                    var patchResponse = await ApiClient.Instance.PatchSoccerPitchAsync(new SoccerPitchRequest
+                    {
+                        Id = _currentSoccerPitch.Id,
+                        Active = this.HasActive,
+                        Color = this.Colors[this.SelectedColor.HasValue ? this.SelectedColor.Value : 0].Value,
+                        Description = this.Description,
+                        HasRoof = this.HasRoof,
+                        Interval = this.Interval.HasValue ? this.Interval.Value : 0,
+                        Name = this.Name,
+                        NumberOfPlayers = this.NumberOfPlayers.HasValue ? this.NumberOfPlayers.Value : 0,
+                        SportTypeId = this.SportTypes[this.SelectedSportTypeId.HasValue ? this.SelectedSportTypeId.Value : 0].Id,
+                        Plans = this.Plans.Where(x => x.Selected).Select(x => new SoccerPitchSoccerPitchPlanRequest { Id = x.Id }).ToArray()
+                    });
+                    if (patchResponse != null)
+                    {
+                        UserDialogs.Instance.Alert("Dados atualizados com sucesso!", "EasySoccer");
+                        _currentSoccerPitch.Plans = Plans.Where(x => x.Selected).Select(x => new PlansResponse { Id = x.Id, Description = x.Description, Name = x.Name, Value = x.Value }).ToList();
+                    }
+                }
+                else
+                {
+                    var postResponse = await ApiClient.Instance.PostSoccerPitchAsync(new SoccerPitchRequest
+                    {
+                        Active = this.HasActive,
+                        Color = this.Colors[this.SelectedColor.HasValue ? this.SelectedColor.Value : 0].Value,
+                        Description = this.Description,
+                        HasRoof = this.HasRoof,
+                        Interval = this.Interval.HasValue ? this.Interval.Value : 0,
+                        Name = this.Name,
+                        NumberOfPlayers = this.NumberOfPlayers.HasValue ? this.NumberOfPlayers.Value : 0,
+                        SportTypeId = this.SportTypes[this.SelectedSportTypeId.HasValue ? this.SelectedSportTypeId.Value : 0].Id,
+                        Plans = this.Plans.Where(x => x.Selected).Select(x => new SoccerPitchSoccerPitchPlanRequest { Id = x.Id }).ToArray(),
+                        ImageBase64 = _imageBase64
+                    });
+                    if (postResponse != null)
+                    {
+                        UserDialogs.Instance.Alert("Dados inseridos com sucesso!", "EasySoccer");
+                        _navigationService.GoBackAsync();
+                    }
+                }
+                this.LoadSoccerPitchDataAsync();
+                this.LoadPlansAsync();
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
             }
         }
 
@@ -274,12 +354,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     _isEditing = true;
                     Name = _currentSoccerPitch.Name;
                     Description = _currentSoccerPitch.Description;
-                    Image = Application.Instance.GetImage(_currentSoccerPitch.ImageName, Infra.Enums.BlobContainerEnum.SoccerPitch);
+                    Image = Application.Instance.GetImageSource(_currentSoccerPitch.ImageName, Infra.Enums.BlobContainerEnum.SoccerPitch);
                     Interval = _currentSoccerPitch.Interval;
                     NumberOfPlayers = _currentSoccerPitch.NumberOfPlayers;
                     HasRoof = _currentSoccerPitch.HasRoof;
                     SportTypeId = _currentSoccerPitch.SportTypeId;
                     Color = _currentSoccerPitch.Color;
+                    HasActive = _currentSoccerPitch.Active;
                 }
             }
             this.GetSportTypesAsync();

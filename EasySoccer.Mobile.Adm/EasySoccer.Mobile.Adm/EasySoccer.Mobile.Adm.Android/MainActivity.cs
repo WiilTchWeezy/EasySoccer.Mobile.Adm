@@ -8,6 +8,7 @@ using EasySoccer.Mobile.Adm.Droid.Services;
 using EasySoccer.Mobile.Adm.Infra.Services;
 using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Google.Places;
+using Plugin.FirebasePushNotification;
 using Prism;
 using Prism.Ioc;
 using System;
@@ -35,7 +36,34 @@ namespace EasySoccer.Mobile.Adm.Droid
                 PlacesApi.Initialize(this, "AIzaSyCi2hnhPwsHYMqTe-CNnAZOaw9Grtt3ESQ");
             }
 
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
+            {
+                FirebasePushNotificationManager.DefaultNotificationChannelId = "EasySoccerNotificationChannel";
+                FirebasePushNotificationManager.DefaultNotificationChannelName = "Geral";
+            }
+
+#if DEBUG
+            FirebasePushNotificationManager.Initialize(this, true);
+#else
+              FirebasePushNotificationManager.Initialize(this,false);
+#endif
+
+            //Handle notification when app is closed here
+            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
+            {
+
+
+            };
+
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+            };
+
+
             LoadApplication(new App(new AndroidInitializer()));
+
+            FirebasePushNotificationManager.ProcessIntent(this, Intent);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
@@ -82,6 +110,12 @@ namespace EasySoccer.Mobile.Adm.Droid
             {
                 return;
             }
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            base.OnNewIntent(intent);
+            FirebasePushNotificationManager.ProcessIntent(this, intent);
         }
     }
 

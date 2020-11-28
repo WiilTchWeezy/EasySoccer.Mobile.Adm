@@ -69,6 +69,9 @@
     <PackageReference Include="Acr.UserDialogs">
       <Version>7.1.0.454</Version>
     </PackageReference>
+    <PackageReference Include="Plugin.FirebasePushNotification">
+      <Version>3.0.22</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Android.Volley">
       <Version>1.1.1.1</Version>
     </PackageReference>
@@ -84,6 +87,9 @@
     <PackageReference Include="Xamarin.Google.Android.Places">
       <Version>1.1.0.2</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.GooglePlayServices.Basement">
+      <Version>117.2.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainApplication.cs" />
@@ -97,6 +103,7 @@
     <AndroidAsset Include="Assets\fa-solid-900.ttf" />
     <AndroidAsset Include="Assets\Gilroy-Light.otf" />
     <AndroidAsset Include="Assets\Gilroy-ExtraBold.otf" />
+    <GoogleServicesJson Include="google-services.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>

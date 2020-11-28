@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "7247329482",
+    "firebase_url": "https://easysoccer.firebaseio.com",
+    "project_id": "easysoccer",
+    "storage_bucket": "easysoccer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7247329482:android:fa528071e3c2f9cad6dc33",
+        "android_client_info": {
+          "package_name": "com.easysoccer.appadm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7247329482-apbumpa7l1ssgl76tl2dm8u7ihhr8hqc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXt_-KC75lNRHZJS-ldLPA2AHfZQrS6-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7247329482-apbumpa7l1ssgl76tl2dm8u7ihhr8hqc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

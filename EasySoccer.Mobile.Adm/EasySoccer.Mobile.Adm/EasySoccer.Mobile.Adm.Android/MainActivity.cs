@@ -10,6 +10,7 @@ using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Google.Places;
 using Plugin.FirebasePushNotification;
 using Prism;
+using Prism.Common;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
@@ -51,13 +52,22 @@ namespace EasySoccer.Mobile.Adm.Droid
             //Handle notification when app is closed here
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
-
-
+                var notificationService = new LocalNotificationService();
+                string message = string.Empty;
+                if(p.Data.ContainsKey("message") && p.Data.TryGetValue("message", out message))
+                {
+                    notificationService.SendLocalNotification(this, "EasySoccer", message);
+                }
             };
 
             CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
             {
                 System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+                if (Xamarin.Essentials.Preferences.ContainsKey("FcmToken") && string.IsNullOrEmpty(Xamarin.Essentials.Preferences.Get("", string.Empty)))
+                {
+                    Xamarin.Essentials.Preferences.Remove("FcmToken");
+                }
+                Xamarin.Essentials.Preferences.Set("FcmToken", p.Token);
             };
 
 

@@ -7,6 +7,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -47,9 +48,14 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             try
             {
                 var response = await ApiClient.Instance.LoginAsync(Email, Password);
-                if(response != null)
+                if (response != null)
                 {
                     CurrentUser.Instance.Login(response.Token, response.ExpireDate);
+                    var fcmToken = Preferences.Get("FcmToken", string.Empty);
+                    if (Preferences.ContainsKey("FcmToken") && string.IsNullOrEmpty(fcmToken) == false)
+                    {
+                        var token = await ApiClient.Instance.InserTokenAsync(new API.ApiRequest.InserTokenRequest { Token = fcmToken });
+                    }
                     await _navigationService.NavigateAsync("/MainPage/NavigationPage/CompanyReservations");
                 }
             }

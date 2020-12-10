@@ -1,4 +1,5 @@
 ﻿using EasySoccer.Mobile.Adm.API.Events;
+using Newtonsoft.Json;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.API.Session
@@ -76,8 +78,22 @@ namespace EasySoccer.Mobile.Adm.API.Session
             }
         }
 
-        public void LogOff()
+        public async void LogOff()
         {
+            var fcmToken = Preferences.Get("FcmToken", string.Empty);
+            if (Preferences.ContainsKey("FcmToken") && string.IsNullOrEmpty(fcmToken) == false)
+            {
+                try
+                {
+                    var request = new ApiRequest.InserTokenRequest { Token = fcmToken };
+                    var json = JsonConvert.SerializeObject(request);
+                    await ApiClient.Instance.LogOffTokenAsync(request);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
             Preferences.Remove("AuthToken");
             Preferences.Remove("AuthExpiresDate");
             _eventAggregator?.GetEvent<UserLoggedInEvent>().Publish(false);

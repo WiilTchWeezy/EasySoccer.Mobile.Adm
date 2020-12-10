@@ -4,7 +4,10 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using EasySoccer.Mobile.Adm.API;
+using EasySoccer.Mobile.Adm.API.Session;
 using EasySoccer.Mobile.Adm.Droid.Services;
+using EasySoccer.Mobile.Adm.Infra;
 using EasySoccer.Mobile.Adm.Infra.Services;
 using EasySoccer.Mobile.Adm.Infra.Services.DTO;
 using Google.Places;
@@ -54,20 +57,31 @@ namespace EasySoccer.Mobile.Adm.Droid
             {
                 var notificationService = new LocalNotificationService();
                 string message = string.Empty;
-                if(p.Data.ContainsKey("message") && p.Data.TryGetValue("message", out message))
+                if (p.Data.ContainsKey("message") && p.Data.TryGetValue("message", out message))
                 {
-                    notificationService.SendLocalNotification(this, "EasySoccer", message);
+                    notificationService.SendLocalNotification(this, "EasySoccer Administrador", message);
                 }
             };
 
             CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
             {
                 System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
-                if (Xamarin.Essentials.Preferences.ContainsKey("FcmToken") && string.IsNullOrEmpty(Xamarin.Essentials.Preferences.Get("", string.Empty)))
+                if (Xamarin.Essentials.Preferences.ContainsKey("FcmToken") && string.IsNullOrEmpty(Xamarin.Essentials.Preferences.Get("FcmToken", string.Empty)) == false)
                 {
                     Xamarin.Essentials.Preferences.Remove("FcmToken");
                 }
                 Xamarin.Essentials.Preferences.Set("FcmToken", p.Token);
+                if (CurrentUser.Instance.IsLoggedIn)
+                {
+                    try
+                    {
+                        ApiClient.Instance.InserTokenAsync(new API.ApiRequest.InserTokenRequest { Token = p.Token }).GetAwaiter().GetResult();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
             };
 
 

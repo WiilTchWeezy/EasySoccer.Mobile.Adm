@@ -287,5 +287,14 @@ namespace EasySoccer.Mobile.Adm.API
             return await Patch<SoccerPitchResponse>("SoccerPitch/patch", request);
         }
 
+        public async Task<InserTokenResponse> InserTokenAsync(InserTokenRequest request)
+        {
+            return await Post<InserTokenResponse>("CompanyUser/inserttoken", request);
+        }
+
+        public async Task<object> LogOffTokenAsync(InserTokenRequest request)
+        {
+            return await Post<object>("CompanyUser/logofftoken", request);
+        }
     }
 }

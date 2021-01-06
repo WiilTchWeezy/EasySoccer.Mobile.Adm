@@ -43,6 +43,7 @@ namespace EasySoccer.Mobile.Adm
             containerRegistry.RegisterForNavigation<PlanInfo, PlanInfoViewModel>();
             containerRegistry.RegisterForNavigation<SoccerPitchInfo, SoccerPitchInfoViewModel>();
             containerRegistry.RegisterForNavigation<SoccerPitchs, SoccerPitchsViewModel>();
+            containerRegistry.RegisterForNavigation<UserNotifications, UserNotificationsViewModel>();
         }
     }
 }

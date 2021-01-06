@@ -27,8 +27,6 @@ namespace EasySoccer.Mobile.Adm.Droid
         private Action<PlaceDetail> _onIntentResult;
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
 
@@ -57,9 +55,14 @@ namespace EasySoccer.Mobile.Adm.Droid
             {
                 var notificationService = new LocalNotificationService();
                 string message = string.Empty;
-                if (p.Data.ContainsKey("message") && p.Data.TryGetValue("message", out message))
+                string title = string.Empty;
+                if (p.Data.ContainsKey("message"))
+                    p.Data.TryGetValue("message", out message);
+                if (p.Data.ContainsKey("title"))
+                    p.Data.TryGetValue("title", out title);
+                if (string.IsNullOrEmpty(message) == false && string.IsNullOrEmpty(title) == false)
                 {
-                    notificationService.SendLocalNotification(this, "EasySoccer Administrador", message);
+                    notificationService.SendLocalNotification(this, title, message);
                 }
             };
 

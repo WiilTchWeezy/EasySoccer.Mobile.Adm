@@ -5,6 +5,13 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="EasySoccer.Mobile.Adm.Views.CompanyReservations"
              Visual="Material">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Notificações"
+                 IconImageSource="ic_notifications.png"
+                 Order="Primary"
+                 Priority="0" 
+                     Command="{Binding OpenUserNotificationsCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>

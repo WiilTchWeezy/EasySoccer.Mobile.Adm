@@ -87,11 +87,12 @@ namespace EasySoccer.Mobile.Adm.API.Session
                 {
                     var request = new ApiRequest.InserTokenRequest { Token = fcmToken };
                     var json = JsonConvert.SerializeObject(request);
-                    await ApiClient.Instance.LogOffTokenAsync(request);
+                    if (CurrentUser.Instance.IsLoggedIn)
+                        await ApiClient.Instance.LogOffTokenAsync(request);
                 }
                 catch (Exception e)
                 {
-
+                    return;
                 }
             }
             Preferences.Remove("AuthToken");

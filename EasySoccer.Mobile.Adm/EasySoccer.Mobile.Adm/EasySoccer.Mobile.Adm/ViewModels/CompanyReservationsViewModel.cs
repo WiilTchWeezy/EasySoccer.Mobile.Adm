@@ -59,10 +59,18 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _completeAddress, value); }
         }
         private INavigationService _navigationService;
+
+        public DelegateCommand OpenUserNotificationsCommand { get; set; }
         public CompanyReservationsViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             CompanySchedules = new ObservableCollection<CompanySchedulesResponse>();
+            OpenUserNotificationsCommand = new DelegateCommand(OpenUserNotifications);
+        }
+
+        private void OpenUserNotifications()
+        {
+            _navigationService.NavigateAsync("UserNotifications");
         }
 
         private async void LoadDataAsync()

@@ -296,5 +296,10 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Post<object>("CompanyUser/logofftoken", request);
         }
+
+        public async Task<List<CompanyUserNotificationResponse>> GetNotificationsAsync()
+        {
+            return await Get<List<CompanyUserNotificationResponse>>("CompanyUser/getNotifications");
+        }
     }
 }

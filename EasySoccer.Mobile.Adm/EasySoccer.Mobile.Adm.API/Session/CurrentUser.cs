@@ -80,6 +80,7 @@ namespace EasySoccer.Mobile.Adm.API.Session
 
         public async void LogOff()
         {
+
             var fcmToken = Preferences.Get("FcmToken", string.Empty);
             if (Preferences.ContainsKey("FcmToken") && string.IsNullOrEmpty(fcmToken) == false)
             {
@@ -92,6 +93,10 @@ namespace EasySoccer.Mobile.Adm.API.Session
                 }
                 catch (Exception e)
                 {
+                    Preferences.Remove("FcmToken");
+                    Preferences.Remove("AuthToken");
+                    Preferences.Remove("AuthExpiresDate");
+                    _eventAggregator?.GetEvent<UserLoggedInEvent>().Publish(false);
                     return;
                 }
             }

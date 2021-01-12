@@ -7,7 +7,7 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
     {
         public Guid Id { get; set; }
 
-        public NotificationTypeEnum NotificationTypeEnum { get; set; }
+        public NotificationTypeEnum NotificationType { get; set; }
 
         public string Title { get; set; }
 
@@ -18,5 +18,7 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public bool Read { get; set; }
 
         public long IdCompanyUser { get; set; }
+
+        public string Data { get; set; }
     }
 }

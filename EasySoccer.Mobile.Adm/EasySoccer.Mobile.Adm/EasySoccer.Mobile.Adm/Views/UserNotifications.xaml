@@ -7,7 +7,7 @@
              Title="Notificações">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Notifications}">
+            <CollectionView ItemsSource="{Binding Notifications}" SelectionChangedCommand="{Binding ItemSelectedCommand}" SelectedItem="{Binding SelectedItem}" SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="0,0">

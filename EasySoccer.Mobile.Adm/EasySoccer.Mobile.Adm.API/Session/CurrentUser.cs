@@ -62,15 +62,15 @@ namespace EasySoccer.Mobile.Adm.API.Session
             _eventAggregator = eventAggregator;
         }
 
-        public Guid? UserId
+        public long? UserId
         {
             get
             {
                 var claimValue = GetClaimByType("UserId");
                 if (string.IsNullOrEmpty(claimValue) == false)
                 {
-                    Guid userId;
-                    if (Guid.TryParse(claimValue, out userId))
+                    long userId;
+                    if (long.TryParse(claimValue, out userId))
                         return userId;
                     return null;
                 }
@@ -86,10 +86,13 @@ namespace EasySoccer.Mobile.Adm.API.Session
             {
                 try
                 {
-                    var request = new ApiRequest.InserTokenRequest { Token = fcmToken };
-                    var json = JsonConvert.SerializeObject(request);
-                    if (CurrentUser.Instance.IsLoggedIn)
-                        await ApiClient.Instance.LogOffTokenAsync(request);
+                    if (this.UserId.HasValue)
+                    {
+                        var request = new ApiRequest.InserTokenRequest { Token = fcmToken, CompanyUserId = this.UserId.Value };
+                        var json = JsonConvert.SerializeObject(request);
+                        if (CurrentUser.Instance.IsLoggedIn)
+                            await ApiClient.Instance.LogOffTokenAsync(request);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -100,6 +103,7 @@ namespace EasySoccer.Mobile.Adm.API.Session
                     return;
                 }
             }
+            Preferences.Remove("FcmToken");
             Preferences.Remove("AuthToken");
             Preferences.Remove("AuthExpiresDate");
             _eventAggregator?.GetEvent<UserLoggedInEvent>().Publish(false);

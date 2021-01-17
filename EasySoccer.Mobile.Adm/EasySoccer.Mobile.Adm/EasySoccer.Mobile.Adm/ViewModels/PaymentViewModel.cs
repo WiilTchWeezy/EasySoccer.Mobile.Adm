@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
+using EasySoccer.Mobile.Adm.API.ApiRequest;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
+using EasySoccer.Mobile.Adm.API.Validations;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -15,6 +17,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     public class PaymentViewModel : BindableBase, INavigationAware
     {
         private INavigationService _navigationService;
+        private PaymentValidator _validator;
 
         public PaymentViewModel(INavigationService navigationService)
         {
@@ -24,6 +27,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             Plans = new List<PlansInfoResponse>();
             OpenLinkCommand = new DelegateCommand(OpenLink);
             PayCommand = new DelegateCommand(Pay);
+            _validator = new PaymentValidator();
         }
 
 
@@ -40,7 +44,41 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         private async void Pay()
         {
-            UserDialogs.Instance.Alert("Pagamento realizado!");
+            var request = new PaymentRequest()
+            {
+                SelectedPlan = SelectedPlan.HasValue ? SelectedPlan.Value : -1,
+                SelectedInstallments = SelectedInstallment.HasValue ? SelectedInstallment.Value : -1,
+                CardExpiration = CardExpiration,
+                CardNumber = CardNumber,
+                FinancialBirthDay = FinancialBirthDay,
+                FinancialDocument = FinancialDocument,
+                FinancialName = FinancialName,
+                SecurityCode = SecurityCode
+            };
+            var validationResponse = _validator.Validate(request);
+            if (validationResponse.IsValid)
+            {
+                var alertConfig = new AlertConfig()
+                {
+                    Title = "Obrigado por realizar o pagamento!",
+                    Message = "Você receberá uma notificação para confirmar seu pagamento. Muito Obrigado!",
+                    OkText = "Fechar"
+                };
+                UserDialogs.Instance.Alert(alertConfig);
+                await _navigationService.GoBackAsync();
+            }
+            else
+            {
+                var validationMessages = validationResponse.Errors.Select(x => x.ErrorMessage).Distinct().ToArray();
+                var errorMessage = string.Join(" - ", validationMessages);
+                var alertConfig = new AlertConfig()
+                {
+                    Title = "Alguns erros de validação!",
+                    Message = errorMessage,
+                    OkText = "Fechar"
+                };
+                UserDialogs.Instance.Alert(alertConfig);
+            }
         }
 
         private async void LoadDataAsync()

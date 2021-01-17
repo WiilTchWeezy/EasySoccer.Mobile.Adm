@@ -58,6 +58,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             var validationResponse = _validator.Validate(request);
             if (validationResponse.IsValid)
             {
+                await ApiClient.Instance.PostPaymentAsync(request);
                 var alertConfig = new AlertConfig()
                 {
                     Title = "Obrigado por realizar o pagamento!",

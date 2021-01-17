@@ -301,5 +301,10 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Get<List<CompanyUserNotificationResponse>>("CompanyUser/getNotifications");
         }
+
+        public Task<object> PostPaymentAsync(PaymentRequest request)
+        {
+            return Post<object>("CompanyUser/payment", request);
+        }
     }
 }

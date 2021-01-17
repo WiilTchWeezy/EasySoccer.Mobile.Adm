@@ -15,8 +15,8 @@ namespace EasySoccer.Mobile.Adm.API.Validations
             RuleFor(x => x.FinancialDocument).MinimumLength(11).WithMessage("CPF de pagamento inválido.");
             RuleFor(x => x.FinancialName).NotNull().WithMessage("O nome do usuário é obrigatório.").NotEmpty().WithMessage("O nome do usuário é obrigatório.");
             RuleFor(x => x.FinancialBirthDay).NotNull().WithMessage("A data de aniversário é obrigatória.");
-            RuleFor(x => x.SelectedPlan).GreaterThanOrEqualTo(0).WithMessage("Selecione o plano.");
-            RuleFor(x => x.SelectedInstallments).GreaterThanOrEqualTo(0).WithMessage("Selecione as parcelas.");
+            RuleFor(x => x.SelectedPlan).GreaterThanOrEqualTo(0).WithMessage("É necessário selecionar um plano.");
+            RuleFor(x => x.SelectedInstallments).GreaterThanOrEqualTo(0).WithMessage("É necessário selecionar uma parcela.");
         }
     }
 }

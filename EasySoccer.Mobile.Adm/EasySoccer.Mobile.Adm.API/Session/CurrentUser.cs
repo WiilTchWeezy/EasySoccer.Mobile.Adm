@@ -96,14 +96,12 @@ namespace EasySoccer.Mobile.Adm.API.Session
                 }
                 catch (Exception e)
                 {
-                    Preferences.Remove("FcmToken");
                     Preferences.Remove("AuthToken");
                     Preferences.Remove("AuthExpiresDate");
                     _eventAggregator?.GetEvent<UserLoggedInEvent>().Publish(false);
                     return;
                 }
             }
-            Preferences.Remove("FcmToken");
             Preferences.Remove("AuthToken");
             Preferences.Remove("AuthExpiresDate");
             _eventAggregator?.GetEvent<UserLoggedInEvent>().Publish(false);

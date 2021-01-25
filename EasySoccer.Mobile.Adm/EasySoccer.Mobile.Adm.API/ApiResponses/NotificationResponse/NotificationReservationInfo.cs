@@ -4,6 +4,6 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses.NotificationResponse
 {
     public class NotificationReservationInfo
     {
-        public Guid Id { get; set; }
+        public Guid reservationId { get; set; }
     }
 }

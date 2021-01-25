@@ -67,7 +67,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     {
                         var navigationParameters = new NavigationParameters();
                         var notificationData = JsonConvert.DeserializeObject<NotificationReservationInfo>(SelectedItem.Data);
-                        navigationParameters.Add("ReservationId", notificationData.Id);
+                        navigationParameters.Add("ReservationId", notificationData.reservationId);
                         _navigationService.NavigateAsync("ReservationInfo", navigationParameters);
                     }
                     break;

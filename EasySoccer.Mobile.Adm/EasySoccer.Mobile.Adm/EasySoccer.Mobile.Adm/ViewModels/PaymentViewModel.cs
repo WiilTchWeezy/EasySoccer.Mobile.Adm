@@ -3,6 +3,7 @@ using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiRequest;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.API.Validations;
+using EasySoccer.Mobile.Adm.Infra.Enums;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -28,6 +29,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             OpenLinkCommand = new DelegateCommand(OpenLink);
             PayCommand = new DelegateCommand(Pay);
             _validator = new PaymentValidator();
+            SelectStateCommand = new DelegateCommand(SelectState);
+            SelectCityCommand = new DelegateCommand(SelectCity);
         }
 
 
@@ -35,6 +38,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public ObservableCollection<string> PlansName { get; set; }
         public DelegateCommand OpenLinkCommand { get; set; }
         public DelegateCommand PayCommand { get; set; }
+        public DelegateCommand SelectStateCommand { get; set; }
+        public DelegateCommand SelectCityCommand { get; set; }
         public ObservableCollection<string> PlansInstallments { get; set; }
 
         private async void OpenLink()
@@ -44,41 +49,55 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         private async void Pay()
         {
-            var request = new PaymentRequest()
+            try
             {
-                SelectedPlan = SelectedPlan.HasValue ? SelectedPlan.Value : -1,
-                SelectedInstallments = SelectedInstallment.HasValue ? SelectedInstallment.Value : -1,
-                CardExpiration = CardExpiration,
-                CardNumber = CardNumber,
-                FinancialBirthDay = FinancialBirthDay,
-                FinancialDocument = FinancialDocument,
-                FinancialName = FinancialName,
-                SecurityCode = SecurityCode
-            };
-            var validationResponse = _validator.Validate(request);
-            if (validationResponse.IsValid)
-            {
-                await ApiClient.Instance.PostPaymentAsync(request);
-                var alertConfig = new AlertConfig()
+                var request = new PaymentRequest()
                 {
-                    Title = "Obrigado por realizar o pagamento!",
-                    Message = "Você receberá uma notificação para confirmar seu pagamento. Muito Obrigado!",
-                    OkText = "Fechar"
+                    SelectedPlan = SelectedPlan.HasValue ? SelectedPlan.Value : -1,
+                    SelectedInstallments = SelectedInstallment.HasValue ? SelectedInstallment.Value : -1,
+                    CardExpiration = CardExpiration.Replace("/", string.Empty),
+                    CardNumber = CardNumber.Trim(),
+                    FinancialBirthDay = FinancialBirthDay,
+                    FinancialDocument = FinancialDocument.Replace(".", string.Empty).Replace("-", string.Empty),
+                    FinancialName = FinancialName,
+                    SecurityCode = SecurityCode,
+                    CityId = IdCity.HasValue ? IdCity.Value : 0,
+                    Complementary = Complementary,
+                    Neighborhood = Neighborhood,
+                    StateId = IdState.HasValue ? IdState.Value : 0,
+                    Street = Street,
+                    StreetNumber = StreetNumber,
+                    ZipCode = ZipCode.Replace("-", string.Empty)
                 };
-                UserDialogs.Instance.Alert(alertConfig);
-                await _navigationService.GoBackAsync();
+                var validationResponse = _validator.Validate(request);
+                if (validationResponse.IsValid)
+                {
+                    await ApiClient.Instance.PostPaymentAsync(request);
+                    var alertConfig = new AlertConfig()
+                    {
+                        Title = "Obrigado por realizar o pagamento!",
+                        Message = "Seu pagamento foi aprovado. Muito Obrigado!",
+                        OkText = "Fechar"
+                    };
+                    UserDialogs.Instance.Alert(alertConfig);
+                    await _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    var validationMessages = validationResponse.Errors.Select(x => x.ErrorMessage).Distinct().ToArray();
+                    var errorMessage = string.Join(" - ", validationMessages);
+                    var alertConfig = new AlertConfig()
+                    {
+                        Title = "Alguns erros de validação!",
+                        Message = errorMessage,
+                        OkText = "Fechar"
+                    };
+                    UserDialogs.Instance.Alert(alertConfig);
+                }
             }
-            else
+            catch (Exception e)
             {
-                var validationMessages = validationResponse.Errors.Select(x => x.ErrorMessage).Distinct().ToArray();
-                var errorMessage = string.Join(" - ", validationMessages);
-                var alertConfig = new AlertConfig()
-                {
-                    Title = "Alguns erros de validação!",
-                    Message = errorMessage,
-                    OkText = "Fechar"
-                };
-                UserDialogs.Instance.Alert(alertConfig);
+                UserDialogs.Instance.Alert(e.Message);
             }
         }
 
@@ -121,6 +140,20 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
+        private void SelectState()
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ModalSelectType", ModalSelectEnum.State);
+            _navigationService.NavigateAsync("ModalSelect", navigationParameters, useModalNavigation: true);
+        }
+        private void SelectCity()
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ModalSelectType", ModalSelectEnum.City);
+            navigationParameters.Add("StateId", IdState);
+            _navigationService.NavigateAsync("ModalSelect", navigationParameters, useModalNavigation: true);
+        }
+
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
 
@@ -128,6 +161,14 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
+            if (parameters.ContainsKey("StateId"))
+                IdState = parameters.GetValue<int>("StateId");
+            if (parameters.ContainsKey("CityId"))
+                IdCity = parameters.GetValue<int>("CityId");
+            if (parameters.ContainsKey("StateName"))
+                StateName = parameters.GetValue<string>("StateName");
+            if (parameters.ContainsKey("CityName"))
+                CityName = parameters.GetValue<string>("CityName");
             LoadDataAsync();
         }
 
@@ -188,11 +229,70 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public int? SelectedInstallment
         {
             get { return _selectedInstallment; }
-            set
-            {
-                if (SetProperty(ref _selectedInstallment, value))
-                    GetPlansInstallments(value);
-            }
+            set { SetProperty(ref _selectedInstallment, value); }
+        }
+
+        private int? _idCity;
+        public int? IdCity
+        {
+            get { return _idCity; }
+            set { SetProperty(ref _idCity, value); }
+        }
+
+        private int? _idState;
+        public int? IdState
+        {
+            get { return _idState; }
+            set { SetProperty(ref _idState, value); }
+        }
+
+        private string _stateName;
+        public string StateName
+        {
+            get { return _stateName; }
+            set { SetProperty(ref _stateName, value); }
+        }
+
+        private string _cityName;
+        public string CityName
+        {
+            get { return _cityName; }
+            set { SetProperty(ref _cityName, value); }
+        }
+
+        private string _zipCode;
+        public string ZipCode
+        {
+            get { return _zipCode; }
+            set { SetProperty(ref _zipCode, value); }
+        }
+
+        private string _streetNumber;
+        public string StreetNumber
+        {
+            get { return _streetNumber; }
+            set { SetProperty(ref _streetNumber, value); }
+        }
+
+        private string _street;
+        public string Street
+        {
+            get { return _street; }
+            set { SetProperty(ref _street, value); }
+        }
+
+        private string _complementary;
+        public string Complementary
+        {
+            get { return _complementary; }
+            set { SetProperty(ref _complementary, value); }
+        }
+
+        private string _neighborhood;
+        public string Neighborhood
+        {
+            get { return _neighborhood; }
+            set { SetProperty(ref _neighborhood, value); }
         }
     }
 }

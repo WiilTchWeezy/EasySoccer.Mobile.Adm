@@ -9,7 +9,7 @@
              >
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout Padding="10">
                 <Picker ItemsSource="{Binding PlansName}" SelectedIndex="{Binding SelectedPlan}" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53" Title="Plano"></Picker>
                 <Picker ItemsSource="{Binding PlansInstallments}" SelectedIndex="{Binding SelectedInstallment}" Style="{StaticResource gilroyLightPicker}" BackgroundColor="Transparent" TextColor="#161E53" Title="Parcelas"></Picker>
                 <Frame Margin="5" HasShadow="True" CornerRadius="10" BorderColor="#161E53">
@@ -56,6 +56,52 @@
                         </Entry.Behaviors>
                     </Entry>
                 </Grid>
+                <Label Style="{StaticResource gilroyLightLabel}" Text="Endereço de cobrança" FontSize="Small"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" IsEnabled="False" Style="{StaticResource gilroyLightEntry}" Placeholder="Estado" Text="{Binding StateName}" BackgroundColor="Transparent"/>
+                    <Frame Grid.Column="1" BackgroundColor="#FF591F" CornerRadius="10" Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectStateCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="&#xf055;" TextColor="#FFF" Style="{StaticResource fontAwesomeLabel}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" IsEnabled="False" Style="{StaticResource gilroyLightEntry}" Placeholder="Cidade" Text="{Binding CityName}" BackgroundColor="Transparent"/>
+                    <Frame Grid.Column="1" BackgroundColor="#FF591F" CornerRadius="10" Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectCityCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="&#xf055;" TextColor="#FFF" Style="{StaticResource fontAwesomeLabel}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </Grid>
+                <Entry Placeholder="CEP" Style="{StaticResource gilroyLightEntry}" Text="{Binding ZipCode}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                    <Entry.Behaviors>
+                        <behaviorPack:MaskedBehavior Mask="XXXXX-XXX" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" Placeholder="Rua" Style="{StaticResource gilroyLightEntry}" Text="{Binding Street}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                    </Entry>
+                    <Entry Grid.Column="1" Placeholder="Numero" Keyboard="Numeric" Style="{StaticResource gilroyLightEntry}" Text="{Binding StreetNumber}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                    </Entry>
+                </Grid>
+                <Entry Placeholder="Bairro" Style="{StaticResource gilroyLightEntry}" Text="{Binding Neighborhood}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                </Entry>
+                <Entry Placeholder="Complemento" Style="{StaticResource gilroyLightEntry}" Text="{Binding Complementary}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                </Entry>
                 <Button Text="Realizar Pagamento" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding PayCommand}"></Button>
             </StackLayout>
         </ScrollView>

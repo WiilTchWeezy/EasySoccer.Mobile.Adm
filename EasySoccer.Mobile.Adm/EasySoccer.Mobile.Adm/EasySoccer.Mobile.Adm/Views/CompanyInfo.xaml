@@ -130,6 +130,16 @@
                         </StackLayout>
                     </Frame>
                 </Grid>
+                <Grid Padding="5">
+                    <Frame HasShadow="True" BorderColor="#DCDCDC">
+                        <StackLayout>
+                            <Label Style="{StaticResource gilroyLightLabel}" Text="Informações financeiras" FontSize="Medium"/>
+                            <Label Style="{StaticResource gilroyLightLabel}" Text="{Binding PlanName}" FontSize="Small"/>
+                            <Label Style="{StaticResource gilroyLightLabel}" Text="{Binding PlanCreatedDate}" FontSize="Small"/>
+                            <Label Style="{StaticResource gilroyLightLabel}" Text="{Binding PlanExpiresDates}" FontSize="Small"/>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
                 <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
             </StackLayout>
         </ScrollView>

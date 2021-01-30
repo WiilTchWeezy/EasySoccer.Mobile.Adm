@@ -233,6 +233,27 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _cityName, value); }
         }
 
+        private string _planName;
+        public string PlanName
+        {
+            get { return _planName; }
+            set { SetProperty(ref _planName, value); }
+        }
+
+        private string _planCreatedDate;
+        public string PlanCreatedDate
+        {
+            get { return _planCreatedDate; }
+            set { SetProperty(ref _planCreatedDate, value); }
+        }
+
+        private string _planExpiresDates;
+        public string PlanExpiresDates
+        {
+            get { return _planExpiresDates; }
+            set { SetProperty(ref _planExpiresDates, value); }
+        }
+
         private async void LoadDataAsync()
         {
             try
@@ -258,6 +279,28 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     else
                         StatusText = "Inativo";
                     SelectedDay = 0;
+                    if (companyInfoResponse != null && companyInfoResponse.FinancialInfo != null)
+                    {
+                        switch (companyInfoResponse.FinancialInfo.FinancialPlan)
+                        {
+                            case 0:
+                                PlanName = "Plano selecionado: Grátis";
+                                break;
+                            case 1:
+                                PlanName = "Plano selecionado: Mensal";
+                                break;
+                            case 2:
+                                PlanName = "Plano selecionado: Semestral";
+                                break;
+                            case 3:
+                                PlanName = "Plano selecionado: Anual";
+                                break;
+                            default:
+                                break;
+                        }
+                        PlanCreatedDate = $"Criado em : {companyInfoResponse.FinancialInfo.CreatedDate.ToString("dd/MM/yyyy")}";
+                        PlanExpiresDates = $"Válido até : {companyInfoResponse.FinancialInfo.ExpiresDate.ToString("dd/MM/yyyy")}";
+                    }
                 }
             }
             catch (Exception e)

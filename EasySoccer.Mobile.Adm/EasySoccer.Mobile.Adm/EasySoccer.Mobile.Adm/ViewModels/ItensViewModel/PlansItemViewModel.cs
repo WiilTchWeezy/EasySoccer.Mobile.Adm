@@ -22,6 +22,21 @@ namespace EasySoccer.Mobile.Adm.ViewModels.ItensViewModel
                 }
             }
         }
+
+        private bool _isDefault;
+        public bool IsDefault
+        {
+            get { return _isDefault; }
+            set
+            {
+                if (_isDefault != value)
+                {
+                    _isDefault = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsDefault"));
+                }
+            }
+        }
+
         public PlansItemViewModel(PlansResponse item)
         {
             this.Id = item.Id;

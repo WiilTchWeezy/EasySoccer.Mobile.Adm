@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -225,7 +226,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadPlansAsync()
+        private async Task LoadPlansAsync()
         {
             try
             {
@@ -235,7 +236,9 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Plans.Clear();
                     foreach (var item in plansResponse)
                     {
-                        Plans.Add(new PlansItemViewModel(item));
+                        var viewModelItem = new PlansItemViewModel(item);
+                        viewModelItem.PropertyChanged += ViewModelItem_PropertyChanged;
+                        Plans.Add(viewModelItem);
                     }
                     if (Plans.Count > 0)
                         PlansHeight = Plans.Count * 75;
@@ -245,7 +248,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                         {
                             var plan = Plans.Where(x => x.Id == item.Id).FirstOrDefault();
                             if (plan != null)
+                            {
                                 plan.Selected = true;
+                                plan.IsDefault = item.IsDefault;
+                            }
                         }
                     }
                 }
@@ -256,7 +262,23 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadSoccerPitchDataAsync()
+        private void ViewModelItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsDefault")
+            {
+                foreach (var item in this.Plans)
+                {
+                    var itemViewModel = sender as PlansItemViewModel;
+                    if (item.Id != itemViewModel.Id && itemViewModel.IsDefault)
+                    {
+                        if (item.IsDefault == true)
+                            item.IsDefault = false;
+                    }
+                }
+            }
+        }
+
+        private async Task LoadSoccerPitchDataAsync()
         {
             try
             {
@@ -273,6 +295,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                         HasRoof = response.HasRoof;
                         SportTypeId = response.SportTypeId;
                         Color = response.Color;
+                        _currentSoccerPitch.Plans = response.Plans;
                     }
                 }
             }
@@ -300,12 +323,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                         Name = this.Name,
                         NumberOfPlayers = this.NumberOfPlayers.HasValue ? this.NumberOfPlayers.Value : 0,
                         SportTypeId = this.SportTypes[this.SelectedSportTypeId.HasValue ? this.SelectedSportTypeId.Value : 0].Id,
-                        Plans = this.Plans.Where(x => x.Selected).Select(x => new SoccerPitchSoccerPitchPlanRequest { Id = x.Id }).ToArray()
+                        Plans = this.Plans.Where(x => x.Selected).Select(x => new SoccerPitchSoccerPitchPlanRequest { Id = x.Id, IsDefault = x.IsDefault }).ToArray()
                     });
                     if (patchResponse != null)
                     {
                         UserDialogs.Instance.Alert("Dados atualizados com sucesso!", "EasySoccer");
-                        _currentSoccerPitch.Plans = Plans.Where(x => x.Selected).Select(x => new PlansResponse { Id = x.Id, Description = x.Description, Name = x.Name, Value = x.Value }).ToList();
+                        //_currentSoccerPitch.Plans = Plans.Where(x => x.Selected).Select(x => new PlansResponse { Id = x.Id, Description = x.Description, Name = x.Name, Value = x.Value, IsDefault = x.IsDefault }).ToList();
                     }
                 }
                 else
@@ -329,8 +352,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                         _navigationService.GoBackAsync();
                     }
                 }
-                this.LoadSoccerPitchDataAsync();
-                this.LoadPlansAsync();
+                await this.LoadSoccerPitchDataAsync();
+                await this.LoadPlansAsync();
             }
             catch (Exception e)
             {

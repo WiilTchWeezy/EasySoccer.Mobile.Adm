@@ -40,7 +40,12 @@
                     <CollectionView ItemsSource="{Binding Plans}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="{Binding PlansHeight}">
                         <CollectionView.Header>
                             <Grid Padding="10" BackgroundColor="#DCDCDC">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Text="Planos" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                                <Label Grid.Column="1" Text="Padrão" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
                             </Grid>
                         </CollectionView.Header>
                         <CollectionView.ItemTemplate>
@@ -49,9 +54,11 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" IsChecked="{Binding Selected}"/>
                                     <Label Grid.Column="1" Text="{Binding Name}" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                                    <Switch Grid.Column="2" IsToggled="{Binding IsDefault}"></Switch>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

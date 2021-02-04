@@ -20,5 +20,7 @@
     public class SoccerPitchSoccerPitchPlanRequest
     {
         public int Id { get; set; }
+
+        public bool IsDefault { get; set; }
     }
 }

@@ -254,6 +254,29 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _planExpiresDates, value); }
         }
 
+        private string _insertReservationConfirmedText;
+        public string InsertReservationConfirmedText
+        {
+            get { return _insertReservationConfirmedText; }
+            set { SetProperty(ref _insertReservationConfirmedText, value); }
+        }
+
+        private bool _insertReservationConfirmed;
+        public bool InsertReservationConfirmed
+        {
+            get { return _insertReservationConfirmed; }
+            set
+            {
+                if (SetProperty(ref _insertReservationConfirmed, value))
+                {
+                    if (value)
+                        InsertReservationConfirmedText = "Sim";
+                    else
+                        InsertReservationConfirmedText = "Não";
+                }
+            }
+        }
+
         private async void LoadDataAsync()
         {
             try
@@ -274,10 +297,15 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     IdCity = companyInfoResponse.IdCity;
                     CityName = companyInfoResponse.City;
                     StateName = companyInfoResponse.State;
+                    InsertReservationConfirmed = companyInfoResponse.InsertReservationConfirmed;
                     if (IsActive)
                         StatusText = "Ativo";
                     else
                         StatusText = "Inativo";
+                    if (InsertReservationConfirmed)
+                        InsertReservationConfirmedText = "Sim";
+                    else
+                        InsertReservationConfirmedText = "Não";
                     SelectedDay = 0;
                     if (companyInfoResponse != null && companyInfoResponse.FinancialInfo != null)
                     {
@@ -389,6 +417,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Longitude = this.Longitude,
                     Name = this.Name,
                     IdCity = this.IdCity,
+                    InsertReservationConfirmed = InsertReservationConfirmed,
                     CompanySchedules = _companyInfoResponse.CompanySchedules,
                 });
                 UserDialogs.Instance.Alert("Dados atualizados com sucesso.");

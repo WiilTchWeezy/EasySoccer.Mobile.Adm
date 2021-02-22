@@ -118,6 +118,21 @@
                 <Grid Padding="5">
                     <Frame HasShadow="True" BorderColor="#DCDCDC">
                         <StackLayout>
+                            <Label Style="{StaticResource gilroyLightLabel}" Text="Inserir reservas já confirmadas :" FontSize="Small"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Style="{StaticResource gilroyLabel}" VerticalTextAlignment="Center" Text="{Binding InsertReservationConfirmedText}" FontSize="Small"/>
+                                <Switch Grid.Column="1" IsToggled="{Binding InsertReservationConfirmed}" />
+                            </Grid>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+                <Grid Padding="5">
+                    <Frame HasShadow="True" BorderColor="#DCDCDC">
+                        <StackLayout>
                             <Label Style="{StaticResource gilroyLightLabel}" Text="Status do Complexo Esportivo:" FontSize="Small"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -130,6 +145,7 @@
                         </StackLayout>
                     </Frame>
                 </Grid>
+
                 <Grid Padding="5">
                     <Frame HasShadow="True" BorderColor="#DCDCDC">
                         <StackLayout>

@@ -15,6 +15,7 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public int? IdCity { get; set; }
         public int? IdState { get; set; }
         public string State { get; set; }
+        public bool InsertReservationConfirmed { get; set; }
         public bool Active { get; set; }
         public List<CompanyDaySchedule> CompanySchedules { get; set; }
         public CompanyFinancialInfo FinancialInfo { get; set; }

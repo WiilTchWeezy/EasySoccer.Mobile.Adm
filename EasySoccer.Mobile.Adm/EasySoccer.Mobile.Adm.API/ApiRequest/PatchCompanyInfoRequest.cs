@@ -12,6 +12,7 @@ namespace EasySoccer.Mobile.Adm.API.ApiRequest
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public int? IdCity { get; set; }
+        public bool InsertReservationConfirmed { get; set; }
         public List<CompanyDaySchedule> CompanySchedules { get; set; }
     }
 }

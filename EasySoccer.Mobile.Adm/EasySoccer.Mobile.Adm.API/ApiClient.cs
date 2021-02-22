@@ -306,5 +306,10 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return Post<object>("CompanyUser/payment", request);
         }
+
+        public Task<object> PostChangeReservationStatus(ChangeStatusRequest request)
+        {
+            return Post<object>("SoccerPitchReservation/changeStatus", request);
+        }
     }
 }

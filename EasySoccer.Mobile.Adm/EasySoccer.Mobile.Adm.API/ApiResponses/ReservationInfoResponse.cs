@@ -23,5 +23,7 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public string CompanyAddress { get; set; }
         public string CompanyCity { get; set; }
         public string SoccerPitchSportType { get; set; }
+        public string StatusDescription { get; set; }
+        public int Status { get; set; }
     }
 }

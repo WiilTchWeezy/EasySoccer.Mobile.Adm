@@ -49,8 +49,17 @@
                     <StackLayout Padding="10">
                         <Label Text="{Binding PersonName}" Style="{StaticResource gilroyLabel}" HorizontalTextAlignment="Center" FontSize="Medium" ></Label>
                         <Label Text="{Binding PersonPhone}" Style="{StaticResource gilroyLightLabel}" HorizontalTextAlignment="Center" ></Label>
+                        <Grid>
+                            <Frame BackgroundColor="{Binding StatusColor}" Padding="5" CornerRadius="50" IsClippedToBounds="True">
+                                <Label Text="{Binding StatusDescription}" TextColor="White" Style="{StaticResource gilroyLabel}" HorizontalTextAlignment="Center"/>
+                            </Frame>
+                        </Grid>
                     </StackLayout>
                 </Frame>
+                <StackLayout Padding="10">
+                    <Button Text="Cancelar Agendamento" IsVisible="{Binding ShowCanceledButton}" Command="{Binding CancelCommand}" BackgroundColor="#d9534f" Style="{StaticResource gilroyLightEntry}"/>
+                    <Button Text="Confirmar Agendamento" IsVisible="{Binding ShowConfirmationButton}" Command="{Binding ConfimCommand}" BackgroundColor="#5cb85c" Style="{StaticResource gilroyLightEntry}"/>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

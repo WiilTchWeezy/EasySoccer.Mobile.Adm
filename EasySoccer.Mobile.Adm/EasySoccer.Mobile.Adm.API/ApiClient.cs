@@ -154,7 +154,10 @@ namespace EasySoccer.Mobile.Adm.API
             NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
             foreach (var item in parameters.GetType().GetProperties())
             {
-                queryString.Add(item.Name, item.GetValue(parameters).ToString());
+                var propValue = item.GetValue(parameters);
+                if (propValue != null) {
+                    queryString.Add(item.Name, propValue.ToString());
+                }
             }
             return queryString.ToString();
         }
@@ -310,6 +313,21 @@ namespace EasySoccer.Mobile.Adm.API
         public Task<object> PostChangeReservationStatus(ChangeStatusRequest request)
         {
             return Post<object>("SoccerPitchReservation/changeStatus", request);
+        }
+
+        public async Task<ReservationsResponse> GetReservationsAsync(DateTime? initialDate, DateTime? finalDate, int? soccerPitchId, int? soccerPitchPlanId, string userName, int? status, int page = 1, int pageSize = 10)
+        {
+            return await Get<ReservationsResponse>("SoccerPitchReservation/get?" + GenerateQueryParameters(new
+            {
+                InitialDate = initialDate,
+                FinalDate = finalDate,
+                SoccerPitchId = soccerPitchId,
+                SoccerPitchPlanId = soccerPitchPlanId,
+                UserName = userName,
+                Status = status,
+                Page = page,
+                PageSize = pageSize
+            }));
         }
     }
 }

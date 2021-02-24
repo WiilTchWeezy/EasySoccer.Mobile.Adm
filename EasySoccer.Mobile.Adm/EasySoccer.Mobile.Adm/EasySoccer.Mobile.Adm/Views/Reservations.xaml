@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.Reservations">
+    <ContentPage.Content>
+        <StackLayout>
+            <CollectionView ItemsSource="{Binding Reservations}" SelectionChangedCommand="{Binding ItemSelectedCommand}" SelectedItem="{Binding SelectedItem}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="8,3,8,8">
+                            <Frame HasShadow="True" Padding="0" IsClippedToBounds="True" CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" BackgroundColor="{Binding SoccerPitchColor}"></Grid>
+                                    <StackLayout Grid.Column="1">
+                                    <StackLayout Padding="10" Margin="10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Text="&#xf073;" Style="{StaticResource fontAwesomeLabel}" FontSize="15" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                            <Label Grid.Column="1" Text="{Binding ReservationHour}" Style="{StaticResource gilroyLabel}" FontSize="Medium"  VerticalTextAlignment="Center"/>
+                                        </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="&#xf45f;" Style="{StaticResource fontAwesomeLabel}" FontSize="15" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                                <Label Grid.Column="1" Text="{Binding SoccerPitchName}" Style="{StaticResource gilroyLightLabel}" FontSize="Medium"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="&#xf007;" Style="{StaticResource fontAwesomeLabel}" FontSize="15" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                                <Label Grid.Column="1" Text="{Binding UserName}" Style="{StaticResource gilroyLightLabel}" FontSize="Medium"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="&#xf095;" Style="{StaticResource fontAwesomeLabel}" FontSize="10" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                                <Label Grid.Column="1" Text="{Binding UserPhone}" Style="{StaticResource gilroyLightLabel}" FontSize="Small"/>
+                                            </Grid>
+                                            <Grid VerticalOptions="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Frame Grid.Column="0" Padding="5" CornerRadius="10" BackgroundColor="{Binding StatusColor}">
+                                                <Grid>
+                                                    <Label Text="{Binding StatusDescription}" Style="{StaticResource gilroyLightLabel}" FontSize="Medium"/>
+                                                </Grid>
+                                            </Frame>
+                                        </Grid>
+                                    </StackLayout>
+                                </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

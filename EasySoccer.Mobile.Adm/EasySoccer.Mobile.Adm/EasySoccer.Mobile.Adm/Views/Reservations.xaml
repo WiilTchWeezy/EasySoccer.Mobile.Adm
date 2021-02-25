@@ -4,6 +4,13 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="EasySoccer.Mobile.Adm.Views.Reservations">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Notificações"
+                 IconImageSource="ic_filter_list.png"
+                 Order="Primary"
+                 Priority="0" 
+                 Command="{Binding ReservationFilterCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <CollectionView ItemsSource="{Binding Reservations}" SelectionChangedCommand="{Binding ItemSelectedCommand}" SelectedItem="{Binding SelectedItem}" SelectionMode="Single">
@@ -43,7 +50,7 @@
                                                 <Label Grid.Column="0" Text="&#xf007;" Style="{StaticResource fontAwesomeLabel}" FontSize="15" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
                                                 <Label Grid.Column="1" Text="{Binding UserName}" Style="{StaticResource gilroyLightLabel}" FontSize="Medium"/>
                                             </Grid>
-                                            <Grid>
+                                            <Grid IsVisible="{Binding UserPhoneVisible}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>

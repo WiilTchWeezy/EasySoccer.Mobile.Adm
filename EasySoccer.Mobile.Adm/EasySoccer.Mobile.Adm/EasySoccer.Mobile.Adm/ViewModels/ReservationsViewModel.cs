@@ -14,9 +14,25 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     public class ReservationsViewModel : BindableBase, INavigationAware
     {
         public ObservableCollection<ReservationResponse> Reservations { get; set; }
-        public ReservationsViewModel()
+        public DelegateCommand ReservationFilterCommand { get; set; }
+        private INavigationService _navigationService;
+        public ReservationsViewModel(INavigationService navigationService)
         {
             Reservations = new ObservableCollection<ReservationResponse>();
+            ReservationFilterCommand = new DelegateCommand(OpenFilter);
+            _navigationService = navigationService;
+        }
+
+        private void OpenFilter()
+        {
+            var navParams = new NavigationParameters();
+            navParams.Add(nameof(InitialDate), InitialDate);
+            navParams.Add(nameof(FinalDate), FinalDate);
+            navParams.Add(nameof(SoccerPitchId), SoccerPitchId);
+            navParams.Add(nameof(SoccerPitchPlanId), SoccerPitchPlanId);
+            navParams.Add(nameof(UserName), UserName);
+            navParams.Add(nameof(Status), Status);
+            _navigationService.NavigateAsync("ReservationsFilter", navParams);
         }
 
         private DateTime? _initialDate;

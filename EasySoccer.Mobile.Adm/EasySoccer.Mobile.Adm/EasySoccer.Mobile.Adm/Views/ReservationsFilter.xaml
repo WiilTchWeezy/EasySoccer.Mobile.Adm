@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.ReservationsFilter"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+        <StackLayout Padding="10">
+            <Label Text="Data Inicial" Style="{StaticResource gilroyLightLabel}"/>
+            <DatePicker Date="{Binding StartDate}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightEntry}"></DatePicker>
+            <Label Text="Data Final" Style="{StaticResource gilroyLightLabel}"/>
+            <DatePicker Date="{Binding StartDate}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightEntry}"></DatePicker>
+            <Picker ItemsSource="{Binding SoccerPitchsNames}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightPicker}" Title="Quadras" />
+            <Picker ItemsSource="{Binding PlansNames}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightPicker}" Title="Planos" />
+                <Grid>
+            <CollectionView ItemsSource="{Binding Status}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="250">
+                <CollectionView.Header>
+                    <Grid Padding="10" BackgroundColor="#DCDCDC">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="Status" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                    </Grid>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" IsChecked="{Binding Selected}"/>
+                            <Label Grid.Column="1" Text="{Binding Text}" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhum status encontrado!" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
+                </CollectionView.EmptyView>
+            </CollectionView>
+                </Grid>
+                <Button Text="Aplicar Filtros" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" />
+        </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -63,5 +63,14 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
                 return color;
             }
         }
+
+        [JsonIgnore]
+        public bool UserPhoneVisible
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(UserPhone);
+            }
+        }
     }
 }

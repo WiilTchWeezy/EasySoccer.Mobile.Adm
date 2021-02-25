@@ -329,5 +329,10 @@ namespace EasySoccer.Mobile.Adm.API
                 PageSize = pageSize
             }));
         }
+
+        public async Task<List<StatusResponse>> GetStatusAsync()
+        {
+            return await Get<List<StatusResponse>>("SoccerPitchReservation/getReservationStatus");
+        }
     }
 }

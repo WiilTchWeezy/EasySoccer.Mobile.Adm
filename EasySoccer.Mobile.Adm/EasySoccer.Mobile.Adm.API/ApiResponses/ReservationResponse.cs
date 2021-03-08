@@ -20,6 +20,8 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public long SoccerPitchSoccerPitchPlanId { get; set; }
         public int SoccerPitchPlanId { get; set; }
 
+        public string  PlanName { get; set; }
+
         [JsonIgnore]
         public string ReservationHour
         {
@@ -66,6 +68,15 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
 
         [JsonIgnore]
         public bool UserPhoneVisible
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(UserPhone);
+            }
+        }
+
+        [JsonIgnore]
+        public bool PlanVisible
         {
             get
             {

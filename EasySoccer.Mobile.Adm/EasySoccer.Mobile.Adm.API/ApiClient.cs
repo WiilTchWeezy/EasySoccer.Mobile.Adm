@@ -315,8 +315,15 @@ namespace EasySoccer.Mobile.Adm.API
             return Post<object>("SoccerPitchReservation/changeStatus", request);
         }
 
-        public async Task<ReservationsResponse> GetReservationsAsync(DateTime? initialDate, DateTime? finalDate, int? soccerPitchId, int? soccerPitchPlanId, string userName, int? status, int page = 1, int pageSize = 10)
+        public async Task<ReservationsResponse> GetReservationsAsync(DateTime? initialDate, DateTime? finalDate, long? soccerPitchId, int? soccerPitchPlanId, string userName, int[] status, int page = 1, int pageSize = 10)
         {
+            string statusStr = null;
+            if (status != null && status.Length <= 0)
+                status = null;
+            else if(status != null)
+            {
+                statusStr = string.Join(";", status);
+            }
             return await Get<ReservationsResponse>("SoccerPitchReservation/get?" + GenerateQueryParameters(new
             {
                 InitialDate = initialDate,
@@ -324,7 +331,7 @@ namespace EasySoccer.Mobile.Adm.API
                 SoccerPitchId = soccerPitchId,
                 SoccerPitchPlanId = soccerPitchPlanId,
                 UserName = userName,
-                Status = status,
+                Status = statusStr,
                 Page = page,
                 PageSize = pageSize
             }));

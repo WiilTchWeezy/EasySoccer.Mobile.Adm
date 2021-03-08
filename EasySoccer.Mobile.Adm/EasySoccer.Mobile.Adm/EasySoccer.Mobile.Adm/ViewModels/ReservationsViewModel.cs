@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -15,12 +16,25 @@ namespace EasySoccer.Mobile.Adm.ViewModels
     {
         public ObservableCollection<ReservationResponse> Reservations { get; set; }
         public DelegateCommand ReservationFilterCommand { get; set; }
+        public DelegateCommand ItemTresholdCommand { get; set; }
         private INavigationService _navigationService;
+        private int[] _selectedStatus;
+        private bool _hasMoreData = true;
+
         public ReservationsViewModel(INavigationService navigationService)
         {
             Reservations = new ObservableCollection<ReservationResponse>();
             ReservationFilterCommand = new DelegateCommand(OpenFilter);
+            ItemTresholdCommand = new DelegateCommand(ItemTreshold);
             _navigationService = navigationService;
+        }
+
+        private async void ItemTreshold()
+        {
+            if (Reservations.Count > 0 && _hasMoreData)
+            {
+                LoadDataAsync(_selectedStatus, false);
+            }
         }
 
         private void OpenFilter()
@@ -31,7 +45,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             navParams.Add(nameof(SoccerPitchId), SoccerPitchId);
             navParams.Add(nameof(SoccerPitchPlanId), SoccerPitchPlanId);
             navParams.Add(nameof(UserName), UserName);
-            navParams.Add(nameof(Status), Status);
+            if (_selectedStatus != null)
+            {
+                var statusStr = string.Empty;
+                statusStr = string.Join(";", _selectedStatus);
+                navParams.Add("SelectedStatus", statusStr);
+            }
             _navigationService.NavigateAsync("ReservationsFilter", navParams);
         }
 
@@ -49,8 +68,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _finalDate, value); }
         }
 
-        private int? _soccerPitchId;
-        public int? SoccerPitchId
+        private long? _soccerPitchId;
+        public long? SoccerPitchId
         {
             get { return _soccerPitchId; }
             set { SetProperty(ref _soccerPitchId, value); }
@@ -90,19 +109,26 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             get { return _pageSize; }
             set { SetProperty(ref _pageSize, value); }
         }
-        private async void LoadDataAsync(bool clear = true)
+        private async void LoadDataAsync(int[] status = null, bool clear = true)
         {
             try
             {
-                var response = await ApiClient.Instance.GetReservationsAsync(InitialDate, FinalDate, SoccerPitchId, SoccerPitchPlanId, UserName, Status, Page, PageSize);
-                if(response != null && response.Data != null && response.Data.Count > 0)
+                var response = await ApiClient.Instance.GetReservationsAsync(InitialDate, FinalDate, SoccerPitchId, SoccerPitchPlanId, UserName, status, Page, PageSize);
+                if (response != null && response.Data != null && response.Data.Count > 0)
                 {
+                    Page++;
                     if (clear)
+                    {
                         Reservations.Clear();
+                    }
                     foreach (var item in response.Data)
                     {
                         Reservations.Add(item);
                     }
+                }
+                else
+                {
+                    _hasMoreData = false;
                 }
             }
             catch (Exception e)
@@ -117,7 +143,43 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            LoadDataAsync();
+            try
+            {
+                if (parameters.ContainsKey("StartDate"))
+                    InitialDate = parameters.GetValue<DateTime?>("StartDate");
+                else
+                    InitialDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                if (parameters.ContainsKey("FinalDate"))
+                    FinalDate = parameters.GetValue<DateTime?>("FinalDate");
+                else
+                    FinalDate = DateTime.Now;
+                if (parameters.ContainsKey("SelectedSoccerPitch"))
+                    SoccerPitchId = parameters.GetValue<long?>("SelectedSoccerPitch");
+                else
+                    SoccerPitchId = null;
+                if (parameters.ContainsKey("SelectedPlan"))
+                    SoccerPitchPlanId = parameters.GetValue<int?>("SelectedPlan");
+                else
+                    SoccerPitchPlanId = null;
+                int[] status = null;
+                if (parameters.ContainsKey("SelectedStatus"))
+                {
+                    var statusStr = parameters.GetValue<string>("SelectedStatus");
+                    status = JsonConvert.DeserializeObject<int[]>(statusStr);
+                    _selectedStatus = status;
+                }
+                else
+                {
+                    status = new int[] { 1, 3, 4 };
+                    _selectedStatus = status;
+                }
+                Page = 1;
+                LoadDataAsync(status);
+            }
+            catch (Exception E)
+            {
+
+            }
         }
     }
 }

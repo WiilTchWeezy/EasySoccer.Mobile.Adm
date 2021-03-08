@@ -13,7 +13,16 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Reservations}" SelectionChangedCommand="{Binding ItemSelectedCommand}" SelectedItem="{Binding SelectedItem}" SelectionMode="Single">
+            <CollectionView 
+                ItemsSource="{Binding Reservations}" 
+                SelectionChangedCommand="{Binding ItemSelectedCommand}" 
+                SelectedItem="{Binding SelectedItem}" 
+                SelectionMode="Single"
+                RemainingItemsThreshold="1"
+                RemainingItemsThresholdReachedCommand="{Binding ItemTresholdCommand}">
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhum agendamento encontrado!" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
+                </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="8,3,8,8">
@@ -57,6 +66,14 @@
                                                 </Grid.ColumnDefinitions>
                                                 <Label Grid.Column="0" Text="&#xf095;" Style="{StaticResource fontAwesomeLabel}" FontSize="10" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
                                                 <Label Grid.Column="1" Text="{Binding UserPhone}" Style="{StaticResource gilroyLightLabel}" FontSize="Small"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Text="&#xf0d6;" Style="{StaticResource fontAwesomeLabel}" FontSize="10" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                                <Label Grid.Column="1" Text="{Binding PlanName}" Style="{StaticResource gilroyLightLabel}" FontSize="Small"/>
                                             </Grid>
                                             <Grid VerticalOptions="Center">
                                             <Grid.ColumnDefinitions>

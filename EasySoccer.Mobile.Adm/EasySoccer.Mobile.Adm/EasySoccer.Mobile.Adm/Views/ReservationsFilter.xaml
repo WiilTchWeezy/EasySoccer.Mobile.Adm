@@ -11,9 +11,9 @@
             <Label Text="Data Inicial" Style="{StaticResource gilroyLightLabel}"/>
             <DatePicker Date="{Binding StartDate}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightEntry}"></DatePicker>
             <Label Text="Data Final" Style="{StaticResource gilroyLightLabel}"/>
-            <DatePicker Date="{Binding StartDate}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightEntry}"></DatePicker>
-            <Picker ItemsSource="{Binding SoccerPitchsNames}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightPicker}" Title="Quadras" />
-            <Picker ItemsSource="{Binding PlansNames}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightPicker}" Title="Planos" />
+            <DatePicker Date="{Binding FinalDate}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightEntry}"></DatePicker>
+            <Picker ItemsSource="{Binding SoccerPitchsNames}" SelectedIndex="{Binding SelectedSoccerPitch}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightPicker}" Title="Quadras" />
+            <Picker ItemsSource="{Binding PlansNames}" SelectedIndex="{Binding SelectedPlan}" BackgroundColor="Transparent" Style="{StaticResource gilroyLightPicker}" Title="Planos" />
                 <Grid>
             <CollectionView ItemsSource="{Binding Status}" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="250">
                 <CollectionView.Header>
@@ -41,7 +41,7 @@
                 </CollectionView.EmptyView>
             </CollectionView>
                 </Grid>
-                <Button Text="Aplicar Filtros" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" />
+                <Button Text="Aplicar Filtros" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding ApplyFilterCommand}"/>
         </StackLayout>
         </ScrollView>
     </ContentPage.Content>

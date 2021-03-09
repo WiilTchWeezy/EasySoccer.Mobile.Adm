@@ -20,6 +20,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         private INavigationService _navigationService;
         private int[] _selectedStatus;
         private bool _hasMoreData = true;
+        private bool _isBusy = false;
 
         public ReservationsViewModel(INavigationService navigationService)
         {
@@ -31,7 +32,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         private async void ItemTreshold()
         {
-            if (Reservations.Count > 0 && _hasMoreData)
+            if (Reservations.Count > 0 && _hasMoreData && _isBusy == false)
             {
                 LoadDataAsync(_selectedStatus, false);
             }
@@ -113,10 +114,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             try
             {
+                _isBusy = true;
                 var response = await ApiClient.Instance.GetReservationsAsync(InitialDate, FinalDate, SoccerPitchId, SoccerPitchPlanId, UserName, status, Page, PageSize);
                 if (response != null && response.Data != null && response.Data.Count > 0)
                 {
+                    _isBusy = false;
                     Page++;
+                    _hasMoreData = true;
                     if (clear)
                     {
                         Reservations.Clear();
@@ -128,11 +132,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 }
                 else
                 {
+                    _isBusy = false;
                     _hasMoreData = false;
                 }
             }
             catch (Exception e)
             {
+                _isBusy = false;
                 UserDialogs.Instance.Alert(e.Message);
             }
         }

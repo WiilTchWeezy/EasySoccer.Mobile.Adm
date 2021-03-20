@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using EasySoccer.Mobile.Adm.ViewModels;
+using Xamarin.Forms;
 
 namespace EasySoccer.Mobile.Adm.Views
 {
@@ -8,5 +9,16 @@ namespace EasySoccer.Mobile.Adm.Views
         {
             InitializeComponent();
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            var vm = (this.BindingContext as ReservationInfoViewModel);
+            if(vm != null)
+            {
+                vm.BackButtonPress();
+            }
+            return false;
+        }
+
     }
 }

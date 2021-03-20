@@ -2,6 +2,7 @@
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.Infra;
 using Prism.Commands;
+using Prism.Common;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
@@ -136,8 +137,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         private int _status = 0;
         private Guid _reservationId;
-        public ReservationInfoViewModel()
+        private INavigationParameters _navigationParameters;
+        private INavigationService _navigationService;
+        public ReservationInfoViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
             CancelCommand = new DelegateCommand(Cancel);
             ConfimCommand = new DelegateCommand(Confirm);
         }
@@ -211,8 +215,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Hours = $"{response.SelectedDateStart:HH:mm} - {response.SelectedDateEnd:HH:mm}";
                     SoccerPitchPlanName = response.SoccerPitchPlanName;
                     SoccerPitchPlanDescription = response.SoccerPitchPlanDescription;
-                    PersonName = response.PersonName;
-                    PersonPhone = response.PersonPhone;
+                    PersonName = string.IsNullOrEmpty(response.PersonName) ? "Responsável não selecionado" : response.PersonName;
+                    PersonPhone = string.IsNullOrEmpty(response.PersonPhone) ? "Telefone não preenchido" : response.PersonPhone;
                     _status = response.Status;
                     _reservationId = response.Id;
                     StatusDescription = $"Status : {response.StatusDescription}";
@@ -254,6 +258,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
+        public void BackButtonPress()
+        {
+            _navigationService.GoBackAsync(_navigationParameters);
+        }
+
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
 
@@ -261,6 +270,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
+            _navigationParameters = parameters;
             if (parameters.ContainsKey("ReservationId"))
             {
                 var reservationId = parameters.GetValue<Guid>("ReservationId");

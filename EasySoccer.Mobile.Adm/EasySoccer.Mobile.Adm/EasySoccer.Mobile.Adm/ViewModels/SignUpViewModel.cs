@@ -28,12 +28,16 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             SaveCommand = new DelegateCommand(PostCompanyInput);
             _navigationService = navigationService;
             _validator = new CompanyValidator();
+            OpenTermsCommand = new DelegateCommand(OpenTerms);
+            OpenPolicyCommand = new DelegateCommand(OpenPolicy);
         }
 
         public List<PlansInfoResponse> Plans { get; set; }
         public ObservableCollection<string> PlansName { get; set; }
         public DelegateCommand OpenLinkCommand { get; set; }
         public DelegateCommand SaveCommand { get; set; }
+        public DelegateCommand OpenTermsCommand { get; set; }
+        public DelegateCommand OpenPolicyCommand { get; set; }
 
         public ObservableCollection<string> PlansInstallments { get; set; }
         private CompanyFormInputRequest _request = new CompanyFormInputRequest();
@@ -133,6 +137,16 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         private async void OpenLink()
         {
             await Browser.OpenAsync("http://www.easysoccer.com.br/", BrowserLaunchMode.SystemPreferred);
+        }
+
+        private async void OpenTerms()
+        {
+            await Browser.OpenAsync("https://www.easysoccer.com.br/documents/terms.html", BrowserLaunchMode.SystemPreferred);
+        }
+
+        private async void OpenPolicy()
+        {
+            await Browser.OpenAsync("https://www.easysoccer.com.br/documents/privacypolicy.html", BrowserLaunchMode.SystemPreferred);
         }
         private async void LoadDataAsync()
         {

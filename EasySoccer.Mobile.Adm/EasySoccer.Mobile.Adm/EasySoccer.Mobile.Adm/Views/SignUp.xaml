@@ -67,6 +67,21 @@
                         </Entry.Behaviors>
                     </Entry>
                 </Grid>
+                <Frame Margin="5" HasShadow="True" CornerRadius="10" BorderColor="#161E53">
+                    <StackLayout>
+                        <Label Style="{StaticResource gilroyLightLabel}" Text="Ao concluir o cadastro você concorda com nossos" HorizontalTextAlignment="Center" />
+                        <Label Style="{StaticResource gilroyLightLabel}" Text="Termo de Uso" HorizontalTextAlignment="Center" TextColor="#0000EE">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenTermsCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Style="{StaticResource gilroyLightLabel}" Text="Politica de Privacidade" HorizontalTextAlignment="Center" TextColor="#0000EE">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenPolicyCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </Frame>
                 <Button Text="Cadastrar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
             </StackLayout>
         </ScrollView>

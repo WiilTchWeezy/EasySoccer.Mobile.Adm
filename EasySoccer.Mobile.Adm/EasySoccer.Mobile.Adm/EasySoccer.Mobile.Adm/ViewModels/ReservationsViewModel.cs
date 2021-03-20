@@ -17,10 +17,19 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public ObservableCollection<ReservationResponse> Reservations { get; set; }
         public DelegateCommand ReservationFilterCommand { get; set; }
         public DelegateCommand ItemTresholdCommand { get; set; }
+
+        public DelegateCommand ItemSelectedCommand { get; set; }
         private INavigationService _navigationService;
         private int[] _selectedStatus;
         private bool _hasMoreData = true;
         private bool _isBusy = false;
+
+        private ReservationResponse _selectedItem;
+        public ReservationResponse SelectedItem
+        {
+            get { return _selectedItem; }
+            set { SetProperty(ref _selectedItem, value); }
+        }
 
         public ReservationsViewModel(INavigationService navigationService)
         {
@@ -28,6 +37,28 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             ReservationFilterCommand = new DelegateCommand(OpenFilter);
             ItemTresholdCommand = new DelegateCommand(ItemTreshold);
             _navigationService = navigationService;
+            ItemSelectedCommand = new DelegateCommand(ItemSelected);
+        }
+
+        private void ItemSelected()
+        {
+            if (SelectedItem != null)
+            {
+                var navParams = new NavigationParameters();
+                navParams.Add("ReservationId", SelectedItem.Id);
+                navParams.Add(nameof(InitialDate), InitialDate);
+                navParams.Add(nameof(FinalDate), FinalDate);
+                navParams.Add(nameof(SoccerPitchId), SoccerPitchId);
+                navParams.Add(nameof(SoccerPitchPlanId), SoccerPitchPlanId);
+                navParams.Add(nameof(UserName), UserName);
+                if (_selectedStatus != null)
+                {
+                    var statusStr = string.Empty;
+                    statusStr = string.Join(";", _selectedStatus);
+                    navParams.Add("SelectedStatus", statusStr);
+                }
+                _navigationService.NavigateAsync("ReservationInfo", navParams);
+            }
         }
 
         private async void ItemTreshold()

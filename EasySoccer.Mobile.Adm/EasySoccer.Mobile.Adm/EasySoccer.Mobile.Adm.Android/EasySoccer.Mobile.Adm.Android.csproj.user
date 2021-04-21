@@ -4,5 +4,6 @@
     <SelectedDevice>Android Google Pixel</SelectedDevice>
     <ProjectView>ShowAllFiles</ProjectView>
     <AndroidDesignerPreferredTheme>Theme.AppCompat.Light.NoActionBar</AndroidDesignerPreferredTheme>
+    <DefaultDevice>pixel_2_pie_9_0_-_api_28</DefaultDevice>
   </PropertyGroup>
 </Project>

@@ -196,46 +196,43 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     var currentPlan = this.Plans.ElementAtOrDefault(SelectedPlan.Value);
                     _request.SelectedPlan = currentPlan.PlanId;
                     _request.SelectedInstallments = SelectedInstallment.Value + 1;
-                    _request.UserName = UserName;
-                    _request.UserEmail = UserEmail;
-                    _request.SecurityCode = SecurityCode;
-                    _request.FinancialName = FinancialName;
-                    _request.FinancialDocument = FinancialDocument;
-                    _request.FinancialBirthDay = FinancialBirthDay;
-                    _request.CompanyName = CompanyName;
-                    _request.CompanyDocument = CNPJ;
-                    _request.CardNumber = CardNumber;
-                    _request.CardExpiration = CardExpiration;
+                }
+                _request.UserName = UserName;
+                _request.UserEmail = UserEmail;
+                _request.CompanyName = CompanyName;
+                _request.CompanyDocument = CNPJ;
 
-                    var validationResponse = _validator.Validate(_request);
-                    if (validationResponse.IsValid)
+                _request.SecurityCode = SecurityCode;
+                _request.FinancialName = FinancialName;
+                _request.FinancialDocument = FinancialDocument;
+                _request.FinancialBirthDay = FinancialBirthDay;
+                _request.CardNumber = CardNumber;
+                _request.CardExpiration = CardExpiration;
+
+                var validationResponse = _validator.Validate(_request);
+                if (validationResponse.IsValid)
+                {
+                    var response = await ApiClient.Instance.PostCompanyFormInputAsync(_request);
+                    var alertConfig = new AlertConfig()
                     {
-                        var response = await ApiClient.Instance.PostCompanyFormInputAsync(_request);
-                        var alertConfig = new AlertConfig()
-                        {
-                            Title = "Obrigado por se cadastrar!",
-                            Message = "Você receberá um e-mail com suas credenciais. Muito Obrigado!",
-                            OkText = "Fechar"
-                        };
-                        UserDialogs.Instance.Alert(alertConfig);
-                        await _navigationService.GoBackAsync();
-                    }
-                    else
-                    {
-                        var validationMessages = validationResponse.Errors.Select(x => x.ErrorMessage).Distinct().ToArray();
-                        var errorMessage = string.Join(" - ", validationMessages);
-                        var alertConfig = new AlertConfig()
-                        {
-                            Title = "Alguns erros de validação!",
-                            Message = errorMessage,
-                            OkText = "Fechar"
-                        };
-                        UserDialogs.Instance.Alert(alertConfig);
-                    }
+                        Title = "Obrigado por se cadastrar!",
+                        Message = "Você receberá um e-mail com suas credenciais. [Não se esqueça de checar a caixa de Spam] Muito Obrigado!",
+                        OkText = "Fechar"
+                    };
+                    UserDialogs.Instance.Alert(alertConfig);
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {
-                    UserDialogs.Instance.Alert("Selecione um plano e a quantidade de parcelas.");
+                    var validationMessages = validationResponse.Errors.Select(x => x.ErrorMessage).Distinct().ToArray();
+                    var errorMessage = string.Join(" - ", validationMessages);
+                    var alertConfig = new AlertConfig()
+                    {
+                        Title = "Alguns erros de validação!",
+                        Message = errorMessage,
+                        OkText = "Fechar"
+                    };
+                    UserDialogs.Instance.Alert(alertConfig);
                 }
             }
             catch (Exception e)

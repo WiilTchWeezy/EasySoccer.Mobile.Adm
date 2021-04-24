@@ -248,7 +248,6 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            LoadDataAsync();
         }
     }
 }

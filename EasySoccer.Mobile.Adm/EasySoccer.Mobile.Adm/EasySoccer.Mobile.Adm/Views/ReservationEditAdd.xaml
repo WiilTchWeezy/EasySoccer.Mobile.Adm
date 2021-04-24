@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.ReservationEditAdd"
+             Visual="Material"
+             xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Picker ItemsSource="{Binding SoccerPitchesName}" SelectedIndex="{Binding SelectedSoccerPitch}" Title="Quadra" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" />
+                <Picker Title="Plano" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" />
+                <Label Style="{StaticResource gilroyLightLabel}" BackgroundColor="Transparent" Text="Data da reserva :" VerticalTextAlignment="Center" FontSize="Small" />
+                <DatePicker BackgroundColor="Transparent" Date="{Binding SelectedDate}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource gilroyLightLabel}" BackgroundColor="Transparent" Text="Horário Inicial :" VerticalTextAlignment="Center" FontSize="Small" />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Entry Grid.Column="0" Placeholder="HH" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                            <Entry.Behaviors>
+                                <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Entry Grid.Column="1" Placeholder="MM" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                            <Entry.Behaviors>
+                                <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                    </Grid>
+                    <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource gilroyLightLabel}" BackgroundColor="Transparent" Text="Horário Final :" VerticalTextAlignment="Center" FontSize="Small" />
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Entry Grid.Column="0" Placeholder="HH" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                            <Entry.Behaviors>
+                                <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Entry Grid.Column="1" Placeholder="MM" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                            <Entry.Behaviors>
+                                <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
+                            </Entry.Behaviors>
+                        </Entry>
+                    </Grid>
+                </Grid>
+                <Frame Margin="5" HasShadow="True" CornerRadius="10" BorderColor="#161E53" IsVisible="{Binding IsEditing}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Style="{StaticResource gilroyLightLabel}" Text="Status" />
+                        <Label Grid.Column="1" Style="{StaticResource gilroyLightLabel}" Text="easysoccer.com.br" TextColor="#0000EE"/>
+                    </Grid>
+                </Frame>
+                <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

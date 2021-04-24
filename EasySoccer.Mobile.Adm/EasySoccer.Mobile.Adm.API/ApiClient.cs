@@ -341,5 +341,15 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Get<List<StatusResponse>>("SoccerPitchReservation/getReservationStatus");
         }
+
+        public async Task<CompanyScheduleHourResponse> GetCompanyHourStartEndAsync(long companyId, int dayOfWeek)
+        {
+            return await Get<CompanyScheduleHourResponse>("CompanySchedule/get?" + GenerateQueryParameters(new { companyId, dayOfWeek }));
+        }
+
+        public async Task<List<PlansResponse>> GetPlansBySoccerPitchIdAsync(long soccerPitchId)
+        {
+            return await Get<List<PlansResponse>>("SoccerPitchPlan/getbysoccerpitch?" + GenerateQueryParameters(new { soccerPitchId }));
+        }
     }
 }

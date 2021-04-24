@@ -23,6 +23,21 @@
                 <CollectionView.EmptyView>
                     <Label Text="Nenhum agendamento encontrado!" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
                 </CollectionView.EmptyView>
+                <CollectionView.Header>
+                    <Grid Padding="10" BackgroundColor="#DCDCDC">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="Reservas" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                        <Frame CornerRadius="20" Grid.Column="1" Padding="5" BackgroundColor="#161E53" BorderColor="#DCDCDC" HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AddReservationCommand}"/>
+                            </Frame.GestureRecognizers>
+                            <Label Text="Adicionar" Style="{StaticResource gilroyLightLabel}" TextColor="White"/>
+                        </Frame>
+                    </Grid>
+                </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="8,3,8,8">

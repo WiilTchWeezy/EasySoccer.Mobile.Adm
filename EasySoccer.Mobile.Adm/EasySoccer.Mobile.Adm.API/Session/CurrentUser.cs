@@ -78,6 +78,22 @@ namespace EasySoccer.Mobile.Adm.API.Session
             }
         }
 
+        public long? CompanyId
+        {
+            get
+            {
+                var claimValue = GetClaimByType("CompanyId");
+                if (string.IsNullOrEmpty(claimValue) == false)
+                {
+                    long companyId;
+                    if (long.TryParse(claimValue, out companyId))
+                        return companyId;
+                    return null;
+                }
+                return null;
+            }
+        }
+
         public async void LogOff()
         {
 

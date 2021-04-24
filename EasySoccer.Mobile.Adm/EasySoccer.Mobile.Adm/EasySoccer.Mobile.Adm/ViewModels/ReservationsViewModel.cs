@@ -17,6 +17,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public ObservableCollection<ReservationResponse> Reservations { get; set; }
         public DelegateCommand ReservationFilterCommand { get; set; }
         public DelegateCommand ItemTresholdCommand { get; set; }
+        public DelegateCommand AddReservationCommand { get; set; }
 
         public DelegateCommand ItemSelectedCommand { get; set; }
         private INavigationService _navigationService;
@@ -38,6 +39,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             ItemTresholdCommand = new DelegateCommand(ItemTreshold);
             _navigationService = navigationService;
             ItemSelectedCommand = new DelegateCommand(ItemSelected);
+            AddReservationCommand = new DelegateCommand(AddReservation);
+        }
+
+        private void AddReservation()
+        {
+            _navigationService.NavigateAsync("ReservationEditAdd");
         }
 
         private void ItemSelected()

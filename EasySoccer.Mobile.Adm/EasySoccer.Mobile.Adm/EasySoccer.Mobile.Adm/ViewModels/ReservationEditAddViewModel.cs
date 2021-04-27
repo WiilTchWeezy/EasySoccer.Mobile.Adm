@@ -21,27 +21,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _isEditing, value); }
         }
 
-        private DateTime _selectedDate = DateTime.Now;
+        private DateTime _selectedDate;
         public DateTime SelectedDate
         {
             get { return _selectedDate; }
             set { SetProperty(ref _selectedDate, value); }
         }
-
-        private TimeSpan _startHour;
-        public TimeSpan StartHour
-        {
-            get { return _startHour; }
-            set { SetProperty(ref _startHour, value); }
-        }
-
-        private TimeSpan _endHour;
-        public TimeSpan EndHour
-        {
-            get { return _endHour; }
-            set { SetProperty(ref _endHour, value); }
-        }
-
         private int? _selectedSoccerPitch;
         public int? SelectedSoccerPitch
         {
@@ -53,22 +38,129 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
+        private string _startHour;
+        public string StartHour
+        {
+            get { return _startHour; }
+            set { SetProperty(ref _startHour, value); }
+        }
+
+        private string _startMinute;
+        public string StartMinute
+        {
+            get { return _startMinute; }
+            set { SetProperty(ref _startMinute, value); }
+        }
+
+        private string _endHour;
+        public string EndHour
+        {
+            get { return _endHour; }
+            set { SetProperty(ref _endHour, value); }
+        }
+
+        private string _endMinute;
+        public string EndMinute
+        {
+            get { return _endMinute; }
+            set { SetProperty(ref _endMinute, value); }
+        }
+
+        private int? _selectedPlanIndex;
+        public int? SelectedPlanIndex
+        {
+            get { return _selectedPlanIndex; }
+            set { SetProperty(ref _selectedPlanIndex, value); }
+        }
+
         private Guid _reservationId;
 
         private List<SoccerPitchResponse> SoccerPitches = new List<SoccerPitchResponse>();
         private List<PlansResponse> Plans = new List<PlansResponse>();
-        public ObservableCollection<string> SoccerPitchesName = new ObservableCollection<string>();
-        public ObservableCollection<string> PlansName = new ObservableCollection<string>();
-        public ReservationEditAddViewModel()
-        {
+        public ObservableCollection<string> SoccerPitchesName { get; set; }
+        public ObservableCollection<string> PlansName { get; set; }
 
+        public DelegateCommand SaveCommand { get; set; }
+        private INavigationService _navigationService;
+        public ReservationEditAddViewModel(INavigationService navigationService)
+        {
+            SoccerPitchesName = new ObservableCollection<string>();
+            PlansName = new ObservableCollection<string>();
+            _navigationService = navigationService;
+            SaveCommand = new DelegateCommand(SaveAsync);
+            SelectedDate = DateTime.Now;
+        }
+
+        private async void SaveAsync()
+        {
+            try
+            {
+                var request = new API.ApiRequest.SoccerPitchReservationRequest { };
+
+                TimeSpan startHour, endHour;
+                if (Validate(out startHour, out endHour))
+                {
+                    var currentSoccerPitch = SoccerPitches[SelectedSoccerPitch.Value];
+                    var currentPlan = Plans[SelectedPlanIndex.Value];
+                    if (currentSoccerPitch != null && currentPlan != null)
+                    {
+                        request.HourEnd = endHour;
+                        request.HourStart = startHour;
+                        request.SelectedDate = SelectedDate;
+                        request.SoccerPitchId = currentSoccerPitch.Id;
+                        request.SoccerPitchPlanId = currentPlan.Id;
+                    }
+                    var response = await ApiClient.Instance.PostReservationAsync(request);
+                    if (response != null)
+                    {
+                        var navParams = new NavigationParameters();
+                        navParams.Add("ReservationId", response.Id);
+                        await _navigationService.GoBackAsync(navParams);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
+            }
+        }
+
+        private bool Validate(out TimeSpan startHour, out TimeSpan endHour)
+        {
+            bool valid = true;
+            if (SelectedSoccerPitch.HasValue == false || SoccerPitches.Count < SelectedSoccerPitch.Value)
+            {
+                UserDialogs.Instance.Alert("Selecione um quadra.");
+                valid = false;
+            }
+            if (SelectedPlanIndex.HasValue == false || Plans.Count < SelectedPlanIndex.Value)
+            {
+                UserDialogs.Instance.Alert("Selecione um plano.");
+                valid = false;
+            }
+            if (!TimeSpan.TryParse($"{StartHour}:{StartMinute}", out startHour))
+            {
+                UserDialogs.Instance.Alert("É necessário informar um horário válido.");
+                valid = false;
+            }
+            if (!TimeSpan.TryParse($"{EndHour}:{EndMinute}", out endHour))
+            {
+                UserDialogs.Instance.Alert("É necessário informar um horário válido.");
+                valid = false;
+            }
+            if (endHour < startHour)
+            {
+                UserDialogs.Instance.Alert("O horário final deve ser maior que o inicial.");
+                valid = false;
+            }
+            return valid;
         }
 
         private async void LoadPlansAsync()
         {
             try
             {
-                if (SelectedSoccerPitch.HasValue && SoccerPitches.Count > SelectedSoccerPitch.Value)
+                if (SelectedSoccerPitch.HasValue && SoccerPitches.Count > SelectedSoccerPitch.Value && SelectedSoccerPitch.Value >= 0)
                 {
                     var currentSoccerPitch = SoccerPitches[SelectedSoccerPitch.Value];
                     if (currentSoccerPitch != null)
@@ -120,12 +212,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     var companyHoursResponse = await ApiClient.Instance.GetCompanyHourStartEndAsync(CurrentUser.Instance.CompanyId.Value, (int)SelectedDate.DayOfWeek);
                     if (companyHoursResponse != null && companyHoursResponse.Data != null && companyHoursResponse.Data.Any())
                     {
-                        TimeSpan startHour;
-                        TimeSpan endHour;
-                        if (TimeSpan.TryParse(companyHoursResponse.Data.First(), out startHour))
-                            StartHour = startHour;
-                        if (TimeSpan.TryParse(companyHoursResponse.Data.Last(), out endHour))
-                            EndHour = endHour;
+
                     }
                 }
             }

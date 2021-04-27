@@ -10,7 +10,7 @@
         <ScrollView>
             <StackLayout Padding="10">
                 <Picker ItemsSource="{Binding SoccerPitchesName}" SelectedIndex="{Binding SelectedSoccerPitch}" Title="Quadra" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" />
-                <Picker Title="Plano" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" />
+                <Picker ItemsSource="{Binding PlansName}" SelectedIndex="{Binding SelectedPlanIndex}" Title="Plano" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" />
                 <Label Style="{StaticResource gilroyLightLabel}" BackgroundColor="Transparent" Text="Data da reserva :" VerticalTextAlignment="Center" FontSize="Small" />
                 <DatePicker BackgroundColor="Transparent" Date="{Binding SelectedDate}" />
                 <Grid>
@@ -28,12 +28,12 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Entry Grid.Column="0" Placeholder="HH" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                        <Entry Grid.Column="0" Text="{Binding StartHour}" Placeholder="HH" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
                             <Entry.Behaviors>
                                 <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
                             </Entry.Behaviors>
                         </Entry>
-                        <Entry Grid.Column="1" Placeholder="MM" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                        <Entry Grid.Column="1" Text="{Binding StartMinute}" Placeholder="MM" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
                             <Entry.Behaviors>
                                 <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
                             </Entry.Behaviors>
@@ -45,12 +45,12 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Entry Grid.Column="0" Placeholder="HH" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                        <Entry Text="{Binding EndHour}" Grid.Column="0" Placeholder="HH" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
                             <Entry.Behaviors>
                                 <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
                             </Entry.Behaviors>
                         </Entry>
-                        <Entry Grid.Column="1" Placeholder="MM" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
+                        <Entry Text="{Binding EndMinute}" Grid.Column="1" Placeholder="MM" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" Keyboard="Numeric" HorizontalTextAlignment="Center">
                             <Entry.Behaviors>
                                 <behaviorPack:MaxLengthValidationBehavior MaxLength="2"/>
                             </Entry.Behaviors>

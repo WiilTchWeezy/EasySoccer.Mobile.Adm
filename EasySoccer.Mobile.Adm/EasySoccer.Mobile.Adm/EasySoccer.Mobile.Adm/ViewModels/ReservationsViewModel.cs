@@ -172,6 +172,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 {
                     _isBusy = false;
                     _hasMoreData = false;
+                    if (clear)
+                        Reservations.Clear();
                 }
             }
             catch (Exception e)

@@ -6,6 +6,7 @@
 
     <MasterDetailPage.Master>
         <ContentPage Title="Menu">
+            <ScrollView>
             <StackLayout>
                 <Image Source="MenuLogo.png" Opacity="0.8"/>
                 <StackLayout>
@@ -77,17 +78,29 @@
                     </Grid>
                     <Grid Padding="10">
                         <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenLinkCommand}" CommandParameter="https://api.whatsapp.com/send?phone=5516993470508"/>
+                        </Grid.GestureRecognizers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="&#xf059;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="1" Text="Ajuda" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
+                    </Grid>
+                    <Grid Padding="10">
+                        <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="Logout"/>
                         </Grid.GestureRecognizers>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Text="&#xf2f6;" Style="{StaticResource fontAwesomeLabel}" FontSize="25" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-                        <Label Grid.Column="1" Text="Sair" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
+                            <Label Grid.Column="0" Text="&#xf2f6;" Style="{StaticResource fontAwesomeLabel}" FontSize="25" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Grid.Column="1" Text="Sair" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
                     </Grid>
                 </StackLayout>
             </StackLayout>
+            </ScrollView>
         </ContentPage>
     </MasterDetailPage.Master>
 </MasterDetailPage>

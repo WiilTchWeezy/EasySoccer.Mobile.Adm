@@ -10,18 +10,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
         public DelegateCommand<string> NavigatePageCommand { get; set; }
+        public DelegateCommand<string> OpenLinkCommand { get; set; }
         private INavigationService _navigationService;
         private IEventAggregator _eventAggregator;
         public MainPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
             : base(navigationService)
         {
             NavigatePageCommand = new DelegateCommand<string>(NavigatePage);
+            OpenLinkCommand = new DelegateCommand<string>(OpenLink);
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<UserLoggedInEvent>().Subscribe(UserHasLoggedIn);
@@ -53,6 +56,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
             else
                 _navigationService.NavigateAsync("NavigationPage/" + page);
+        }
+
+        private async void OpenLink(string url)
+        {
+            await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
         }
 
         private void UserHasLoggedIn(bool payLoad)

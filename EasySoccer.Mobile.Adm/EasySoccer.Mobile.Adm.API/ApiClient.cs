@@ -356,5 +356,10 @@ namespace EasySoccer.Mobile.Adm.API
         {
             return await Post<PostReservationResponse>("SoccerPitchReservation/post", request);
         }
+
+        public async Task<PostReservationResponse> PatchReservationAsync(SoccerPitchReservationRequest request)
+        {
+            return await Patch<PostReservationResponse>("SoccerPitchReservation/patch", request);
+        }
     }
 }

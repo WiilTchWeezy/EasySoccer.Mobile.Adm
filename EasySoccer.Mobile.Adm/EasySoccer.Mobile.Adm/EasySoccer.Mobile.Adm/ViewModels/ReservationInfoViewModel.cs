@@ -134,6 +134,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         public DelegateCommand CancelCommand { get; set; }
         public DelegateCommand ConfimCommand { get; set; }
+        public DelegateCommand EditReservationCommand { get; set; }
 
         private int _status = 0;
         private Guid _reservationId;
@@ -144,7 +145,16 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             _navigationService = navigationService;
             CancelCommand = new DelegateCommand(Cancel);
             ConfimCommand = new DelegateCommand(Confirm);
+            EditReservationCommand = new DelegateCommand(EditReservation);
         }
+
+        private void EditReservation()
+        {
+            var navParams = new NavigationParameters();
+            navParams.Add("ReservationId", _reservationId);
+            _navigationService.NavigateAsync("ReservationEditAdd", navParams);
+        }
+
         private void Cancel()
         {
             var confirmConfig = new ConfirmConfig()

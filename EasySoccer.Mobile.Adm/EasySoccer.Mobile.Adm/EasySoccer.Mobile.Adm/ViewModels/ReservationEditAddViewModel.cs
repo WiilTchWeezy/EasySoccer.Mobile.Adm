@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -73,6 +74,27 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _selectedPlanIndex, value); }
         }
 
+        private bool _saveButtonIsVisible;
+        public bool SaveButtonIsVisible
+        {
+            get { return _saveButtonIsVisible; }
+            set { SetProperty(ref _saveButtonIsVisible, value); }
+        }
+
+        private string _statusDescription;
+        public string StatusDescription
+        {
+            get { return _statusDescription; }
+            set { SetProperty(ref _statusDescription, value); }
+        }
+
+        private string _statusColor;
+        public string StatusColor
+        {
+            get { return _statusColor; }
+            set { SetProperty(ref _statusColor, value); }
+        }
+
         private Guid _reservationId;
 
         private List<SoccerPitchResponse> SoccerPitches = new List<SoccerPitchResponse>();
@@ -110,9 +132,19 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                         request.SoccerPitchId = currentSoccerPitch.Id;
                         request.SoccerPitchPlanId = currentPlan.Id;
                     }
-                    var response = await ApiClient.Instance.PostReservationAsync(request);
+                    PostReservationResponse response;
+                    if (IsEditing)
+                    {
+                        request.Id = _reservationId;
+                        response = await ApiClient.Instance.PatchReservationAsync(request);
+                    }
+                    else
+                        response = await ApiClient.Instance.PostReservationAsync(request);
+
                     if (response != null)
                     {
+                        var text = IsEditing ? "alterados" : "inseridos";
+                        UserDialogs.Instance.Alert($"Dados {text} com sucesso!");
                         var navParams = new NavigationParameters();
                         navParams.Add("ReservationId", response.Id);
                         await _navigationService.GoBackAsync(navParams);
@@ -156,7 +188,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             return valid;
         }
 
-        private async void LoadPlansAsync()
+        private async Task LoadPlansAsync()
         {
             try
             {
@@ -168,6 +200,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                         var plansResponse = await ApiClient.Instance.GetPlansBySoccerPitchIdAsync(currentSoccerPitch.Id);
                         if (plansResponse != null && plansResponse.Any())
                         {
+                            Plans.Clear();
+                            PlansName.Clear();
                             foreach (var item in plansResponse)
                             {
                                 Plans.Add(item);
@@ -183,7 +217,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadSoccerPitchs()
+        private async Task LoadSoccerPitchs()
         {
             try
             {
@@ -203,17 +237,40 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadHoursAsync()
+        private async void LoadReservationInfo()
         {
             try
             {
-                if (CurrentUser.Instance.CompanyId.HasValue)
+                var reservationInfo = await ApiClient.Instance.GetReservationInfoAsync(_reservationId);
+                if (reservationInfo != null)
                 {
-                    var companyHoursResponse = await ApiClient.Instance.GetCompanyHourStartEndAsync(CurrentUser.Instance.CompanyId.Value, (int)SelectedDate.DayOfWeek);
-                    if (companyHoursResponse != null && companyHoursResponse.Data != null && companyHoursResponse.Data.Any())
+                    await LoadSoccerPitchs();
+                    if (SoccerPitches != null && SoccerPitches.Any())
                     {
-
+                        var currentSoccerPitch = SoccerPitches.Where(z => z.Id == reservationInfo.SoccerPitchId).FirstOrDefault();
+                        if (currentSoccerPitch != null)
+                        {
+                            SelectedSoccerPitch = SoccerPitches.IndexOf(currentSoccerPitch);
+                            await LoadPlansAsync();
+                        }
                     }
+                    if (Plans != null && Plans.Any())
+                    {
+                        var currentPlan = Plans.Where(x => x.Id == reservationInfo.SoccerPitchPlanId).FirstOrDefault();
+                        if (currentPlan != null)
+                            SelectedPlanIndex = Plans.IndexOf(currentPlan);
+                    }
+                    StartHour = reservationInfo.SelectedDateStart.ToString("HH");
+                    StartMinute = reservationInfo.SelectedDateStart.ToString("mm");
+                    EndHour = reservationInfo.SelectedDateEnd.ToString("HH");
+                    EndMinute = reservationInfo.SelectedDateEnd.ToString("mm");
+                    SelectedDate = reservationInfo.SelectedDateStart;
+                    StatusDescription = reservationInfo.StatusDescription;
+                    StatusColor = reservationInfo.StatusColor;
+                    if (IsEditing == false)
+                        SaveButtonIsVisible = true;
+                    else
+                        SaveButtonIsVisible = reservationInfo.Status == 1 || reservationInfo.Status == 3;
                 }
             }
             catch (Exception e)
@@ -232,9 +289,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             {
                 IsEditing = true;
                 _reservationId = parameters.GetValue<Guid>("ReservationId");
+                LoadReservationInfo();
             }
-            LoadHoursAsync();
-            LoadSoccerPitchs();
+            else
+            {
+                SaveButtonIsVisible = true;
+                LoadSoccerPitchs();
+            }
         }
     }
 }

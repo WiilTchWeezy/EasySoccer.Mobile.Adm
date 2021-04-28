@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace EasySoccer.Mobile.Adm.API.ApiResponses
 {
@@ -25,5 +26,32 @@ namespace EasySoccer.Mobile.Adm.API.ApiResponses
         public string SoccerPitchSportType { get; set; }
         public string StatusDescription { get; set; }
         public int Status { get; set; }
+
+        [JsonIgnore]
+        public string StatusColor
+        {
+            get
+            {
+                string color = string.Empty;
+                switch (Status)
+                {
+                    case 1:
+                        color = "#f0ad4e";
+                        break;
+                    case 2:
+                        color = "#d9534f";
+                        break;
+                    case 3:
+                        color = "#5cb85c";
+                        break;
+                    case 4:
+                        color = "#0275d8";
+                        break;
+                    default:
+                        break;
+                }
+                return color;
+            }
+        }
     }
 }

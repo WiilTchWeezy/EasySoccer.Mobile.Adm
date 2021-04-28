@@ -57,17 +57,17 @@
                         </Entry>
                     </Grid>
                 </Grid>
-                <Frame Margin="5" HasShadow="True" CornerRadius="10" BorderColor="#161E53" IsVisible="{Binding IsEditing}">
+                <Frame Margin="5" HasShadow="True" CornerRadius="10" BorderColor="{Binding StatusColor}" IsVisible="{Binding IsEditing}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Column="0" Style="{StaticResource gilroyLightLabel}" Text="Status" />
-                        <Label Grid.Column="1" Style="{StaticResource gilroyLightLabel}" Text="easysoccer.com.br" TextColor="#0000EE"/>
+                        <Label Grid.Column="1" Style="{StaticResource gilroyLightLabel}" Text="{Binding StatusDescription}" TextColor="{Binding StatusColor}"/>
                     </Grid>
                 </Frame>
-                <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"/>
+                <Button Text="Salvar" IsVisible="{Binding SaveButtonIsVisible}" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

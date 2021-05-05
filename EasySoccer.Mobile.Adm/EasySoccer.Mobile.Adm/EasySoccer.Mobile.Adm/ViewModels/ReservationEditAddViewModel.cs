@@ -141,7 +141,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     else
                         response = await ApiClient.Instance.PostReservationAsync(request);
 
-                    if (response != null)
+                    if (response != null && response.Id.HasValue)
                     {
                         var text = IsEditing ? "alterados" : "inseridos";
                         UserDialogs.Instance.Alert($"Dados {text} com sucesso!");

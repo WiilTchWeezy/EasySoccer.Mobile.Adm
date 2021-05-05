@@ -19,6 +19,8 @@
                     </Entry.Behaviors>
                 </Entry>
                 <Entry Placeholder="Nome do Complexo Esportivo" Style="{StaticResource gilroyLightEntry}" Text="{Binding CompanyName}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Entry Placeholder="Senha" IsPassword="True" Style="{StaticResource gilroyLightEntry}" Text="{Binding Password}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Entry Placeholder="Confirmação da Senha" IsPassword="True" Style="{StaticResource gilroyLightEntry}" Text="{Binding ConfirmPassword}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
                 <Frame Margin="5" HasShadow="True" CornerRadius="10" BorderColor="#161E53">
                     <StackLayout>
                         <Label Style="{StaticResource gilroyLightLabel}" Text="Para mais informações sobre planos e preços acesse:" HorizontalTextAlignment="Center" />

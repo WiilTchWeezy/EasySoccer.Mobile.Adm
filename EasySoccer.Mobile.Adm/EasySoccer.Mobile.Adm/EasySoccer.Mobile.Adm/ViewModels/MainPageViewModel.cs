@@ -60,7 +60,18 @@ namespace EasySoccer.Mobile.Adm.ViewModels
 
         private async void OpenLink(string url)
         {
-            await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
+            var confirmConfig = new ConfirmConfig()
+            {
+                CancelText = "Fale conosco",
+                Message = "Como podemos te ajudar ?",
+                OkText = "Manual da Plataforma",
+                Title = "EasySoccer"
+            };
+            var response = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
+            if (response)
+                await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
+            else
+                await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
         }
 
         private void UserHasLoggedIn(bool payLoad)

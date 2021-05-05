@@ -134,6 +134,20 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _securityCode, value); }
         }
 
+        private string _password;
+        public string Password
+        {
+            get { return _password; }
+            set { SetProperty(ref _password, value); }
+        }
+
+        private string _confirmPassword;
+        public string ConfirmPassword
+        {
+            get { return _confirmPassword; }
+            set { SetProperty(ref _confirmPassword, value); }
+        }
+
         private async void OpenLink()
         {
             await Browser.OpenAsync("http://www.easysoccer.com.br/", BrowserLaunchMode.SystemPreferred);
@@ -208,6 +222,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 _request.FinancialBirthDay = FinancialBirthDay;
                 _request.CardNumber = CardNumber;
                 _request.CardExpiration = CardExpiration;
+                _request.Password = Password;
+                _request.ConfirmPassword = ConfirmPassword;
 
                 var validationResponse = _validator.Validate(_request);
                 if (validationResponse.IsValid)

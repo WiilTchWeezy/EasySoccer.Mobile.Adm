@@ -69,7 +69,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             };
             var response = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
             if (response)
-                await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
+                await Browser.OpenAsync("https://www.easysoccer.com.br/documents/ManualEasySoccerv1.0.pdf", BrowserLaunchMode.SystemPreferred);
             else
                 await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
         }

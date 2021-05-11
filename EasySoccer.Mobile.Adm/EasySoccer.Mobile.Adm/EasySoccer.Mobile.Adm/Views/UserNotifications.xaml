@@ -8,6 +8,9 @@
     <ContentPage.Content>
         <StackLayout>
             <CollectionView ItemsSource="{Binding Notifications}" SelectionChangedCommand="{Binding ItemSelectedCommand}" SelectedItem="{Binding SelectedItem}" SelectionMode="Single">
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhuma notificação encontrada!" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
+                </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="0,0">

@@ -17,7 +17,7 @@
                 </Frame>
                 <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Nome" Text="{Binding Name}" BackgroundColor="Transparent"></Entry>
                 <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="Descrição" Text="{Binding Description}" BackgroundColor="Transparent"/>
-                <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="CNPJ" Text="{Binding CNPJ}" BackgroundColor="Transparent">
+                <Entry Style="{StaticResource gilroyLightEntry}" Placeholder="CNPJ" IsEnabled="False" Text="{Binding CNPJ}" BackgroundColor="Transparent">
                     <Entry.Behaviors>
                         <behaviorPack:MaskedBehavior Mask="XX.XXX.XXX/XXXX-XX" />
                     </Entry.Behaviors>

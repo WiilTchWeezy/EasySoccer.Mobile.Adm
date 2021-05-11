@@ -385,7 +385,14 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Color = _currentSoccerPitch.Color;
                     HasActive = _currentSoccerPitch.Active;
                 }
+                else
+                {
+                    Image = ImageSource.FromUri(new Uri("https://easysoccer.blob.core.windows.net/soccerpitch/default.png"));
+                }
             }
+            if(_isEditing == false)
+                Image = ImageSource.FromUri(new Uri("https://easysoccer.blob.core.windows.net/soccerpitch/default.png"));
+
             this.GetSportTypesAsync();
             this.GetColorsAsync();
             this.LoadPlansAsync();

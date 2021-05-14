@@ -7,6 +7,9 @@
              Visual="Material">
     <ContentPage.Content>
         <CollectionView ItemsSource="{Binding Plans}">
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum plano encontrado. Cadastre uma agora!" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
+            </CollectionView.EmptyView>
             <CollectionView.Header>
                 <Grid Padding="10" BackgroundColor="#DCDCDC">
                     <Grid.ColumnDefinitions>

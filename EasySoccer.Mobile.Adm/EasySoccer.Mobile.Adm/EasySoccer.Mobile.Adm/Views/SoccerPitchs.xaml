@@ -7,6 +7,9 @@
              Visual="Material">
     <ContentPage.Content>
         <CollectionView ItemsSource="{Binding SoccerPitchs}">
+            <CollectionView.EmptyView>
+                <Label Text="Nenhuma quadra encontrada. Cadastre uma agora!" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
+            </CollectionView.EmptyView>
             <CollectionView.Header>
                 <Grid Padding="10" BackgroundColor="#DCDCDC">
                     <Grid.ColumnDefinitions>

@@ -36,6 +36,9 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         private CompanyInfoResponse _companyInfoResponse = null;
         private INavigationService _navigationService;
         Action<PlaceDetail> onIntentResult;
+
+        private double _lat;
+        private double _long;
         public CompanyInfoViewModel(IGooglePlacesService googlePlacesService, INavigationService navigationService)
         {
             _googlePlacesService = googlePlacesService;
@@ -292,6 +295,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     CompleteAddress = companyInfoResponse.CompleteAddress;
                     Longitude = companyInfoResponse.Longitude;
                     Latitude = companyInfoResponse.Latitude;
+                    _lat = companyInfoResponse.Latitude;
+                    _long = companyInfoResponse.Latitude;
                     IsActive = companyInfoResponse.Active;
                     IdState = companyInfoResponse.IdState;
                     IdCity = companyInfoResponse.IdCity;
@@ -388,6 +393,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             onIntentResult = (placeDetail) =>
             {
+                _lat = placeDetail.Latitude;
+                _long = placeDetail.Longitude;
                 this.Longitude = placeDetail.Longitude;
                 this.Latitude = placeDetail.Latitude;
             };
@@ -399,6 +406,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             var location = await Geolocation.GetLastKnownLocationAsync();
             if (location != null)
             {
+                _lat = location.Latitude;
+                _long = location.Longitude;
                 this.Longitude = location.Longitude;
                 this.Latitude = location.Latitude;
             }
@@ -413,8 +422,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     CNPJ = this.CNPJ,
                     CompleteAddress = this.CompleteAddress,
                     Description = this.Description,
-                    Latitude = this.Latitude,
-                    Longitude = this.Longitude,
+                    Latitude = _lat,
+                    Longitude = _long,
                     Name = this.Name,
                     IdCity = this.IdCity,
                     InsertReservationConfirmed = InsertReservationConfirmed,

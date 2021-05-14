@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -155,8 +156,15 @@ namespace EasySoccer.Mobile.Adm.API
             foreach (var item in parameters.GetType().GetProperties())
             {
                 var propValue = item.GetValue(parameters);
-                if (propValue != null) {
-                    queryString.Add(item.Name, propValue.ToString());
+                if (propValue != null)
+                {
+                    if (propValue.GetType() == typeof(DateTime))
+                    {
+                        var dateProp = (DateTime)propValue;
+                        queryString.Add(item.Name, dateProp.ToString(CultureInfo.InvariantCulture));
+                    }
+                    else
+                        queryString.Add(item.Name, propValue.ToString());
                 }
             }
             return queryString.ToString();
@@ -320,7 +328,7 @@ namespace EasySoccer.Mobile.Adm.API
             string statusStr = null;
             if (status != null && status.Length <= 0)
                 status = null;
-            else if(status != null)
+            else if (status != null)
             {
                 statusStr = string.Join(";", status);
             }

@@ -13,7 +13,7 @@
                 <BoxView HorizontalOptions="FillAndExpand" Color="#DCDCDC" HeightRequest="1"/>
                 <Entry Placeholder="Seu Nome" Style="{StaticResource gilroyLightEntry}" Text="{Binding UserName}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
                 <Entry Placeholder="Email" Style="{StaticResource gilroyLightEntry}" Keyboard="Email" Text="{Binding UserEmail}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
-                <Entry Placeholder="CNPJ" Style="{StaticResource gilroyLightEntry}" Text="{Binding CNPJ}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                <Entry Placeholder="CNPJ" Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Text="{Binding CNPJ}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
                     <Entry.Behaviors>
                         <behaviorPack:MaskedBehavior Mask="XX.XXX.XXX/XXXX-XX" />
                     </Entry.Behaviors>

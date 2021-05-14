@@ -11,7 +11,7 @@
             <Frame VerticalOptions="Center" HasShadow="True" BackgroundColor="#c6c6c6" Margin="15">
                 <StackLayout>
                     <Image Source="logo.png" HorizontalOptions="Center" Margin="15" />
-                    <Entry Placeholder="Email" Style="{StaticResource gilroyLightEntry}" Text="{Binding Email}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                    <Entry Placeholder="Email" Style="{StaticResource gilroyLightEntry}" Keyboard="Email" Text="{Binding Email}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
                     <Entry Placeholder="Senha" Style="{StaticResource gilroyLightEntry}" Text="{Binding Password}" BackgroundColor="Transparent" IsPassword="True"  PlaceholderColor="#161E53" TextColor="#161E53"/>
                     <Button Text="Login" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding LoginCommand}"></Button>
                     <Button Text="Cadastre-se" BackgroundColor="#FF591F" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SignUpCommand}" />

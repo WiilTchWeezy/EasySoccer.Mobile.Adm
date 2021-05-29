@@ -28,8 +28,8 @@ namespace EasySoccer.Mobile.Adm.API
             }
         }
 
-        const string ApiUrl = "https://apieasysoccer.azurewebsites.net/api/";
-        //const string ApiUrl = "http://localhost:56284/api/";
+        //const string ApiUrl = "https://apieasysoccer.azurewebsites.net/api/";
+        const string ApiUrl = "http://192.168.0.106:45456/api/";
 
         private HttpClient CreateClient()
         {
@@ -368,6 +368,26 @@ namespace EasySoccer.Mobile.Adm.API
         public async Task<PostReservationResponse> PatchReservationAsync(SoccerPitchReservationRequest request)
         {
             return await Patch<PostReservationResponse>("SoccerPitchReservation/patch", request);
+        }
+
+        public async Task<PersonCompanyInfoResponse> GetPersonCompanyInfoAsync(Guid Id)
+        {
+            return await Get<PersonCompanyInfoResponse>("PersonCompany/getInfo?" + GenerateQueryParameters(new { Id }));
+        }
+
+        public async Task<PersonCompanyResponse> GetPersonCompanyAsync(string name, string email, string phone, int page, int pageSize)
+        {
+            return await Get<PersonCompanyResponse>("PersonCompany/get?" + GenerateQueryParameters(new { name, email, phone, page, pageSize }));
+        }
+
+        public async Task<PersonCompany> PostPersonCompanyAsync(PersonCompanyRequest request)
+        {
+            return await Post<PersonCompany>("PersonCompany/post", request);
+        }
+
+        public async Task<PersonCompany> PatchPersonCompanyAsync(PersonCompanyRequest request)
+        {
+            return await Patch<PersonCompany>("PersonCompany/patch", request);
         }
     }
 }

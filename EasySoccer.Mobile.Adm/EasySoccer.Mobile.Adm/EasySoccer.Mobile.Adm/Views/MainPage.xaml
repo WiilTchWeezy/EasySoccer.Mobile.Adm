@@ -54,7 +54,18 @@
                         <Label Grid.Column="0" Text="&#xf073;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
                         <Label Grid.Column="1" Text="Minhas Reservas" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
                     </Grid>
-                    <Grid Padding="10">
+                        <Grid Padding="10">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="PersonCompany"/>
+                            </Grid.GestureRecognizers>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="&#xf0c0;" Style="{StaticResource fontAwesomeLabel}" IsEnabled="{Binding UserLoggedIn}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="1" Text="Clientes" FontSize="20" IsEnabled="{Binding UserLoggedIn}" Style="{StaticResource gilroyLightLabel}"/>
+                        </Grid>
+                        <Grid Padding="10">
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding NavigatePageCommand}" CommandParameter="SoccerPitchs"/>
                         </Grid.GestureRecognizers>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.PersonCompanyDetail"
+             Visual="Material"
+             xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Entry Placeholder="Nome" Style="{StaticResource gilroyLightEntry}" Text="{Binding Name}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+            <Entry Placeholder="Email" Style="{StaticResource gilroyLightEntry}" Text="{Binding Email}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+            <Entry Placeholder="Telefone" Style="{StaticResource gilroyLightEntry}" Keyboard="Numeric" Text="{Binding Phone}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53">
+                <Entry.Behaviors>
+                    <behaviorPack:MaskedBehavior Mask="(XX) XXXXX-XXXX" />
+                </Entry.Behaviors>
+            </Entry>
+            <CollectionView ItemsSource="{Binding Reservations}" IsVisible="{Binding ShowLastReservations}">
+                <CollectionView.Header>
+                    <Grid Padding="10" BackgroundColor="#DCDCDC">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="Ultimas reservas" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                    </Grid>
+                </CollectionView.Header>
+                <CollectionView.EmptyView>
+                    <Label Text="Este usuário ainda não realizou reservas!" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Style="{StaticResource gilroyLightPicker}"/>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="10" Style="{StaticResource gilroyLightLabel}" Text="{Binding SoccerPitchName}" VerticalTextAlignment="Center" FontSize="Medium"/>
+                                <Label Grid.Column="0" Grid.Row="1" Margin="10" Style="{StaticResource gilroyLabel}" Text="{Binding SelectedDateStart, StringFormat='{0:dd/MM/yyyy}'}" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="0" Grid.Row="2" Margin="10" Style="{StaticResource gilroyLabel}" Text="{Binding SelectedDateStart, StringFormat='{0:HH:mm}'}" VerticalTextAlignment="Center"/>
+                                <Label Grid.Column="1" Grid.Row="2" Margin="10" Style="{StaticResource gilroyLabel}" Text="{Binding SelectedDateEnd, StringFormat='{0:HH:mm}'}" VerticalTextAlignment="Center"/>
+                            </Grid>
+                            <BoxView HeightRequest="1" HorizontalOptions="FillAndExpand" Color="#DCDCDC"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="Salvar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding SaveCommand}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+  
+</ContentPage>

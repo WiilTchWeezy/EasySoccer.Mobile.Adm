@@ -48,6 +48,9 @@ namespace EasySoccer.Mobile.Adm
             containerRegistry.RegisterForNavigation<Reservations, ReservationsViewModel>();
             containerRegistry.RegisterForNavigation<ReservationsFilter, ReservationsFilterViewModel>();
             containerRegistry.RegisterForNavigation<ReservationEditAdd, ReservationEditAddViewModel>();
+            containerRegistry.RegisterForNavigation<PersonCompany, PersonCompanyViewModel>();
+            containerRegistry.RegisterForNavigation<PersonCompanyDetail, PersonCompanyDetailViewModel>();
+            containerRegistry.RegisterForNavigation<PersonCompanyFilter, PersonCompanyFilterViewModel>();
         }
     }
 }

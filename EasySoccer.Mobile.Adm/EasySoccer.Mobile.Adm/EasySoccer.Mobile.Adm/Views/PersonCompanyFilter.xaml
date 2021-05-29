@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="EasySoccer.Mobile.Adm.Views.PersonCompanyFilter"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Entry Placeholder="Nome" Style="{StaticResource gilroyLightEntry}" Text="{Binding Name}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Entry Placeholder="Email" Keyboard="Email" Style="{StaticResource gilroyLightEntry}" Text="{Binding Email}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Entry Placeholder="Phone" Keyboard="Numeric" Style="{StaticResource gilroyLightEntry}" Text="{Binding Phone}" BackgroundColor="Transparent" PlaceholderColor="#161E53" TextColor="#161E53"/>
+                <Button Text="Aplicar" BackgroundColor="#161E53" Style="{StaticResource gilroyLightEntry}" TextColor="#FFF" Command="{Binding ApplyCommand}"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

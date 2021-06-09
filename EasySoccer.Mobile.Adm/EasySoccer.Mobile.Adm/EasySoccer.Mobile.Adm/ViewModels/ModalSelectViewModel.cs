@@ -28,12 +28,22 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _searchText, value); }
         }
 
+        private string _headerText;
+        public string HeaderText
+        {
+            get { return _headerText; }
+            set { SetProperty(ref _headerText, value); }
+        }
+
         public ObservableCollection<ModalSelectItem> Itens { get; set; }
         public List<ModalSelectItem> _itens { get; set; }
         private int? _stateId;
         private ModalSelectEnum _currentModalType;
+        private string _pageToNavigate;
+        private bool _useApiSearch = false;
         public DelegateCommand OnSelectItemCommand { get; set; }
         public DelegateCommand SearchCommand { get; set; }
+        public DelegateCommand AddCommand { get; set; }
         private INavigationService _navigationService;
 
         public ModalSelectViewModel(INavigationService navigationService)
@@ -41,8 +51,14 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             Itens = new ObservableCollection<ModalSelectItem>();
             _itens = new List<ModalSelectItem>();
             OnSelectItemCommand = new DelegateCommand(OnItemSelect);
+            AddCommand = new DelegateCommand(Add);
             SearchCommand = new DelegateCommand(() => { this.Search(this.SearchText); });
             _navigationService = navigationService;
+        }
+
+        private void Add()
+        {
+            _navigationService.NavigateAsync(_pageToNavigate);
         }
 
         private void OnItemSelect()
@@ -58,6 +74,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     navigationParameters.Add("CityId", SelectedItem.Id);
                     navigationParameters.Add("CityName", SelectedItem.Text);
                     break;
+                case ModalSelectEnum.PersonCompany:
+                    navigationParameters.Add("PersonId", SelectedItem.Identifier);
+                    navigationParameters.Add("PersonName", SelectedItem.Text);
+                    break;
                 default:
                     break;
             }
@@ -67,19 +87,27 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public void Search(string text)
         {
             Itens.Clear();
-            if (string.IsNullOrEmpty(text))
+            if (_useApiSearch) 
             {
-                foreach (var item in _itens)
-                {
-                    Itens.Add(item);
-                }
+                if (_currentModalType == ModalSelectEnum.PersonCompany)
+                    this.LoadPersonCompanyAsync(text, true);
             }
             else
             {
-                var filteredItens = _itens.Where(x => x.Text.ToLower().Contains(text.ToLower())).OrderBy(x => x.Text).ToList();
-                foreach (var item in filteredItens)
+                if (string.IsNullOrEmpty(text))
                 {
-                    Itens.Add(item);
+                    foreach (var item in _itens)
+                    {
+                        Itens.Add(item);
+                    }
+                }
+                else
+                {
+                    var filteredItens = _itens.Where(x => x.Text.ToLower().Contains(text.ToLower())).OrderBy(x => x.Text).ToList();
+                    foreach (var item in filteredItens)
+                    {
+                        Itens.Add(item);
+                    }
                 }
             }
         }
@@ -97,6 +125,9 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     {
                         this.LoadCitiesAsync(_stateId.Value);
                     }
+                    break;
+                case ModalSelectEnum.PersonCompany:
+                    this.LoadPersonCompanyAsync();
                     break;
                 default:
                     break;
@@ -144,6 +175,31 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
+        private async void LoadPersonCompanyAsync(string name = "", bool clearItens = false)
+        {
+            try
+            {
+                var personCompanyResponse = await ApiClient.Instance.GetPersonCompanyAsync(name, string.Empty, string.Empty, 1, 50);
+                if (personCompanyResponse != null && personCompanyResponse.Data != null && personCompanyResponse.Data.Count > 0)
+                {
+                    if (clearItens)
+                    {
+                        Itens.Clear();
+                        _itens.Clear();
+                    }
+                    foreach (var item in personCompanyResponse.Data)
+                    {
+                        Itens.Add(new ModalSelectItem { Text = item.Name, Identifier = item.Id });
+                        _itens.Add(new ModalSelectItem { Text = item.Name, Identifier = item.Id });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                UserDialogs.Instance.Alert(e.Message);
+            }
+        }
+
         public void OnNavigatedFrom(INavigationParameters parameters)
         {
 
@@ -159,6 +215,18 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             {
                 var modalSelect = parameters.GetValue<ModalSelectEnum>("ModalSelectType");
                 LoadData(modalSelect);
+            }
+            if (parameters.ContainsKey("PageToNavigate"))
+            {
+                _pageToNavigate = parameters.GetValue<string>("PageToNavigate");
+            }
+            if (parameters.ContainsKey("UseApiSearch"))
+            {
+                _useApiSearch = parameters.GetValue<bool>("UseApiSearch");
+            }
+            if (parameters.ContainsKey("HeaderText"))
+            {
+                HeaderText = parameters.GetValue<string>("HeaderText");
             }
         }
     }

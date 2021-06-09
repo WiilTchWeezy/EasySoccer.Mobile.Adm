@@ -2,6 +2,7 @@
 using EasySoccer.Mobile.Adm.API;
 using EasySoccer.Mobile.Adm.API.ApiResponses;
 using EasySoccer.Mobile.Adm.API.Session;
+using EasySoccer.Mobile.Adm.Infra.Enums;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -103,6 +104,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public ObservableCollection<string> PlansName { get; set; }
 
         public DelegateCommand SaveCommand { get; set; }
+        public DelegateCommand SelectPersonCompanyCommand { get; set; }
         private INavigationService _navigationService;
         public ReservationEditAddViewModel(INavigationService navigationService)
         {
@@ -110,7 +112,18 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             PlansName = new ObservableCollection<string>();
             _navigationService = navigationService;
             SaveCommand = new DelegateCommand(SaveAsync);
+            SelectPersonCompanyCommand = new DelegateCommand(SelectPersonCompany);
             SelectedDate = DateTime.Now;
+        }
+
+        private async void SelectPersonCompany()
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ModalSelectType", ModalSelectEnum.PersonCompany);
+            navigationParameters.Add("PageToNavigate", "PersonCompanyDetail");
+            navigationParameters.Add("UseApiSearch", true);
+            navigationParameters.Add("HeaderText", "Clientes");
+            await _navigationService.NavigateAsync("ModalSelect", navigationParameters, useModalNavigation: true);
         }
 
         private async void SaveAsync()

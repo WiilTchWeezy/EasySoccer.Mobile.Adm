@@ -9,6 +9,19 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Entry Grid.Column="0" IsEnabled="False" Style="{StaticResource gilroyLightEntry}" Placeholder="Cliente Responsável" Text="{Binding PersonCompany}" BackgroundColor="Transparent"/>
+                    <Frame Grid.Column="1" BackgroundColor="#FF591F" CornerRadius="10" Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectPersonCompanyCommand}"/>
+                        </Frame.GestureRecognizers>
+                        <Label Text="&#xf055;" TextColor="#FFF" Style="{StaticResource fontAwesomeLabel}" FontSize="25" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </Grid>
                 <Picker ItemsSource="{Binding SoccerPitchesName}" SelectedIndex="{Binding SelectedSoccerPitch}" Title="Quadra" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" />
                 <Picker ItemsSource="{Binding PlansName}" SelectedIndex="{Binding SelectedPlanIndex}" Title="Plano" Style="{StaticResource gilroyLightEntry}" BackgroundColor="Transparent" />
                 <Label Style="{StaticResource gilroyLightLabel}" BackgroundColor="Transparent" Text="Data da reserva :" VerticalTextAlignment="Center" FontSize="Small" />

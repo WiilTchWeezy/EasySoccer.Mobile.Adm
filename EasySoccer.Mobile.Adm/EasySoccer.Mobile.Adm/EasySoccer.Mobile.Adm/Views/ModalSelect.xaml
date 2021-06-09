@@ -26,24 +26,39 @@
         <StackLayout>
             <SearchBar x:Name="srchText" Style="{StaticResource gilroyLightEntry}" Placeholder="Pesquise..." SearchCommand="{Binding SearchCommand}" Text="{Binding SearchText}"/>
             <CollectionView ItemsSource="{Binding Itens}" SelectionMode="Single" SelectedItem="{Binding SelectedItem}" SelectionChangedCommand="{Binding OnSelectItemCommand}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="15">
-                        <Label Text="{Binding Text}" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
+                <CollectionView.Header>
+                    <Grid Padding="10" BackgroundColor="#DCDCDC">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="{Binding HeaderText}" VerticalTextAlignment="Center" Style="{StaticResource gilroyLabel}"/>
+                        <Frame CornerRadius="20" Grid.Column="1" Padding="5" BackgroundColor="#161E53" BorderColor="#DCDCDC" HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding AddCommand}"/>
+                            </Frame.GestureRecognizers>
+                            <Label Text="Adicionar" Style="{StaticResource gilroyLightLabel}" TextColor="White"/>
+                        </Frame>
                     </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.EmptyView>
-                <StackLayout>
-                    <Label Text="Nenhum resultado encontrado."
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="15">
+                            <Label Text="{Binding Text}" FontSize="20" Style="{StaticResource gilroyLightLabel}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <StackLayout>
+                        <Label Text="Nenhum resultado encontrado."
                        Margin="10,25,10,10"
                        FontSize="18"
                        HorizontalOptions="Fill"
                        HorizontalTextAlignment="Center"
                        Style="{StaticResource gilroyLightLabel}"/>
-                </StackLayout>
-            </CollectionView.EmptyView>
-        </CollectionView>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 

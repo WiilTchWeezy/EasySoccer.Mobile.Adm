@@ -29,7 +29,7 @@ namespace EasySoccer.Mobile.Adm.API
         }
 
         //const string ApiUrl = "https://apieasysoccer.azurewebsites.net/api/";
-        const string ApiUrl = "http://192.168.0.106:45456/api/";
+        const string ApiUrl = "http://192.168.0.101:45456/api/";
 
         private HttpClient CreateClient()
         {

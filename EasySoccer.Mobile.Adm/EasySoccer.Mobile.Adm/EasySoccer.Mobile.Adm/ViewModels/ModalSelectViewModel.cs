@@ -228,6 +228,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             {
                 HeaderText = parameters.GetValue<string>("HeaderText");
             }
+            if(_currentModalType == ModalSelectEnum.PersonCompany)
+            {
+                this.LoadPersonCompanyAsync(string.Empty, true);
+            }
         }
     }
 }

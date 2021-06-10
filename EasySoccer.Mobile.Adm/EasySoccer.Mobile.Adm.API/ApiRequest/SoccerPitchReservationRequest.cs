@@ -10,6 +10,7 @@ namespace EasySoccer.Mobile.Adm.API.ApiRequest
         public TimeSpan HourStart { get; set; }
         public TimeSpan HourEnd { get; set; }
         public int SoccerPitchPlanId { get; set; }
+        public Guid? PersonCompanyId { get; set; }
         public int Application { get; set; } = 2;
     }
 }

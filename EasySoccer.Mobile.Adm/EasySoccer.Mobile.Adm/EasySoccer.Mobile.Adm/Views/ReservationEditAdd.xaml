@@ -14,7 +14,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Entry Grid.Column="0" IsEnabled="False" Style="{StaticResource gilroyLightEntry}" Placeholder="Cliente Responsável" Text="{Binding PersonCompany}" BackgroundColor="Transparent"/>
+                    <Entry Grid.Column="0" IsEnabled="False" Style="{StaticResource gilroyLightEntry}" Placeholder="Cliente Responsável" Text="{Binding PersonCompanyName}" BackgroundColor="Transparent"/>
                     <Frame Grid.Column="1" BackgroundColor="#FF591F" CornerRadius="10" Padding="10">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding SelectPersonCompanyCommand}"/>

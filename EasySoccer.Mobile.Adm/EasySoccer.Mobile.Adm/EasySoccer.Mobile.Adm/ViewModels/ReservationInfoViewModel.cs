@@ -225,8 +225,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     Hours = $"{response.SelectedDateStart:HH:mm} - {response.SelectedDateEnd:HH:mm}";
                     SoccerPitchPlanName = response.SoccerPitchPlanName;
                     SoccerPitchPlanDescription = response.SoccerPitchPlanDescription;
-                    PersonName = string.IsNullOrEmpty(response.PersonName) ? "Responsável não selecionado" : response.PersonName;
-                    PersonPhone = string.IsNullOrEmpty(response.PersonPhone) ? "Telefone não preenchido" : response.PersonPhone;
+                    PersonName = string.IsNullOrEmpty(response.PersonCompanyName) ? "Responsável não selecionado" : response.PersonCompanyName;
+                    PersonPhone = string.IsNullOrEmpty(response.PersonCompanyPhone) ? "Telefone não preenchido" : response.PersonCompanyPhone;
                     _status = response.Status;
                     _reservationId = response.Id;
                     StatusDescription = $"Status : {response.StatusDescription}";

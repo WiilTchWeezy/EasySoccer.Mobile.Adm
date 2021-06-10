@@ -96,6 +96,13 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _statusColor, value); }
         }
 
+        private string _personCompanyName;
+        public string PersonCompanyName
+        {
+            get { return _personCompanyName; }
+            set { SetProperty(ref _personCompanyName, value); }
+        }
+
         private Guid _reservationId;
 
         private List<SoccerPitchResponse> SoccerPitches = new List<SoccerPitchResponse>();
@@ -106,6 +113,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand SelectPersonCompanyCommand { get; set; }
         private INavigationService _navigationService;
+        private Guid _personCompanyId;
         public ReservationEditAddViewModel(INavigationService navigationService)
         {
             SoccerPitchesName = new ObservableCollection<string>();
@@ -137,6 +145,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 {
                     var currentSoccerPitch = SoccerPitches[SelectedSoccerPitch.Value];
                     var currentPlan = Plans[SelectedPlanIndex.Value];
+                    if(_personCompanyId != Guid.Empty)
+                    {
+                        request.PersonCompanyId = _personCompanyId;
+                    }
                     if (currentSoccerPitch != null && currentPlan != null)
                     {
                         request.HourEnd = endHour;
@@ -280,6 +292,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                     SelectedDate = reservationInfo.SelectedDateStart;
                     StatusDescription = reservationInfo.StatusDescription;
                     StatusColor = reservationInfo.StatusColor;
+                    _personCompanyId = reservationInfo.PersonCompanyId;
+                    PersonCompanyName = reservationInfo.PersonCompanyName;
                     if (IsEditing == false)
                         SaveButtonIsVisible = true;
                     else
@@ -308,6 +322,15 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             {
                 SaveButtonIsVisible = true;
                 LoadSoccerPitchs();
+            }
+
+            if(parameters.ContainsKey("PersonId"))
+            {
+                _personCompanyId = parameters.GetValue<Guid>("PersonId");
+            }
+            if (parameters.ContainsKey("PersonName"))
+            {
+                PersonCompanyName = parameters.GetValue<string>("PersonName");
             }
         }
     }

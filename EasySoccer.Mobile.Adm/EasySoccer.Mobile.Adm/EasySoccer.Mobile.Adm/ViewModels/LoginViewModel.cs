@@ -7,6 +7,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
@@ -21,7 +22,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             _navigationService = navigationService;
             SignUpCommand = new DelegateCommand(NavigateSignUp);
-            LoginCommand = new DelegateCommand(LoginAsync);
+            LoginCommand = new DelegateCommand(async () => { await LoginAsync(); });
         }
 
         private string _email;
@@ -43,7 +44,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             _navigationService.NavigateAsync("SignUp");
         }
 
-        private async void LoginAsync()
+        private async Task LoginAsync()
         {
             try
             {

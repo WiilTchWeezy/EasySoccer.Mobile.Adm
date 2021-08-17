@@ -122,17 +122,17 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         private INavigationService _navigationService;
         public SoccerPitchInfoViewModel(INavigationService navigationService)
         {
-            SelectedImageCommand = new DelegateCommand(SelectImage);
+            SelectedImageCommand = new DelegateCommand(async () => { await SelectImage(); });
             SportTypes = new ObservableCollection<SportTypeResponse>();
             SportTypesName = new ObservableCollection<string>();
             Colors = new ObservableCollection<ColorsResponse>();
             ColorsName = new ObservableCollection<string>();
             Plans = new ObservableCollection<PlansItemViewModel>();
-            SaveCommand = new DelegateCommand(SaveAsync);
+            SaveCommand = new DelegateCommand(async () => { await SaveAsync(); });
             _navigationService = navigationService;
         }
 
-        private async void SelectImage()
+        private async Task SelectImage()
         {
             try
             {
@@ -166,7 +166,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void GetSportTypesAsync()
+        private async Task GetSportTypesAsync()
         {
             try
             {
@@ -196,7 +196,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void GetColorsAsync()
+        private async Task GetColorsAsync()
         {
             try
             {
@@ -231,10 +231,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             try
             {
                 var plansResponse = await ApiClient.Instance.GetPlansAsync();
-                if (plansResponse != null)
+                if (plansResponse != null && plansResponse.Data != null)
                 {
                     Plans.Clear();
-                    foreach (var item in plansResponse)
+                    foreach (var item in plansResponse.Data)
                     {
                         var viewModelItem = new PlansItemViewModel(item);
                         viewModelItem.PropertyChanged += ViewModelItem_PropertyChanged;
@@ -306,7 +306,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void SaveAsync()
+        private async Task SaveAsync()
         {
             try
             {

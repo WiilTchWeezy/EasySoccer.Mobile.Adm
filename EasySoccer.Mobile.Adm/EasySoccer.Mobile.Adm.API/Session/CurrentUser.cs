@@ -94,7 +94,7 @@ namespace EasySoccer.Mobile.Adm.API.Session
             }
         }
 
-        public async void LogOff()
+        public async Task LogOff()
         {
 
             var fcmToken = Preferences.Get("FcmToken", string.Empty);

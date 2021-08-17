@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -38,15 +39,15 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             _navigationService.NavigateAsync("SoccerPitchInfo", navigationParamters);
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             try
             {
                 var response = await ApiClient.Instance.GetSoccerPitchsAsync();
-                if (response != null && response.Any())
+                if (response != null && response.Data != null && response.Data.Any())
                 {
                     SoccerPitchs.Clear();
-                    foreach (var item in response)
+                    foreach (var item in response.Data)
                     {
                         item.EditSoccerPitchCommand = new DelegateCommand<SoccerPitchResponse>(OpenSoccerPitchInfoToEdit);
                         SoccerPitchs.Add(item);

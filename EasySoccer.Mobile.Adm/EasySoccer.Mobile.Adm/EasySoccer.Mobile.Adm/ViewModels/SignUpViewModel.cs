@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
@@ -24,12 +25,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             PlansName = new ObservableCollection<string>();
             PlansInstallments = new ObservableCollection<string>();
             Plans = new List<PlansInfoResponse>();
-            OpenLinkCommand = new DelegateCommand(OpenLink);
-            SaveCommand = new DelegateCommand(PostCompanyInput);
+            OpenLinkCommand = new DelegateCommand(async () => { await OpenLink(); });
+            SaveCommand = new DelegateCommand(async () => { await PostCompanyInput(); });
             _navigationService = navigationService;
             _validator = new CompanyValidator();
-            OpenTermsCommand = new DelegateCommand(OpenTerms);
-            OpenPolicyCommand = new DelegateCommand(OpenPolicy);
+            OpenTermsCommand = new DelegateCommand(async () => { await OpenTerms(); });
+            OpenPolicyCommand = new DelegateCommand(async () => { await OpenPolicy(); });
         }
 
         public List<PlansInfoResponse> Plans { get; set; }
@@ -148,21 +149,21 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             set { SetProperty(ref _confirmPassword, value); }
         }
 
-        private async void OpenLink()
+        private async Task OpenLink()
         {
             await Browser.OpenAsync("http://www.easysoccer.com.br/", BrowserLaunchMode.SystemPreferred);
         }
 
-        private async void OpenTerms()
+        private async Task OpenTerms()
         {
             await Browser.OpenAsync("https://www.easysoccer.com.br/documents/terms.html", BrowserLaunchMode.SystemPreferred);
         }
 
-        private async void OpenPolicy()
+        private async Task OpenPolicy()
         {
             await Browser.OpenAsync("https://www.easysoccer.com.br/documents/privacypolicy.html", BrowserLaunchMode.SystemPreferred);
         }
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             try
             {
@@ -201,7 +202,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void PostCompanyInput()
+        private async Task PostCompanyInput()
         {
             try
             {

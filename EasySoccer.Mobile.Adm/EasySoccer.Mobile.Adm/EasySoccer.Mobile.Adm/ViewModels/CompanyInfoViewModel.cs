@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
@@ -43,12 +44,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             _googlePlacesService = googlePlacesService;
             _navigationService = navigationService;
-            SelectedImageCommand = new DelegateCommand(SelectImage);
+            SelectedImageCommand = new DelegateCommand(async () => { await SelectImage(); });
             SearchPlacesCommand = new DelegateCommand(SearchGoogleMaps);
-            CurrentLocationCommand = new DelegateCommand(CurrentLocation);
-            SaveCommand = new DelegateCommand(SaveAsync);
-            ActiveCommand = new DelegateCommand(ActiveCompany);
-            NavigateToSchedulesCommand = new DelegateCommand(NavigateToSchedule);
+            CurrentLocationCommand = new DelegateCommand(async () => { await CurrentLocation(); });
+            SaveCommand = new DelegateCommand(async () => { await SaveAsync(); });
+            ActiveCommand = new DelegateCommand(async () => { await ActiveCompany(); });
+            NavigateToSchedulesCommand = new DelegateCommand(async () => { await NavigateToSchedule(); });
             HourStart = new ObservableCollection<string>();
             HourEnd = new ObservableCollection<string>();
             Days = new ObservableCollection<string>();
@@ -280,7 +281,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             try
             {
@@ -358,7 +359,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             return _companyInfoResponse.CompanySchedules.Where(x => x.Day == SelectedDay).FirstOrDefault();
         }
 
-        private async void SelectImage()
+        private async Task SelectImage()
         {
             try
             {
@@ -401,7 +402,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             _googlePlacesService.DisplayIntent(onIntentResult);
         }
 
-        private async void CurrentLocation()
+        private async Task CurrentLocation()
         {
             var location = await Geolocation.GetLastKnownLocationAsync();
             if (location != null)
@@ -413,7 +414,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void SaveAsync()
+        private async Task SaveAsync()
         {
             try
             {
@@ -438,7 +439,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void ActiveCompany()
+        private async Task ActiveCompany()
         {
             try
             {
@@ -465,7 +466,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             _navigationService.NavigateAsync("ModalSelect", navigationParameters, useModalNavigation: true);
         }
 
-        private async void NavigateToSchedule()
+        private async Task NavigateToSchedule()
         {
             await _navigationService.NavigateAsync("CompanySchedules");
         }

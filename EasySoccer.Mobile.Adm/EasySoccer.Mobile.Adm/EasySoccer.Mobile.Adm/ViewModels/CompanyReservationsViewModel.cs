@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -73,7 +74,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             _navigationService.NavigateAsync("UserNotifications");
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             try
             {

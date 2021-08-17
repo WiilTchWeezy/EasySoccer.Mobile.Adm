@@ -119,12 +119,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             SoccerPitchesName = new ObservableCollection<string>();
             PlansName = new ObservableCollection<string>();
             _navigationService = navigationService;
-            SaveCommand = new DelegateCommand(SaveAsync);
-            SelectPersonCompanyCommand = new DelegateCommand(SelectPersonCompany);
+            SaveCommand = new DelegateCommand(async () => { await SaveAsync(); });
+            SelectPersonCompanyCommand = new DelegateCommand(async () => { await SelectPersonCompany(); });
             SelectedDate = DateTime.Now;
         }
 
-        private async void SelectPersonCompany()
+        private async Task SelectPersonCompany()
         {
             var navigationParameters = new NavigationParameters();
             navigationParameters.Add("ModalSelectType", ModalSelectEnum.PersonCompany);
@@ -134,7 +134,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             await _navigationService.NavigateAsync("ModalSelect", navigationParameters, useModalNavigation: true);
         }
 
-        private async void SaveAsync()
+        private async Task SaveAsync()
         {
             try
             {
@@ -145,7 +145,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 {
                     var currentSoccerPitch = SoccerPitches[SelectedSoccerPitch.Value];
                     var currentPlan = Plans[SelectedPlanIndex.Value];
-                    if(_personCompanyId != Guid.Empty)
+                    if (_personCompanyId != Guid.Empty)
                     {
                         request.PersonCompanyId = _personCompanyId;
                     }
@@ -247,9 +247,9 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             try
             {
                 var soccerPitchs = await ApiClient.Instance.GetSoccerPitchsAsync();
-                if (soccerPitchs != null && soccerPitchs.Any())
+                if (soccerPitchs != null && soccerPitchs.Data != null && soccerPitchs.Data.Any())
                 {
-                    foreach (var item in soccerPitchs)
+                    foreach (var item in soccerPitchs.Data)
                     {
                         SoccerPitches.Add(item);
                         SoccerPitchesName.Add(item.Name);
@@ -262,7 +262,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadReservationInfo()
+        private async Task LoadReservationInfo()
         {
             try
             {
@@ -324,7 +324,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 LoadSoccerPitchs();
             }
 
-            if(parameters.ContainsKey("PersonId"))
+            if (parameters.ContainsKey("PersonId"))
             {
                 _personCompanyId = parameters.GetValue<Guid>("PersonId");
             }

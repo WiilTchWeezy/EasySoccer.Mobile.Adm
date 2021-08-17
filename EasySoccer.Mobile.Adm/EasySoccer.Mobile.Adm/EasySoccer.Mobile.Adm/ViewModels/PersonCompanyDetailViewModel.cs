@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -50,11 +51,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public PersonCompanyDetailViewModel(INavigationService navigationService)
         {
             Reservations = new ObservableCollection<ReservationsInfoResponse>();
-            SaveCommand = new DelegateCommand(SaveAsync);
+            SaveCommand = new DelegateCommand(async () => { await SaveAsync(); });
             _navigationService = navigationService;
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             try
             {
@@ -79,7 +80,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void SaveAsync()
+        private async Task SaveAsync()
         {
             try
             {

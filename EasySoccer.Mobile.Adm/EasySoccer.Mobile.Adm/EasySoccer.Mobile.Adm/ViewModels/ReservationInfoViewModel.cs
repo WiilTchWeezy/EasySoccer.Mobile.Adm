@@ -8,6 +8,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -193,7 +194,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             UserDialogs.Instance.Confirm(confirmConfig);
         }
 
-        private async void ChangeStatusAsync(int status)
+        private async Task ChangeStatusAsync(int status)
         {
             try
             {
@@ -207,7 +208,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadDataAsync(Guid reservationId)
+        private async Task LoadDataAsync(Guid reservationId)
         {
             try
             {

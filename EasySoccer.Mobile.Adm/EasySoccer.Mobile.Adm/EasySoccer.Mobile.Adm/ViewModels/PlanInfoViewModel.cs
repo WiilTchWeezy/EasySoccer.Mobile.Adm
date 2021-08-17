@@ -9,6 +9,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -43,10 +44,10 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public PlanInfoViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            SaveCommand = new DelegateCommand(UpdateInfoAsync);
+            SaveCommand = new DelegateCommand(async () => { await UpdateInfoAsync(); });
         }
 
-        private async void UpdateInfoAsync()
+        private async Task UpdateInfoAsync()
         {
             try
             {

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -134,7 +135,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadStatesAsync()
+        private async Task LoadStatesAsync()
         {
             try
             {
@@ -155,7 +156,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadCitiesAsync(int stateId)
+        private async Task LoadCitiesAsync(int stateId)
         {
             try
             {
@@ -175,7 +176,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadPersonCompanyAsync(string name = "", bool clearItens = false)
+        private async Task LoadPersonCompanyAsync(string name = "", bool clearItens = false)
         {
             try
             {

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -167,16 +168,16 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             LoadStatusAsync();
         }
 
-        private async void LoadSoccerPitchAsync()
+        private async Task LoadSoccerPitchAsync()
         {
             try
             {
                 var response = await ApiClient.Instance.GetSoccerPitchsAsync();
                 SoccerPitchs.Clear();
                 SoccerPitchsNames.Clear();
-                if (response != null && response.Count > 0)
+                if (response != null && response.Data != null && response.Data.Count > 0)
                 {
-                    foreach (var item in response)
+                    foreach (var item in response.Data)
                     {
                         SoccerPitchs.Add(item);
                         SoccerPitchsNames.Add(item.Name);
@@ -195,16 +196,16 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadPlansAsync()
+        private async Task LoadPlansAsync()
         {
             try
             {
                 var response = await ApiClient.Instance.GetPlansAsync();
-                if (response != null && response.Count > 0)
+                if (response != null && response.Data != null && response.Data.Count > 0)
                 {
                     Plans.Clear();
                     PlansNames.Clear();
-                    foreach (var item in response)
+                    foreach (var item in response.Data)
                     {
                         Plans.Add(item);
                         PlansNames.Add(item.Name);
@@ -223,7 +224,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadStatusAsync()
+        private async Task LoadStatusAsync()
         {
             try
             {

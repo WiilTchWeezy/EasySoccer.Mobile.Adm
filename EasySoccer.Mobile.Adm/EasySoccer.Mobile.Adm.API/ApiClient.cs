@@ -28,8 +28,8 @@ namespace EasySoccer.Mobile.Adm.API
             }
         }
 
-        //const string ApiUrl = "https://apieasysoccer.azurewebsites.net/api/";
-        const string ApiUrl = "http://192.168.0.101:45456/api/";
+        const string ApiUrl = "https://apieasysoccer.azurewebsites.net/api/";
+        //const string ApiUrl = "http://192.168.0.101:45456/api/";
 
         private HttpClient CreateClient()
         {
@@ -248,9 +248,9 @@ namespace EasySoccer.Mobile.Adm.API
             return await Get<ReservationInfoResponse>("SoccerPitchReservation/getInfo?" + GenerateQueryParameters(new { reservationId }));
         }
 
-        public async Task<List<PlansResponse>> GetPlansAsync()
+        public async Task<PlansResponseData> GetPlansAsync()
         {
-            return await Get<List<PlansResponse>>("SoccerPitchPlan/get");
+            return await Get<PlansResponseData>("SoccerPitchPlan/get");
         }
 
         public async Task<PlansResponse> PostSoccerPitchPlanAsync(SoccerPitchPlanRequest request)
@@ -263,9 +263,9 @@ namespace EasySoccer.Mobile.Adm.API
             return await Patch<PlansResponse>("SoccerPitchPlan/patch", request);
         }
 
-        public async Task<List<SoccerPitchResponse>> GetSoccerPitchsAsync()
+        public async Task<SoccerSoccerPitchResponseData> GetSoccerPitchsAsync()
         {
-            return await Get<List<SoccerPitchResponse>>("SoccerPitch/get");
+            return await Get<SoccerSoccerPitchResponseData>("SoccerPitch/get");
         }
 
         public Task<object> PostSoccerPitchImageAsync(SoccerPitchImageRequest soccerPitchImageRequest)

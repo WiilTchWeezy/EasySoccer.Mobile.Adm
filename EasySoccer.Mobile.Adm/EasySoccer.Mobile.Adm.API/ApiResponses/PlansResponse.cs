@@ -6,6 +6,11 @@ using System.Text;
 
 namespace EasySoccer.Mobile.Adm.API.ApiResponses
 {
+    public class PlansResponseData
+    {
+        public List<PlansResponse> Data { get; set; }
+        public int Total { get; set; }
+    }
     public class PlansResponse
     {
         public int Id { get; set; }

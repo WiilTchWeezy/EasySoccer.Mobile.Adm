@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -36,7 +37,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         {
             Reservations = new ObservableCollection<ReservationResponse>();
             ReservationFilterCommand = new DelegateCommand(OpenFilter);
-            ItemTresholdCommand = new DelegateCommand(ItemTreshold);
+            ItemTresholdCommand = new DelegateCommand(async () => { await ItemTreshold(); });
             _navigationService = navigationService;
             ItemSelectedCommand = new DelegateCommand(ItemSelected);
             AddReservationCommand = new DelegateCommand(AddReservation);
@@ -68,7 +69,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void ItemTreshold()
+        private async Task ItemTreshold()
         {
             if (Reservations.Count > 0 && _hasMoreData && _isBusy == false)
             {
@@ -148,7 +149,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             get { return _pageSize; }
             set { SetProperty(ref _pageSize, value); }
         }
-        private async void LoadDataAsync(int[] status = null, bool clear = true)
+        private async Task LoadDataAsync(int[] status = null, bool clear = true)
         {
             try
             {

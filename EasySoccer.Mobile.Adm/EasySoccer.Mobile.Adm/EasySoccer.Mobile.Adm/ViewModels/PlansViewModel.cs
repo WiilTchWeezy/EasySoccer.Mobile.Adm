@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -54,15 +55,15 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             try
             {
                 var response = await ApiClient.Instance.GetPlansAsync();
-                if (response != null && response.Count > 0)
+                if (response != null && response.Data !=  null && response.Data.Count > 0)
                 {
                     Plans.Clear();
-                    foreach (var item in response)
+                    foreach (var item in response.Data)
                     {
                         item.EditPlanCommand = new DelegateCommand<PlansResponse>(OpenPlanInfoEdit);
                         Plans.Add(item);

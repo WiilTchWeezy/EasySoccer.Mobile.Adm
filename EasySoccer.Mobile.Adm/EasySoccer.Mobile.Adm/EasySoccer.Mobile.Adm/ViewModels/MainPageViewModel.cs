@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
@@ -24,7 +25,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             : base(navigationService)
         {
             NavigatePageCommand = new DelegateCommand<string>(NavigatePage);
-            OpenLinkCommand = new DelegateCommand<string>(OpenLink);
+            OpenLinkCommand = new DelegateCommand<string>(async (param) => { await OpenLink(param); });
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<UserLoggedInEvent>().Subscribe(UserHasLoggedIn);
@@ -58,7 +59,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
                 _navigationService.NavigateAsync("NavigationPage/" + page);
         }
 
-        private async void OpenLink(string url)
+        private async Task OpenLink(string url)
         {
             var confirmConfig = new ConfirmConfig()
             {

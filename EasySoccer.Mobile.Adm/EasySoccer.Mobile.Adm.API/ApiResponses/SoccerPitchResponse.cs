@@ -6,6 +6,13 @@ using System.Text;
 
 namespace EasySoccer.Mobile.Adm.API.ApiResponses
 {
+
+    public class SoccerSoccerPitchResponseData
+    {
+        public List<SoccerPitchResponse> Data { get; set; }
+        public int Total { get; set; }
+    }
+
     public class SoccerPitchResponse
     {
         public long Id { get; set; }

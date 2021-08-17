@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
@@ -26,8 +27,8 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             PlansName = new ObservableCollection<string>();
             PlansInstallments = new ObservableCollection<string>();
             Plans = new List<PlansInfoResponse>();
-            OpenLinkCommand = new DelegateCommand(OpenLink);
-            PayCommand = new DelegateCommand(Pay);
+            OpenLinkCommand = new DelegateCommand(async () => { await OpenLink(); });
+            PayCommand = new DelegateCommand(async () => { await Pay(); });
             _validator = new PaymentValidator();
             SelectStateCommand = new DelegateCommand(SelectState);
             SelectCityCommand = new DelegateCommand(SelectCity);
@@ -42,12 +43,12 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         public DelegateCommand SelectCityCommand { get; set; }
         public ObservableCollection<string> PlansInstallments { get; set; }
 
-        private async void OpenLink()
+        private async Task OpenLink()
         {
             await Browser.OpenAsync("http://www.easysoccer.com.br/", BrowserLaunchMode.SystemPreferred);
         }
 
-        private async void Pay()
+        private async Task Pay()
         {
             try
             {
@@ -101,7 +102,7 @@ namespace EasySoccer.Mobile.Adm.ViewModels
             }
         }
 
-        private async void LoadDataAsync()
+        private async Task LoadDataAsync()
         {
             try
             {

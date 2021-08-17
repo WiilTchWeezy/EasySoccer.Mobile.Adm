@@ -6,6 +6,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasySoccer.Mobile.Adm.ViewModels
 {
@@ -36,11 +37,11 @@ namespace EasySoccer.Mobile.Adm.ViewModels
         private INavigationService _navigationService;
         public ChangePasswordViewModel(INavigationService navigationService)
         {
-            SaveCommand = new DelegateCommand(Save);
+            SaveCommand = new DelegateCommand(async () => { await Save(); });
             _navigationService = navigationService;
         }
 
-        private async void Save()
+        private async Task Save()
         {
             try
             {
